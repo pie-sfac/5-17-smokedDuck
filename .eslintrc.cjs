@@ -22,6 +22,7 @@ module.exports = {
     'react-hooks',
     '@typescript-eslint',
     'prettier',
+    'simple-import-sort',
   ],
   rules: {
     'react-refresh/only-export-components': [
