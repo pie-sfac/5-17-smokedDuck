@@ -1,93 +1,143 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { useYoutubeVideo } from 'hooks/UseYoutubeVideo';
 
-import LinkCreateComponent from './LinkCreateComponent';
-import LinkViewComponent from './LinkViewComponent';
 
-const slideUpFadeOutAnimation = keyframes`
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  20% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  70% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-`;
-
-const MessageBox = styled.div`
+const Container = styled.div`
   display: flex;
-  position: relative;
-  bottom: 20px;
-  width: 992px;
-  background-color: #2d62ea;
-  color: white;
-  border-radius: 10px;
-  height: 40px;
-  animation: ${slideUpFadeOutAnimation} 4s ease-in-out;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 912px;
 `;
 
-const MessageText = styled.p`
-  color: white;
-  font-size: 14px;
-  height: 40px;
+const InputWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 20px;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 `;
 
-export default function LinkComponent() {
-  const [formData, setFormData] = useState<any>(null);
-  const [showCompletionMessage, setShowCompletionMessage] = useState(false);
+const Input = styled.input`
+  width: 912px;
+  margin-right: 10px;
+`;
 
-  const handleFormSubmit = (data: any) => {
-    setFormData(data);
-  };
 
-  useEffect(() => {
-    if (formData) {
-      setShowCompletionMessage(true);
-      const timer = setTimeout(() => {
-        setShowCompletionMessage(false);
-      }, 4000);
+const ThumbnailBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  width: 912px
+`;
 
-      return () => clearTimeout(timer);
-    }
-  }, [formData]);
+const ThumbnailImage = styled.img`
+  width: 120px;
+  margin-right: 10px;
+`;
 
+const Title = styled.p`
+  font-size: 14px;
+`;
+
+const InputTitle = styled.h4``;
+
+const DescriptionBox = styled.div`
+  position: relative;
+`;
+
+const DescriptionTextarea = styled.textarea`
+  margin-bottom: 20px;
+  width: 912px;
+  height: 150px;
+  resize: none;
+`;
+
+const CharacterCount = styled.p`
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: #777;
+`;
+
+const ErrorMsg = styled.p`
+  color: red;
+  font-size: 12px;
+`;
+
+
+
+
+function LinkComponent() {
+
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const {youtubeVideo, handler} = useYoutubeVideo();
+  useEffect(()=>{
+    setDescription(youtubeVideo?.description||'');
+  },[youtubeVideo])
+
+  
+  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
+      setTitle(event.target.value);
+  }
+
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    const { value } = event.target;
+    console.log(value);
+      setDescription(value.slice(0, 500));
+  }
+  
   return (
-    <div>
-      {!formData ? (
-        <LinkCreateComponent onSubmit={handleFormSubmit} />
-      ) : (
-        <>
-          <LinkViewComponent
-            category={formData.category}
-            linkUrl={formData.linkUrl}
-            linkTitle={formData.title}
-            description={formData.description}
-            thumbnailUrl={formData.thumbnailUrl}
-            title={formData.title}
-          />
-          {showCompletionMessage && (
-            <MessageBox>
-              <MessageText color="white">저장되었습니다.</MessageText>
-            </MessageBox>
-          )}
-        </>
+    <Container>
+      <h2>센터 링크 추가</h2>
+      <p>센터에 미리 운동 영상 링크를 정리하세요.</p>
+      <p>회원에게 발송하는 메시지에 간편하게 활용할 수 있습니다.</p>
+      
+      <InputTitle>링크</InputTitle>
+
+      <InputWrapper>
+        <Input
+          type="text"
+          onChange={handler}
+          placeholder="URL을 입력해주세요"
+        />
+      </InputWrapper>
+
+      {youtubeVideo && (
+        <ThumbnailBox>
+          <ThumbnailImage src={youtubeVideo.thumbnailUrl} alt="Thumbnail" />
+          <Title>{youtubeVideo.title}</Title>
+        </ThumbnailBox>
       )}
-    </div>
+
+      <InputTitle>링크 제목</InputTitle>
+
+      <Input
+        type="text"
+        value={title || youtubeVideo?.title}
+        onChange={handleTitleChange}
+        placeholder="링크 제목을 입력해 주세요."
+      />
+
+      <InputTitle>메모</InputTitle>
+
+      <DescriptionBox>
+        <DescriptionTextarea
+          value={description || youtubeVideo?.description}
+          onChange={handleDescriptionChange}
+          placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
+        />
+
+        <CharacterCount>
+          {description.length} / 500
+        </CharacterCount>
+      </DescriptionBox>
+
+    </Container>
   );
 }
+
+export default LinkComponent;
