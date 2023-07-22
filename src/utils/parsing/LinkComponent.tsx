@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { useYoutubeVideo } from 'hooks/UseYoutubeVideo';
 
@@ -62,13 +63,6 @@ const CharacterCount = styled.p`
   color: #777;
 `;
 
-const ErrorMsg = styled.p`
-  color: red;
-  font-size: 12px;
-`;
-
-
-
 
 function LinkComponent() {
 
@@ -112,7 +106,7 @@ function LinkComponent() {
           <Title>{youtubeVideo.title}</Title>
         </ThumbnailBox>
       )}
-      
+
       <InputTitle>링크 제목</InputTitle>
 
       <Input
