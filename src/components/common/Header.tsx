@@ -1,8 +1,11 @@
 import { Avatar } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '../../assests/Logo.svg';
+import Logo from '../../assets/Logo.svg';
+import { category, userName } from '../../utils/constants/header';
+import { categoryType } from '../../utils/constants/header';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -58,46 +61,35 @@ export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const category: string[] = [
-    '직원 관리',
-    '수강권 관리',
-    '기록 관리',
-    '미디어 관리',
-    '운영 데이터',
-    '알림메시지',
-    '센터 정보',
-  ];
-  const userName = '박관리자01';
-
-  const handlePageMove = (index: number) => {
-    if (index === 2) {
-      navigate('/record');
+  const handlePageMove = (item: categoryType) => {
+    if (item.id === 2) {
+      navigate(`${item.name}`);
     }
 
-    if (index === 3) {
-      navigate('/media');
+    if (item.id === 3) {
+      navigate(`${item.name}`);
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.clear();
     navigate('/login');
-  };
+  }, [navigate]);
 
   if (pathname === '/login') {
-    return <></>;
+    return null;
   }
 
   return (
     <HeaderContainer>
       <img src={Logo} />
       <HeaderCategoryList>
-        {category.map((item, index) => (
+        {category.map(item => (
           <HeaderCategoryListItem
-            key={index}
-            onClick={() => handlePageMove(index)}
+            key={item.id}
+            onClick={() => handlePageMove(item)}
           >
-            {item}
+            {item.text}
           </HeaderCategoryListItem>
         ))}
       </HeaderCategoryList>
