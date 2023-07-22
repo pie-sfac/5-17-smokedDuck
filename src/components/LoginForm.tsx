@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface LoginResponse {
@@ -12,6 +12,7 @@ interface LoginResponse {
 interface StyledPasswordIconProps {
   password: string;
 }
+
 const StyledLoginForm = styled.form`
   display: flex;
   position: relative;
@@ -31,6 +32,7 @@ const StyledUl = styled.ul`
   margin-right: 160px;
   margin-bottom: 24px;
 `;
+
 const StyledLi = styled.li`
   padding: 0 12px;
   list-style-type: none;
@@ -57,6 +59,7 @@ const StyledInput = styled.input`
 const StyledDivInput = styled.div`
   position: relative;
 `;
+
 const StyledPasswordIcon = styled.img<StyledPasswordIconProps>`
   position: absolute;
   top: 38px;
@@ -104,42 +107,40 @@ export default function LoginForm() {
 
   const navigate = useNavigate();
 
-  // 로그인 정보 요청
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    try {
-      const basicToken = btoa(`${username}:${password}`);
-      const headers = {
-        Authorization: `Basic ${basicToken}`,
-        'Content-Type': 'application/json',
-      };
-      const data = {
-        Username: username,
-        Password: password,
-      };
-      const response = await axios.post<LoginResponse>(
-        'http://223.130.161.221/api/v1/admins/login',
-        { data },
-        { headers }
-      );
-
-      window.localStorage.setItem('token', response.data.accessToken);
-      window.localStorage.setItem('refreshToken', response.data.refreshToken);
-
-      navigate('record');
-    } catch (error) {
-      alert('아이디 또는 비밀번호가 틀렸습니다.');
-      console.error('error');
-    }
-  };
-
-  //아이디&비밀번호 입력시 버튼활성화
   const isButtonDisabled: boolean =
     username.length === 0 || password.length === 0;
-  const handleTogglePassword = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword);
-  };
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      try {
+        const basicToken = btoa(`${username}:${password}`);
+        const headers = {
+          Authorization: `Basic ${basicToken}`,
+          'Content-Type': 'application/json',
+        };
+        const data = {
+          Username: username,
+          Password: password,
+        };
+        const response = await axios.post<LoginResponse>(
+          'http://223.130.161.221/api/v1/admins/login',
+          { data },
+          { headers }
+        );
+
+        window.localStorage.setItem('token', response.data.accessToken);
+        window.localStorage.setItem('refreshToken', response.data.refreshToken);
+
+        navigate('record');
+      } catch (error) {
+        alert('아이디 또는 비밀번호가 틀렸습니다.');
+        console.error('error');
+      }
+    },
+    [username, password, navigate]
+  );
 
   return (
     <StyledLoginForm onSubmit={handleSubmit}>
@@ -171,7 +172,9 @@ export default function LoginForm() {
           src=""
           alt=""
           password={password}
-          onClick={handleTogglePassword}
+          onClick={() => {
+            setShowPassword(prevShowPassword => !prevShowPassword);
+          }}
         />
       </StyledDivInput>
       <StyledFind>
