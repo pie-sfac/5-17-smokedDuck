@@ -1,3 +1,4 @@
+import Header from 'components/common/Header';
 import LoginPage from 'pages/LoginPage';
 import MediaManagementPage from 'pages/MediaManagementPage';
 import NotFoundPage from 'pages/NotFoundPage';
@@ -7,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 export default function AppRouter() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/record" element={<RecordManagementPage />} />
