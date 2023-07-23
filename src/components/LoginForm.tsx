@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Logo from '../assets/Logo.svg';
+import VisibilityOn from '../assets/VisibilityOn.svg';
+
 interface LoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -144,7 +147,7 @@ export default function LoginForm() {
 
   return (
     <StyledLoginForm onSubmit={handleSubmit}>
-      <StyledImg src="" alt="" />
+      <StyledImg src={Logo} alt="logo" />
       <StyledUl>
         <StyledLi>관리자 로그인</StyledLi>
         <StyledLi>직원 로그인</StyledLi>
@@ -169,7 +172,7 @@ export default function LoginForm() {
           onChange={e => setPassword(e.target.value)}
         />
         <StyledPasswordIcon
-          src=""
+          src={VisibilityOn}
           alt=""
           password={password}
           onClick={() => {
