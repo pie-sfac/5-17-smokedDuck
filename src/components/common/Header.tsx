@@ -75,8 +75,9 @@ export default function Header() {
     localStorage.clear();
     navigate('/login');
   }, [navigate]);
+  console.log(pathname);
 
-  if (pathname === '/login') {
+  if (pathname === '/login' || pathname === '/') {
     return null;
   }
 
