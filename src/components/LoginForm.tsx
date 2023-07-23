@@ -148,6 +148,7 @@ export default function LoginForm() {
   return (
     <StyledLoginForm onSubmit={handleSubmit}>
       <StyledImg src={Logo} alt="logo" />
+
       <StyledUl>
         <StyledLi>관리자 로그인</StyledLi>
         <StyledLi>직원 로그인</StyledLi>
