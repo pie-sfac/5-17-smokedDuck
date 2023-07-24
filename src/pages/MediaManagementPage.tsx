@@ -1,5 +1,21 @@
 import styled from '@emotion/styled';
-import MediaList from 'components/MediaList';
+
+import MediaCard from '@/components/MediaCard';
+import { mediaList } from '@/utils/constants/mediaList';
+
+export default function MediaManagementPage() {
+  return (
+    <MediaListContainer>
+      {mediaList.map(item => (
+        <MediaCard
+          key={item.id}
+          title={item.title}
+          description={item.description}
+        />
+      ))}
+    </MediaListContainer>
+  );
+}
 
 const MediaListContainer = styled('div')`
   display: flex;
@@ -14,11 +30,3 @@ const MediaListContainer = styled('div')`
   background-color: rgba(235, 241, 255, 0.26);
   border-radius: 16px;
 `;
-
-export default function MediaManagementPage() {
-  return (
-    <MediaListContainer>
-      <MediaList />
-    </MediaListContainer>
-  );
-}
