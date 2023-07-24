@@ -3,9 +3,9 @@ import styled from '@emotion/styled';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '../../assets/Logo.svg';
-import { category, userName } from '../../utils/constants/header';
-import { categoryType } from '../../utils/constants/header';
+import Logo from '@/assets/Logo.svg';
+import { category, userName } from '@/utils/constants/header';
+import { categoryType } from '@/utils/constants/header';
 
 export default function Header() {
   const navigate = useNavigate();
