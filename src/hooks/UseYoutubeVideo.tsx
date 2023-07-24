@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useState } from 'react';
 
-import { fetchYoutubeVideo } from '../apis/Youtube';
+import { fetchYoutubeVideo } from '@/apis/Youtube';
 
 export interface YoutubeVideo {
   title: string;
@@ -19,7 +24,6 @@ export function useYoutubeVideo() {
     }
 
     fetchYoutubeVideo(extractVideoIdFromUrl(youtubeVideoUrl)).then(data => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       setYoutubeVideo(getYoutubeVideoFromMetedata(data.items[0]));
     });
   };
@@ -33,15 +37,11 @@ export function useYoutubeVideo() {
 }
 
 export function getYoutubeVideoFromMetedata(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   youtubeVideoMetadata: any
 ): YoutubeVideo {
   return {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     title: youtubeVideoMetadata?.snippet.title,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     thumbnailUrl: youtubeVideoMetadata?.snippet.thumbnails?.default?.url || '',
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     description: youtubeVideoMetadata?.snippet.description.slice(0, 500),
   };
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   FormControl,
@@ -64,7 +65,12 @@ const StyledButton = styled(Button)`
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
 `;
 
-function LinkCreateComponent() {
+interface LinkCreateComponentProps {
+  onSubmit: (data: any) => void;
+}
+
+function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
+  const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -90,17 +96,27 @@ function LinkCreateComponent() {
   }
 
   function handleCategoryChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setCategory(event.target.value);
+    setCategory(event.target.selectedOptions[0].text);
     updateFormCompletion();
   }
 
   function updateFormCompletion() {
     const isCategoryValid = category.trim() !== '';
     const isTitleValid =
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
 
     setIsFormComplete(isCategoryValid && isTitleValid);
+  }
+
+  function handleSubmit() {
+    const formData = {
+      category,
+      linkUrl: linkUrl,
+      title: title,
+      description: description,
+    };
+
+    onSubmit(formData);
   }
 
   return (
@@ -130,7 +146,6 @@ function LinkCreateComponent() {
         <InputWrapper>
           <Input
             type="text"
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             onChange={handler}
             placeholder="URL을 입력해주세요"
             width="912px"
@@ -142,7 +157,6 @@ function LinkCreateComponent() {
 
         <Input
           type="text"
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           value={title || youtubeVideo?.title}
           onChange={handleTitleChange}
           placeholder="링크 제목을 입력해 주세요."
@@ -154,7 +168,6 @@ function LinkCreateComponent() {
 
       <DescriptionBox>
         <Textarea
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           value={description || youtubeVideo?.description}
           onChange={handleDescriptionChange}
           placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
@@ -174,6 +187,7 @@ function LinkCreateComponent() {
           width="40px"
           height="24px"
           disabled={!isFormComplete}
+          onClick={handleSubmit}
         >
           완료
         </StyledButton>
