@@ -4,8 +4,8 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Logo from '../assets/Logo.svg';
-import VisibilityOn from '../assets/VisibilityOn.svg';
+import Logo from '@/assets/Logo.svg';
+import VisibilityOn from '@/assets/VisibilityOn.svg';
 
 interface LoginResponse {
   accessToken: string;
