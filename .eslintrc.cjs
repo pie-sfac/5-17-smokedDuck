@@ -45,7 +45,12 @@ module.exports = {
         },
       },
     ],
-    'prettier/prettier': ['error'],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'no-console': ['error', { allow: ['warn', 'error'] }],
   },
 };
