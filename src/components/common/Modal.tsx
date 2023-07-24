@@ -8,9 +8,6 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 
-import TemplateContent from '../Template/TemplateContent';
-import TemplateTitle from '../Template/TemplateTitle';
-
 type ModalProps = {
   width?: number;
   height?: number;
