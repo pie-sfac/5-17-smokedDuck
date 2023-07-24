@@ -1,6 +1,7 @@
 import { Button } from '@chakra-ui/react';
-import Modal from 'components/common/Modal';
 import { useState } from 'react';
+
+import Modal from '@/components/common/Modal';
 
 export default function RecordManagementPage() {
   const [isOpen, setIsOpen] = useState(false);

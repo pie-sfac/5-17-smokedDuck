@@ -45,6 +45,7 @@ module.exports = {
         },
       },
     ],
-    'eslint no-console': ['error', { allow: ['warn', 'error'] }],
+    'prettier/prettier': ['error'],
+    'no-console': ['error', { allow: ['warn', 'error'] }],
   },
 };

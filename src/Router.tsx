@@ -1,9 +1,10 @@
-import Header from 'components/common/Header';
-import LoginPage from 'pages/LoginPage';
-import MediaManagementPage from 'pages/MediaManagementPage';
-import NotFoundPage from 'pages/NotFoundPage';
-import RecordManagementPage from 'pages/RecordManagementPage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import Header from './components/common/Header';
+import LoginPage from './pages/LoginPage';
+import MediaManagementPage from './pages/MediaManagementPage';
+import NotFoundPage from './pages/NotFoundPage';
+import RecordManagementPage from './pages/RecordManagementPage';
 
 export default function AppRouter() {
   return (
