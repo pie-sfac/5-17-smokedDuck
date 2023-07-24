@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import Modal from '@/components/Common/Modal';
 import RecordListContainer from '@/components/Record/RecordListContainer';
 import TypeSelector from '@/components/Record/TypeSelector';
+import Template from '@/components/Template';
 import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
