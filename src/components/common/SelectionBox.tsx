@@ -32,18 +32,18 @@ export default function SelectionBox({
       </TitleContainer>
       <IconContainer>
         <StyledImage>
-          <img src={image} alt="템플릿 아이콘" width={16} height={20} />
+          <img
+            id={'templateImg'}
+            src={image}
+            alt="템플릿 아이콘"
+            width={16}
+            height={20}
+          />
         </StyledImage>
       </IconContainer>
     </SelectionBoxContainer>
   );
 }
-
-const TitleContainer = styled('div')`
-  margin: 1rem;
-  display: flex;
-  flex-direction: column;
-`;
 
 const SelectionBoxContainer = styled('div')`
   display: flex;
@@ -52,6 +52,25 @@ const SelectionBoxContainer = styled('div')`
   margin: 1rem;
   border: 1px solid #e7e7e7;
   border-radius: 10px 10px 10px 10px;
+  :hover {
+    border: 1px solid #2d62ea;
+    * {
+      color: #2d62ea;
+    }
+    .css-19njikn {
+      background-color: #ebf1ff;
+    }
+    #templateImg {
+      filter: invert(29%) sepia(57%) saturate(5495%) hue-rotate(220deg)
+        brightness(99%) contrast(85%);
+    }
+  }
+`;
+
+const TitleContainer = styled('div')`
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const IconContainer = styled('div')`
