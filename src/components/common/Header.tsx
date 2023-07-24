@@ -23,11 +23,10 @@ export default function Header() {
 
   const handleLogout = useCallback(() => {
     localStorage.clear();
-    navigate('/login');
+    navigate('/');
   }, [navigate]);
-  console.log(pathname);
 
-  if (pathname === '/login' || pathname === '/') {
+  if (pathname === '/') {
     return null;
   }
 
