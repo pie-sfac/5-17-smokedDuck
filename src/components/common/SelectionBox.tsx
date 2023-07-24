@@ -7,6 +7,7 @@ type SelectionBoxProps = {
   title: string;
   titleDescription: string;
   image: string;
+  onClick: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function SelectionBox({
@@ -15,6 +16,7 @@ export default function SelectionBox({
   title,
   titleDescription,
   image,
+  onClick,
 }: SelectionBoxProps) {
   const selectionBoxContainerStyle = useMemo(
     () => ({
@@ -25,7 +27,10 @@ export default function SelectionBox({
   );
 
   return (
-    <SelectionBoxContainer style={{ ...selectionBoxContainerStyle }}>
+    <SelectionBoxContainer
+      style={{ ...selectionBoxContainerStyle }}
+      onClick={() => onClick(title)}
+    >
       <TitleContainer>
         <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{title}</div>
         <div style={{ fontSize: '0.8rem' }}>{titleDescription}</div>
