@@ -9,6 +9,7 @@ function App() {
     </AppContainer>
   );
 }
+export default App;
 
 const AppContainer = styled.div`
   width: 1440px;
@@ -16,5 +17,3 @@ const AppContainer = styled.div`
   margin: 0 auto;
   position: relative;
 `;
-
-export default App;

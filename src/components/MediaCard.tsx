@@ -14,7 +14,7 @@ export default function MediaCard(props: {
     <MediaContainer>
       <MediaContent>
         <MoreIcon src={MoreVert} onClick={() => setIsOpen(!isOpen)} />
-        <MediaImg src="" alt="" />
+        <MediaImg src="https://placehold.co/24x24" alt="" />
         <MediaDiv>
           <MediaTitle>{props.title}</MediaTitle>
           <Mediadescription>{props.description}</Mediadescription>
@@ -33,6 +33,7 @@ const MediaContainer = styled('div')`
   background-color: #fff;
   padding: 24px;
   margin: 8px;
+  box-shadow: 0px 1px 3px -2px rgba(0, 0, 0, 0.75);
 `;
 
 const MoreIcon = styled('img')`
