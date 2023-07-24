@@ -67,15 +67,21 @@ const ListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.5rem;
-  overflow: hidden;
-  height: calc(696px - 6rem);
+  overflow: auto;
+  height: calc(38rem + 1.5rem + 5px);
+  padding: 5px;
+  box-sizing: content-box;
+  &::-webkit-scrollbar {
+    background-color: none;
+    width: 0.5rem;
+  }
 `;
 
 const ListBackGround = styled.div`
-  height: 696px;
+  height: calc(38rem + 1.5rem + 5px + 4rem);
   background-color: rgba(235, 241, 255, 0.8);
   border-radius: 10px;
-  padding: 3rem 6rem;
+  padding: 2rem 6rem;
   margin-top: 1rem;
   border: 1px solid #e7e7e7;
 `;
