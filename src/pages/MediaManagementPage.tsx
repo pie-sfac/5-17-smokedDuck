@@ -1,7 +1,8 @@
 import { Button } from '@chakra-ui/react';
-import Modal from 'components/common/Modal';
 import { useState } from 'react';
-import LinkComponent from 'utils/parsing/LinkComponent';
+
+import Modal from '@/components/common/Modal';
+import LinkComponent from '@/utils/parsing/LinkComponent';
 
 export default function MediaManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,18 +29,17 @@ export default function MediaManagementPage() {
           setIsOpen={setIsOpen}
         >
           {}
-          <div 
-          style={{ 
-            display: 'flex', 
-            justifyContent: 'center',
-            height: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
             <LinkComponent />
-
           </div>
-          
         </Modal>
       )}
     </div>
   );
 }
-
