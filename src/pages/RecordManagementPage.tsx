@@ -4,9 +4,9 @@ import { useState } from 'react';
 
 import Template from '@/assets/Template.svg';
 import Modal from '@/components/common/Modal';
+import SelectionBox from '@/components/common/SelectionBox';
 import RecordListContainer from '@/components/record/RecordListContainer';
 import TypeSelector from '@/components/record/TypeSelector';
-import SelectionBox from '@/components/common/SelectionBox';
 
 export default function RecordManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
