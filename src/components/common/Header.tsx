@@ -3,9 +3,57 @@ import styled from '@emotion/styled';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '@/assets/Logo.svg';
-import { category, userName } from '@/utils/constants/header';
-import { categoryType } from '@/utils/constants/header';
+import Logo from '../../assets/Logo.svg';
+import { category, userName } from '../../utils/constants/header';
+import { categoryType } from '../../utils/constants/header';
+
+export default function Header() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const handlePageMove = (item: categoryType) => {
+    if (item.id === 2) {
+      navigate(`${item.name}`);
+    }
+
+    if (item.id === 3) {
+      navigate(`${item.name}`);
+    }
+  };
+
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    navigate('/');
+  }, [navigate]);
+
+  if (pathname === '/') {
+    return null;
+  }
+
+  return (
+    <HeaderContainer>
+      <img src={Logo} />
+      <HeaderCategoryList>
+        {category.map(item => (
+          <HeaderCategoryListItem
+            key={item.id}
+            onClick={() => handlePageMove(item)}
+          >
+            {item.text}
+          </HeaderCategoryListItem>
+        ))}
+      </HeaderCategoryList>
+      <UserArea>
+        <AvatarArea>
+          <Avatar src="https://bit.ly/broken-link" size="xs" />
+        </AvatarArea>
+        {userName}
+        <PlanUser>플랜 이용중</PlanUser>
+      </UserArea>
+      <LogoutArea onClick={handleLogout}>로그아웃</LogoutArea>
+    </HeaderContainer>
+  );
+}
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -13,6 +61,7 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  border-bottom: 2px solid rgba(231, 231, 231, 40%);
 `;
 const HeaderCategoryList = styled.ul`
   display: flex;
@@ -56,51 +105,3 @@ const LogoutArea = styled.button`
 const AvatarArea = styled.span`
   margin-right: 8px;
 `;
-
-export default function Header() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const handlePageMove = (item: categoryType) => {
-    if (item.id === 2) {
-      navigate(`${item.name}`);
-    }
-
-    if (item.id === 3) {
-      navigate(`${item.name}`);
-    }
-  };
-
-  const handleLogout = useCallback(() => {
-    localStorage.clear();
-    navigate('/login');
-  }, [navigate]);
-
-  if (pathname === '/login') {
-    return null;
-  }
-
-  return (
-    <HeaderContainer>
-      <img src={Logo} />
-      <HeaderCategoryList>
-        {category.map(item => (
-          <HeaderCategoryListItem
-            key={item.id}
-            onClick={() => handlePageMove(item)}
-          >
-            {item.text}
-          </HeaderCategoryListItem>
-        ))}
-      </HeaderCategoryList>
-      <UserArea>
-        <AvatarArea>
-          <Avatar src="https://bit.ly/broken-link" size="xs" />
-        </AvatarArea>
-        {userName}
-        <PlanUser>플랜 이용중</PlanUser>
-      </UserArea>
-      <LogoutArea onClick={handleLogout}>로그아웃</LogoutArea>
-    </HeaderContainer>
-  );
-}
