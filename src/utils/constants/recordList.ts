@@ -1,4 +1,4 @@
-type recordListType = {
+export type recordListType = {
   title: string;
   type: string;
   id: number;
@@ -49,9 +49,9 @@ export const recordList: recordListType[] = [
     id: 21,
   },
   { title: '통증 없는 회원 템플릿.', type: 'treatment', id: 22 },
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 23 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 23 },
   { title: '운동용 템플릿', type: 'treatment', id: 24 },
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 25 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 25 },
 
   { title: '운동용 템플릿', type: 'treatment', id: 26 },
   {
@@ -60,10 +60,10 @@ export const recordList: recordListType[] = [
     id: 27,
   },
   { title: '통증 없는 회원 템플릿.', type: 'treatment', id: 28 },
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 29 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 29 },
   { title: '운동용 템플릿', type: 'treatment', id: 30 },
 
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 31 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 31 },
   { title: '운동용 템플릿', type: 'treatment', id: 32 },
   {
     title: '다이어트용 템플릿 (허리 디스트있는 회원용)',
@@ -71,11 +71,11 @@ export const recordList: recordListType[] = [
     id: 33,
   },
   { title: '통증 없는 회원 템플릿.', type: 'treatment', id: 34 },
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 35 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 35 },
 
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 36 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 36 },
   { title: '운동용 템플릿', type: 'treatment', id: 37 },
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'treatment', id: 38 },
+  { title: '통증이 있는 회원 처치 템플릿 입니다.', type: 'treatment', id: 38 },
   { title: '운동용 템플릿', type: 'treatment', id: 39 },
   {
     title: '다이어트용 템플릿 (허리 디스트있는 회원용)',
