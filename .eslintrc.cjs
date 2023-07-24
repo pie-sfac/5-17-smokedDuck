@@ -45,5 +45,6 @@ module.exports = {
         },
       },
     ],
+    'eslint no-console': ['error', { allow: ['warn', 'error'] }],
   },
 };
