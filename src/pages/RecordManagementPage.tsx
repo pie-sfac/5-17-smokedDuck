@@ -3,25 +3,20 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import RecordCard from '@/components/RecordCard';
-import { recordList } from '@/utils/constants/recordList';
+import RecordListContainer from '@/components/RecordListContainer';
+import TypeSelector from '@/components/TypeSelector';
 
 export default function RecordManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [templateType, setTemplateType] = useState('history');
   return (
     <PageContainer>
       <PageTitle>기록 템플릿</PageTitle>
-      <span>{`문진(00)`}</span>
-      <span>{`처치(00)`}</span>
-
-      <ListBackGround>
-        <ListContainer>
-          {recordList.map(item => (
-            <RecordCard title={item.title} key={item.id} id={item.id} />
-          ))}
-        </ListContainer>
-      </ListBackGround>
+      <TypeSelector
+        templateType={templateType}
+        setTemplateType={setTemplateType}
+      />
+      <RecordListContainer templateType={templateType} />
 
       <BlueButton onClick={() => setIsOpen(true)}>+ 템플릿 추가</BlueButton>
       {isOpen && (
@@ -61,27 +56,4 @@ const PageTitle = styled.span`
 const PageContainer = styled.div`
   margin-top: 2rem;
   position: relative;
-`;
-
-const ListContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
-  overflow: auto;
-  height: calc(38rem + 1.5rem + 5px);
-  padding: 5px;
-  box-sizing: content-box;
-  &::-webkit-scrollbar {
-    background-color: none;
-    width: 0.5rem;
-  }
-`;
-
-const ListBackGround = styled.div`
-  height: calc(38rem + 1.5rem + 5px + 4rem);
-  background-color: rgba(235, 241, 255, 0.8);
-  border-radius: 10px;
-  padding: 2rem 6rem;
-  margin-top: 1rem;
-  border: 1px solid #e7e7e7;
 `;
