@@ -2,7 +2,6 @@ import { Button, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import Template from '@/assets/Template.svg';
 import Modal from '@/components/common/Modal';
 import SelectionBox from '@/components/common/SelectionBox';
 import RecordListContainer from '@/components/record/RecordListContainer';
