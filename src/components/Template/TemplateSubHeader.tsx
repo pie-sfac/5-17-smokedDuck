@@ -22,4 +22,8 @@ const StyledInput = styled('input')`
   border-bottom: 1px solid #e7e7e7;
   font-size: 0.9rem;
   margin: 0.2rem;
+  padding: 0 0.2rem 0 0.2rem;
+  :focus {
+    outline: none;
+  }
 `;
