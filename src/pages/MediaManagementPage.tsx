@@ -2,7 +2,7 @@ import { Button, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import Modal from '@/components/common/Modal';
+import Modal from '@/components/Common/Modal';
 import CategorySelector from '@/components/Media/CategorySelector';
 import MediaListContainer from '@/components/Media/MediaListContainer';
 
