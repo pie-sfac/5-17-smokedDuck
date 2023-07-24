@@ -61,8 +61,7 @@ const SelectionBoxContainer = styled('div')`
       background-color: #ebf1ff;
     }
     #templateImg {
-      filter: invert(29%) sepia(57%) saturate(5495%) hue-rotate(220deg)
-        brightness(99%) contrast(85%);
+      filter: opacity(0.5) drop-shadow(0 0 0 #ebf1ff);
     }
   }
 `;
