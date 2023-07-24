@@ -62,6 +62,7 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  border-bottom: 2px solid rgba(231, 231, 231, 40%);
 `;
 const HeaderCategoryList = styled.ul`
   display: flex;
