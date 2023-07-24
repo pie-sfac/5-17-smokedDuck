@@ -1,34 +1,41 @@
 import styled from '@emotion/styled';
 import {
   Dispatch,
-  ReactNode,
   SetStateAction,
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
+
+import TemplateContent from '../Template/TemplateContent';
+import TemplateTitle from '../Template/TemplateTitle';
 
 type ModalProps = {
   width?: number;
   height?: number;
-  title: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  children: ReactNode;
 };
 
 export default function Modal({
   width = 940,
   height = 640,
-  title,
   setIsOpen,
-  children,
 }: ModalProps) {
+  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
+
   const modalContainerStyle = useMemo(
-    () => ({
-      width,
-      height,
-    }),
-    [width, height]
+    () =>
+      selectedTemplateTitle.length === 0
+        ? {
+            width,
+            height,
+          }
+        : {
+            width: 940,
+            height: 740,
+          },
+    [width, height, selectedTemplateTitle]
   );
 
   const closeModal = useCallback(
@@ -39,8 +46,9 @@ export default function Modal({
     ) => {
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
+      setSelectedTemplateTitle('');
     },
-    [setIsOpen]
+    [setIsOpen, setSelectedTemplateTitle]
   );
 
   return createPortal(
@@ -48,10 +56,16 @@ export default function Modal({
       <ModalContainer
         style={{
           ...modalContainerStyle,
+          transition: 'all ease 0.2s',
         }}
       >
-        <ModalTitle>{title}</ModalTitle>
-        {children}
+        <TemplateTitle title={selectedTemplateTitle} />
+        <TemplateContent
+          selectedTemplateTitle={selectedTemplateTitle}
+          setSelectedTemplateTitle={setSelectedTemplateTitle}
+        >
+          {}
+        </TemplateContent>
         <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
       </ModalContainer>
     </BackgroundDim>,
@@ -75,13 +89,6 @@ const ModalContainer = styled('div')`
   transform: translate(-50%, -50%);
   background-color: #ffffff;
   border-radius: 10px 10px 10px 10px;
-`;
-
-const ModalTitle = styled('div')`
-  font-size: 14px;
-  margin: 2rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid #e7e7e7;
 `;
 
 const ModalCloseButton = styled('button')`
