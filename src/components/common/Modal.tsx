@@ -63,9 +63,7 @@ export default function Modal({
         <TemplateContent
           selectedTemplateTitle={selectedTemplateTitle}
           setSelectedTemplateTitle={setSelectedTemplateTitle}
-        >
-          {}
-        </TemplateContent>
+        />
         <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
       </ModalContainer>
     </BackgroundDim>,
