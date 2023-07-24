@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 
-import HambergerDot from '../assets/hamburgerDots.svg';
+import HambergerDot from '@/assets/hamburgerDots.svg';
 
 type EditBoxProps = {
   top?: number;
