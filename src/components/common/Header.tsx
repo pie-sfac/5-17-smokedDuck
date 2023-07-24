@@ -54,55 +54,6 @@ export default function Header() {
     </HeaderContainer>
   );
 }
-
-export default function Header() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
-  const handlePageMove = (item: categoryType) => {
-    if (item.id === 2) {
-      navigate(`${item.name}`);
-    }
-
-    if (item.id === 3) {
-      navigate(`${item.name}`);
-    }
-  };
-
-  const handleLogout = useCallback(() => {
-    localStorage.clear();
-    navigate('/');
-  }, [navigate]);
-
-  if (pathname === '/') {
-    return null;
-  }
-
-  return (
-    <HeaderContainer>
-      <img src={Logo} />
-      <HeaderCategoryList>
-        {category.map(item => (
-          <HeaderCategoryListItem
-            key={item.id}
-            onClick={() => handlePageMove(item)}
-          >
-            {item.text}
-          </HeaderCategoryListItem>
-        ))}
-      </HeaderCategoryList>
-      <UserArea>
-        <AvatarArea>
-          <Avatar src="https://bit.ly/broken-link" size="xs" />
-        </AvatarArea>
-        {userName}
-        <PlanUser>플랜 이용중</PlanUser>
-      </UserArea>
-      <LogoutArea onClick={handleLogout}>로그아웃</LogoutArea>
-    </HeaderContainer>
-  );
-}
-
 const HeaderContainer = styled.header`
   width: 100%;
   height: 48px;
