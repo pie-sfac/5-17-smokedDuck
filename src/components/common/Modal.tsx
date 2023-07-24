@@ -5,6 +5,7 @@ import {
   SetStateAction,
   useCallback,
   useMemo,
+  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -19,15 +20,24 @@ type ModalProps = {
 export default function Modal({
   width = 940,
   height = 640,
+  title,
   setIsOpen,
   children,
 }: ModalProps) {
+  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
+
   const modalContainerStyle = useMemo(
-    () => ({
-      width,
-      height,
-    }),
-    [width, height]
+    () =>
+      selectedTemplateTitle.length === 0
+        ? {
+            width,
+            height,
+          }
+        : {
+            width: 940,
+            height: 740,
+          },
+    [width, height, selectedTemplateTitle]
   );
 
   const closeModal = useCallback(
@@ -38,8 +48,9 @@ export default function Modal({
     ) => {
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
+      setSelectedTemplateTitle('');
     },
-    [setIsOpen]
+    [setIsOpen, setSelectedTemplateTitle]
   );
 
   return createPortal(
@@ -75,6 +86,13 @@ const ModalContainer = styled('div')`
   transform: translate(-50%, -50%);
   background-color: #ffffff;
   border-radius: 10px 10px 10px 10px;
+`;
+
+const ModalTitle = styled('div')`
+  font-size: 14px;
+  margin: 2rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e7e7e7;
 `;
 
 const ModalCloseButton = styled('button')`
