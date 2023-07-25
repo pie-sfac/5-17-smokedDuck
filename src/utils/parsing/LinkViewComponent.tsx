@@ -1,6 +1,5 @@
-import { AbsoluteCenter, Alert, Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
 
 import Logo from '@/assets/Logo.svg';
 
@@ -25,6 +24,7 @@ const StyledImg = styled.img`
 const LinkInfo = styled.div`
   width: 400px;
   height: 376px;
+  margin-right: 40px;
 `;
 
 const Divider = styled.div`
@@ -36,7 +36,7 @@ const Divider = styled.div`
 
 const MemoBox = styled.div`
   width: 400px;
-  margin-left: 70px;
+  margin-left: 40px;
 `;
 
 const CharacterCount = styled.p`
@@ -47,11 +47,24 @@ const CharacterCount = styled.p`
   color: #777;
 `;
 
+const Title = styled.div`
+  font-size: 14px;
+  float: left;
+  margin-top: 18px;
+  height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 300px;
+`;
+
 interface LinkViewProps {
   category: string;
   linkUrl: string;
   linkTitle: string;
   description: string;
+  thumbnailUrl: string;
+  title: string;
 }
 
 function LinkViewComponent({
@@ -59,6 +72,8 @@ function LinkViewComponent({
   linkUrl,
   linkTitle,
   description,
+  thumbnailUrl,
+  title,
 }: LinkViewProps) {
   return (
     <Container>
@@ -71,16 +86,35 @@ function LinkViewComponent({
         <Heading as="h5" size="md" marginBottom="10px">
           링크
         </Heading>
-        <Text marginBottom="10px">linkUrl</Text>
-        <Box bg="white" borderWidth="1px" borderRadius="lg" height="56px"></Box>
+        <Text marginBottom="10px">{linkUrl}</Text>
+        <Box borderRadius="lg" bg="white" borderWidth="1px" height="56px">
+          <Image
+            src={thumbnailUrl}
+            alt={title}
+            width="40px"
+            height="40px"
+            float="left"
+            marginTop="7px"
+            marginLeft="10px"
+            marginRight="8px"
+            borderRadius="lg"
+          />
+          <Title>{title}</Title>
+        </Box>
         <Heading as="h5" size="md" marginBottom="10px" marginTop="70px">
           링크 제목
         </Heading>
-        <Text marginBottom="30px">{linkTitle}</Text>
+        <Text
+          marginBottom="30px"
+          width="300px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {linkTitle}
+        </Text>
       </LinkInfo>
-      <AbsoluteCenter>
-        <Divider />
-      </AbsoluteCenter>
+      <Divider />
       <MemoBox>
         <Heading as="h5" size="md" marginBottom="10px" marginTop="50px">
           메모
