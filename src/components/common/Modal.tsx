@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import {
   Dispatch,
+  ReactNode,
   SetStateAction,
   useCallback,
   useMemo,
-  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -13,27 +13,21 @@ type ModalProps = {
   height?: number;
   title?: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
 };
 
 export default function Modal({
   width = 940,
   height = 640,
   setIsOpen,
+  children,
 }: ModalProps) {
-  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
-
   const modalContainerStyle = useMemo(
-    () =>
-      selectedTemplateTitle.length === 0
-        ? {
-            width,
-            height,
-          }
-        : {
-            width: 940,
-            height: 740,
-          },
-    [width, height, selectedTemplateTitle]
+    () => ({
+      width,
+      height,
+    }),
+    [width, height]
   );
 
   const closeModal = useCallback(
@@ -44,9 +38,8 @@ export default function Modal({
     ) => {
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
-      setSelectedTemplateTitle('');
     },
-    [setIsOpen, setSelectedTemplateTitle]
+    [setIsOpen]
   );
 
   return createPortal(
