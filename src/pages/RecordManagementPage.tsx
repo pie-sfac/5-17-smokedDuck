@@ -1,15 +1,23 @@
 import { Button, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import SelectionBox from '@/components/common/SelectionBox';
 import RecordListContainer from '@/components/record/RecordListContainer';
 import TypeSelector from '@/components/record/TypeSelector';
+import Template from '@/components/Template';
 
 export default function RecordManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [templateType, setTemplateType] = useState('history');
+  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedTemplateTitle('');
+    }
+  }, [isOpen]);
+
   return (
     <PageContainer>
       <PageTitle>기록 템플릿</PageTitle>
@@ -22,26 +30,15 @@ export default function RecordManagementPage() {
       <BlueButton onClick={() => setIsOpen(true)}>+ 템플릿 추가</BlueButton>
       {isOpen && (
         <Modal
-          width={700}
-          height={400}
+          width={selectedTemplateTitle.length === 0 ? 700 : undefined}
+          height={selectedTemplateTitle.length === 0 ? 400 : undefined}
           title={'템플릿 생성'}
           setIsOpen={setIsOpen}
         >
-          {
-            <SelectionBoxContainer>
-              <SelectionBox
-                title={'문진 템플릿'}
-                titleDescription={'첫 방문 또는 회원 현재 상태를 체크 합니다.'}
-                image={Template}
-              />
-
-              <SelectionBox
-                title={'처치 템플릿'}
-                titleDescription={'수업 시, 작성합니다.'}
-                image={Template}
-              />
-            </SelectionBoxContainer>
-          }
+          <Template
+            selectedTemplateTitle={selectedTemplateTitle}
+            setSelectedTemplateTitle={setSelectedTemplateTitle}
+          />
         </Modal>
       )}
     </PageContainer>
@@ -77,11 +74,4 @@ const PageContainer = styled.div`
   @media screen and (max-height: 750px) {
     margin-top: 1rem;
   }
-`;
-
-const SelectionBoxContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 16rem;
 `;
