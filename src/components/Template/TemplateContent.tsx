@@ -36,7 +36,11 @@ export default function TemplateContent({
               border={'1px'}
               borderRadius={'20px 20px 20px 20px'}
               borderColor={'#ccd0d5'}
-              _hover={{ bg: '#6691FF', color: '#FFFFFF' }}
+              _hover={{
+                bg: '#6691FF',
+                borderColor: '#6691FF',
+                color: '#FFFFFF',
+              }}
               marginRight={2}
               onClick={() => setQuestions(['temporary'])}
             >
@@ -51,7 +55,11 @@ export default function TemplateContent({
               borderRadius={'20px 20px 20px 20px'}
               bg={'none'}
               borderColor={'#ccd0d5'}
-              _hover={{ bg: '#6691FF', color: '#FFFFFF' }}
+              _hover={{
+                bg: '#1FB881',
+                borderColor: '#1FB881',
+                color: '#FFFFFF',
+              }}
             >
               + 전문 문항
             </Box>
