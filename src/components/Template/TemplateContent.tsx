@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 
+import TemplateFooter from './TemplateFooter';
 import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
@@ -36,11 +37,11 @@ export default function TemplateContent({
               borderRadius={'20px 20px 20px 20px'}
               borderColor={'#ccd0d5'}
               _hover={{ bg: '#6691FF', color: '#FFFFFF' }}
+              marginRight={2}
               onClick={() => setQuestions(['temporary'])}
             >
               + 기본 문항
             </Box>
-            &nbsp; &nbsp;
             <Box
               as="button"
               padding={1}
@@ -67,6 +68,7 @@ export default function TemplateContent({
               </EmptyQuestionContainer>
             )}
           </ContentContainer>
+          <TemplateFooter questions={questions} />
         </>
       )}
     </div>
@@ -83,7 +85,7 @@ const ContentContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 26rem;
+  height: 24rem;
   width: 940;
   margin: 0 2rem 0 2rem;
 `;
