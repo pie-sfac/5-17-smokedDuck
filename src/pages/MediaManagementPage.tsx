@@ -10,9 +10,11 @@ import { mediaList } from '@/utils/constants/mediaList';
 export default function MediaManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0]?.id);
+  const [list, setList] = useState(mediaList);
 
-  const handleCategoryClick = (categoryId: number) => {
-    setSelectedCategory(categoryId);
+  const handleDeleteList = (id: number) => {
+    const updatedList = list.filter(item => item.id !== id);
+    setList(updatedList);
   };
 
   return (
@@ -21,7 +23,7 @@ export default function MediaManagementPage() {
         {categoryList.map(item => (
           <ul key={item.id}>
             <li
-              onClick={() => handleCategoryClick(item.id)}
+              onClick={() => setSelectedCategory(item.id)}
               style={{
                 color: selectedCategory === item.id ? '#6691FF' : 'inherit',
                 borderBottom:
@@ -39,44 +41,52 @@ export default function MediaManagementPage() {
         </EditButton>
       </CategoryTitle>
       <ListBackGround>
-        {mediaList.map(item => (
+        {list.map(item => (
           <MediaCard
-            key={item.id}
+            id={item.id}
             title={item.title}
             description={item.description}
+            onDelete={() => handleDeleteList(item.id)}
           />
         ))}
-        <BlueButton onClick={() => setIsOpen(true)}>+ 링크 추가</BlueButton>
-        {isOpen && (
-          <Modal
-            width={700}
-            height={400}
-            title={'템플릿 생성'}
-            setIsOpen={setIsOpen}
-          >
-            {}
-          </Modal>
-        )}
       </ListBackGround>
+      <BlueButton onClick={() => setIsOpen(true)}>+ 링크 추가</BlueButton>
+      {isOpen && (
+        <Modal
+          width={700}
+          height={400}
+          title={'템플릿 생성'}
+          setIsOpen={setIsOpen}
+        >
+          {}
+        </Modal>
+      )}
     </MediaListContainer>
   );
 }
 
 const MediaListContainer = styled('div')`
+  position: relative;
   margin: 6rem auto 0 auto;
 `;
 
 const ListBackGround = styled('div')`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(3, 202px);
   position: relative;
   flex-wrap: wrap;
   justify-content: flex-start;
+  overflow: auto;
   margin: 1rem;
   width: 1408px;
   height: 624px;
   padding: 16px;
   background-color: rgba(235, 241, 255, 0.8);
   border-radius: 16px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BlueButton = chakra(Button, {
@@ -87,8 +97,8 @@ const BlueButton = chakra(Button, {
     background: '#2d62ea',
     color: '#ffffff',
     position: 'absolute',
-    bottom: '-3.5rem',
-    right: '0',
+    // bottom: '-3.5rem',
+    right: '1rem',
   },
 });
 
