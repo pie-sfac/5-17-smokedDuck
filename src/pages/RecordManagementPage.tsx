@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import RecordListContainer from '@/components/RecordListContainer';
-import TypeSelector from '@/components/TypeSelector';
+import RecordListContainer from '@/components/record/RecordListContainer';
+import TypeSelector from '@/components/record/TypeSelector';
 
 export default function RecordManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,9 +51,15 @@ const PageTitle = styled.span`
   font-weight: 800;
   display: block;
   margin: 2rem 0;
+  @media screen and (max-height: 750px) {
+    margin: 0.5rem 0;
+  }
 `;
 
 const PageContainer = styled.div`
   margin-top: 2rem;
   position: relative;
+  @media screen and (max-height: 750px) {
+    margin-top: 1rem;
+  }
 `;

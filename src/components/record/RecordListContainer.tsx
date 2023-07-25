@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-import RecordCard from '@/components/RecordCard';
+import RecordCard from '@/components/record/RecordCard';
 import { recordList, recordListType } from '@/utils/constants/recordList';
 
 export default function RecordListContainer(props: { templateType: string }) {
@@ -38,6 +38,11 @@ const ListContainer = styled.div`
     background-color: none;
     width: 0.5rem;
   }
+  @media screen and (max-height: 750px) {
+    padding: 3px;
+    gap: 1rem;
+    height: calc(28rem + 1.5rem + 3px);
+  }
 `;
 
 const ListBackGround = styled.div`
@@ -47,4 +52,9 @@ const ListBackGround = styled.div`
   padding: 2rem 6rem;
   margin-top: 1rem;
   border: 1px solid #e7e7e7;
+  @media screen and (max-height: 750px) {
+    padding: 1rem 8rem;
+    margin-top: 0.5rem;
+    height: calc(28rem + 1.5rem + 3px + 2rem);
+  }
 `;
