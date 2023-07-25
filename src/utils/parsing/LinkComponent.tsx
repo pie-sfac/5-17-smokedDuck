@@ -1,11 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import LinkCreateComponent from './LinkCreateComponent';
 import LinkViewComponent from './LinkViewComponent';
+
+const slideUpFadeOutAnimation = keyframes`
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+`;
 
 const MessageBox = styled.div`
   display: flex;
@@ -16,6 +36,7 @@ const MessageBox = styled.div`
   color: white;
   border-radius: 10px;
   height: 40px;
+  animation: ${slideUpFadeOutAnimation} 4s ease-in-out;
 `;
 
 const MessageText = styled.p`
@@ -40,7 +61,7 @@ export default function LinkComponent() {
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
-      }, 2000);
+      }, 4000);
 
       return () => clearTimeout(timer);
     }
