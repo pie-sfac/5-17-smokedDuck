@@ -6,7 +6,11 @@ export type recordListType = {
 
 export const recordList: recordListType[] = [
   //문진
-  { title: '통증이 있는 회원 문진 템플릿 입니다.', type: 'history', id: 1 },
+  {
+    title: '통증이 있는 회원 문진 템플릿 입니다.(삭제)',
+    type: 'history',
+    id: 1,
+  },
   { title: '운동용 템플릿', type: 'history', id: 2 },
   {
     title: '다이어트용 템플릿 (허리 디스트있는 회원용)',

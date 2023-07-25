@@ -2,15 +2,21 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
+import RecordDeleteModal from '@/components/record/RecordDeleteModal';
+
+import Modal from './Modal';
 
 type EditBoxProps = {
   top?: number;
   right?: number;
   bottom?: number;
+  id: number;
 };
 
-export default function EditBox({ top, right, bottom }: EditBoxProps) {
+export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
   const [editOpen, setEditOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const EditBoxStyle = useMemo(
     () => ({
       top,
@@ -21,15 +27,25 @@ export default function EditBox({ top, right, bottom }: EditBoxProps) {
   );
 
   return (
-    <EditContainer onClick={() => setEditOpen(!editOpen)}>
-      <ImgContainer src={HambergerDot} alt="편집/삭제버튼" />
-      {editOpen && (
-        <EditItemArea style={{ ...EditBoxStyle }}>
-          <EditItem>편집</EditItem>
-          <EditItem>삭제</EditItem>
-        </EditItemArea>
+    <>
+      <EditContainer onClick={() => setEditOpen(!editOpen)}>
+        <ImgContainer src={HambergerDot} alt="편집/삭제버튼" />
+        {editOpen && (
+          <EditItemArea style={{ ...EditBoxStyle }}>
+            <EditItem onClick={() => setEditModalOpen(true)}>편집</EditItem>
+            <EditItem onClick={() => setDeleteModalOpen(true)}>삭제</EditItem>
+          </EditItemArea>
+        )}
+      </EditContainer>
+      {editModalOpen && (
+        <Modal title={'템플릿 수정'} setIsOpen={setEditModalOpen}>
+          {}
+        </Modal>
       )}
-    </EditContainer>
+      {deleteModalOpen && (
+        <RecordDeleteModal id={id} setDeleteModalOpen={setDeleteModalOpen} />
+      )}
+    </>
   );
 }
 

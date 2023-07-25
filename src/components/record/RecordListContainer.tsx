@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import RecordCard from '@/components/record/RecordCard';
-import { recordList, recordListType } from '@/utils/constants/recordList';
+import { MainContext } from '@/store';
+import { recordListType } from '@/utils/constants/recordList';
 
 export default function RecordListContainer(props: { templateType: string }) {
+  const { recordList } = useContext(MainContext);
+
   const [list, setList] = useState<recordListType[]>(
     recordList.filter(listitem => listitem.type === props.templateType)
   );
@@ -13,7 +16,7 @@ export default function RecordListContainer(props: { templateType: string }) {
     setList(
       recordList.filter(listitem => listitem.type === props.templateType)
     );
-  }, [props.templateType]);
+  }, [props.templateType, recordList]);
 
   return (
     <ListBackGround>

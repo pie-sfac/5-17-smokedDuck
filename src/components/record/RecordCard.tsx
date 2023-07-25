@@ -15,7 +15,7 @@ export default function RecordCard(props: { title: string; id: number }) {
           <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
         )}
       </LineArea>
-      <EditBox top={0} right={13} />
+      <EditBox top={0} right={13} id={props.id} />
     </CardContainer>
   );
 }
