@@ -98,23 +98,6 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
     setTitle(youtubeVideo?.title || '');
   }, [youtubeVideo, title, category]);
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setCategory(event.target.selectedOptions[0].text);
-  };
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const { value } = event.target;
-    setDescription(value.slice(0, 500));
-  };
-
   const handleSubmit = () => {
     const formData = {
       category,
@@ -146,7 +129,9 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
         <Select
           placeholder="카테고리를 선택해 주세요."
           marginBottom="20px"
-          onChange={handleCategoryChange}
+          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            setCategory(event.target.selectedOptions[0].text);
+          }}
         >
           <option value="1">test 1</option>
           <option value="2">test 2</option>
@@ -169,7 +154,9 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
         <Input
           type="text"
           value={title || youtubeVideo?.title}
-          onChange={handleTitleChange}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setTitle(event.target.value);
+          }}
           placeholder="링크 제목을 입력해 주세요."
           width="912px"
           marginBottom="20px"
@@ -180,7 +167,10 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
       <DescriptionBox>
         <Textarea
           value={description || youtubeVideo?.description}
-          onChange={handleDescriptionChange}
+          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+            const { value } = event.target;
+            setDescription(value.slice(0, 500));
+          }}
           placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
           resize="none"
           height="150px"
