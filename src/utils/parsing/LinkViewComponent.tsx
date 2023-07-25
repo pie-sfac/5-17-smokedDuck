@@ -106,7 +106,7 @@ function LinkViewComponent({
         </Heading>
         <Text
           marginBottom="30px"
-          width="300px"
+          width="350px"
           overflow="hidden"
           textOverflow="ellipsis"
           whiteSpace="nowrap"
