@@ -1,10 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export async function fetchYoutubeVideo(videoId: any) {
+import { YoutubeVideoMetadata } from '@/hooks/useGetYoutubeVideoFromMetadata';
+
+export interface YoutubeVideoAPIResponse {
+  items: [YoutubeVideoMetadata];
+}
+
+export async function fetchYoutubeVideo(
+  videoId: string
+): Promise<YoutubeVideoAPIResponse> {
   const requestUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${
     import.meta.env.VITE_APP_GA_API_KEY
   }`;
-  return (await axios.get(requestUrl)).data;
+
+  const responseData: AxiosResponse<YoutubeVideoAPIResponse> = await axios.get(
+    requestUrl
+  );
+  return responseData.data;
 }

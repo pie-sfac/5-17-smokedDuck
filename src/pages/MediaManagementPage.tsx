@@ -28,7 +28,6 @@ export default function MediaManagementPage() {
           title={'센터 링크 추가'}
           setIsOpen={setIsOpen}
         >
-          {}
           <div
             style={{
               display: 'flex',

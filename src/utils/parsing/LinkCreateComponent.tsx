@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   FormControl,
@@ -11,7 +10,7 @@ import {
 import styled from '@emotion/styled';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
+import { useYoutubeVideo } from '@/hooks/useYoutubeVideo';
 
 const Container = styled.div`
   display: flex;
@@ -66,7 +65,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface LinkCreateComponentProps {
-  onSubmit: (data: any) => void;
+  onSubmit: (data: unknown) => void;
 }
 
 function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
@@ -76,14 +75,6 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
   const [category, setCategory] = useState('');
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
-
-  const updateFormCompletion = useCallback(() => {
-    const isCategoryValid = category.trim() !== '';
-    const isTitleValid =
-      title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
-
-    setIsFormComplete(isCategoryValid && isTitleValid);
-  }, [title, category, youtubeVideo?.title]);
 
   const handleLinkChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,27 +86,36 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
   );
 
   useEffect(() => {
+    const updateFormCompletion = () => {
+      const isCategoryValid = category.trim() !== '';
+      const isTitleValid =
+        title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
+
+      setIsFormComplete(isCategoryValid && isTitleValid);
+    };
     updateFormCompletion();
     setDescription(youtubeVideo?.description || '');
     setTitle(youtubeVideo?.title || '');
-  }, [youtubeVideo, title, category, updateFormCompletion]);
+  }, [youtubeVideo, title, category]);
 
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setCategory(event.target.selectedOptions[0].text);
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-  }
+  };
 
-  function handleDescriptionChange(
+  const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
-  ) {
+  ) => {
     const { value } = event.target;
     setDescription(value.slice(0, 500));
-  }
+  };
 
-  function handleCategoryChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setCategory(event.target.selectedOptions[0].text);
-  }
-
-  function handleSubmit() {
+  const handleSubmit = () => {
     const formData = {
       category,
       linkUrl,
@@ -128,7 +128,7 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
       thumbnailUrl: youtubeVideo?.thumbnailUrl || '',
       linkTitle: title || youtubeVideo?.title || '',
     });
-  }
+  };
 
   return (
     <Container>
