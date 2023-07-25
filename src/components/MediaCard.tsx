@@ -4,16 +4,28 @@ import { useState } from 'react';
 import MoreVert from '@/assets/MoreVert.svg';
 
 export default function MediaCard(props: {
-  key: number;
+  id: number;
   title: string;
   description: string;
+  onDelete: (id: number) => void;
 }) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleDelete = () => {
+    setIsEdit(false);
+    props.onDelete(props.id);
+  };
 
   return (
     <MediaContainer>
+      {isEdit && (
+        <MediaDropdown>
+          <p>편집</p>
+          <p onClick={handleDelete}>삭제</p>
+        </MediaDropdown>
+      )}
       <MediaContent>
-        <MoreIcon src={MoreVert} onClick={() => setIsOpen(!isOpen)} />
+        <MoreIcon src={MoreVert} onClick={() => setIsEdit(!isEdit)} />
         <MediaImg src="https://placehold.co/24x24" alt="" />
         <MediaDiv>
           <MediaTitle>{props.title}</MediaTitle>
@@ -34,6 +46,27 @@ const MediaContainer = styled('div')`
   padding: 24px;
   margin: 8px;
   box-shadow: 0px 1px 3px -2px rgba(0, 0, 0, 0.75);
+`;
+
+const MediaDropdown = styled('div')`
+  position: absolute;
+  right: 40px;
+  width: 80px;
+  height: 96px;
+  padding: 16px 24px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px 2px rgba(231, 231, 231, 0.8);
+  cursor: pointer;
+  & p:first-of-type {
+    border-bottom: 1px solid #dfdfdf;
+    padding-bottom: 8px;
+  }
+  & p:last-of-type {
+    padding-top: 8px;
+  }
 `;
 
 const MoreIcon = styled('img')`
