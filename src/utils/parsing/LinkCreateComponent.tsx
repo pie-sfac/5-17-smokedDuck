@@ -9,7 +9,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
@@ -32,7 +32,7 @@ const InputWrapper = styled.div`
 `;
 
 const InputTitle = styled.h4`
-  margin-botton: 10px;
+  margin-bottom: 10px;
   margin-top: 10px;
 `;
 
@@ -75,17 +75,33 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [isFormComplete, setIsFormComplete] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   const { youtubeVideo, handler } = useYoutubeVideo();
 
+  const updateFormCompletion = useCallback(() => {
+    const isCategoryValid = category.trim() !== '';
+    const isTitleValid =
+      title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
+
+    setIsFormComplete(isCategoryValid && isTitleValid);
+  }, [title, category, youtubeVideo?.title]);
+
+  const handleLinkChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const link = event.target.value;
+      setLinkUrl(link);
+      handler(event);
+    },
+    [handler]
+  );
+
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+    updateFormCompletion();
     setDescription(youtubeVideo?.description || '');
-  }, [youtubeVideo]);
+    setTitle(youtubeVideo?.title || '');
+  }, [youtubeVideo, title, category, updateFormCompletion]);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
-    updateFormCompletion();
   }
 
   function handleDescriptionChange(
@@ -97,26 +113,21 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
 
   function handleCategoryChange(event: React.ChangeEvent<HTMLSelectElement>) {
     setCategory(event.target.selectedOptions[0].text);
-    updateFormCompletion();
-  }
-
-  function updateFormCompletion() {
-    const isCategoryValid = category.trim() !== '';
-    const isTitleValid =
-      title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
-
-    setIsFormComplete(isCategoryValid && isTitleValid);
   }
 
   function handleSubmit() {
     const formData = {
       category,
-      linkUrl: linkUrl,
-      title: title,
-      description: description,
+      linkUrl,
+      title,
+      description,
     };
 
-    onSubmit(formData);
+    onSubmit({
+      ...formData,
+      thumbnailUrl: youtubeVideo?.thumbnailUrl || '',
+      linkTitle: title || youtubeVideo?.title || '',
+    });
   }
 
   return (
@@ -146,7 +157,7 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
         <InputWrapper>
           <Input
             type="text"
-            onChange={handler}
+            onChange={handleLinkChange}
             placeholder="URL을 입력해주세요"
             width="912px"
             marginBottom="20px"
