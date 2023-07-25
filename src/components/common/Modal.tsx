@@ -1,41 +1,32 @@
 import styled from '@emotion/styled';
 import {
   Dispatch,
+  ReactNode,
   SetStateAction,
   useCallback,
   useMemo,
-  useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-
-import TemplateContent from '../Template/TemplateContent';
-import TemplateTitle from '../Template/TemplateTitle';
 
 type ModalProps = {
   width?: number;
   height?: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  children: ReactNode;
 };
 
 export default function Modal({
   width = 940,
   height = 640,
   setIsOpen,
+  children,
 }: ModalProps) {
-  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
-
   const modalContainerStyle = useMemo(
-    () =>
-      selectedTemplateTitle.length === 0
-        ? {
-            width,
-            height,
-          }
-        : {
-            width: 940,
-            height: 740,
-          },
-    [width, height, selectedTemplateTitle]
+    () => ({
+      width,
+      height,
+    }),
+    [width, height]
   );
 
   const closeModal = useCallback(
@@ -46,9 +37,8 @@ export default function Modal({
     ) => {
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
-      setSelectedTemplateTitle('');
     },
-    [setIsOpen, setSelectedTemplateTitle]
+    [setIsOpen]
   );
 
   return createPortal(
@@ -59,11 +49,7 @@ export default function Modal({
           transition: 'all ease 0.2s',
         }}
       >
-        <TemplateTitle title={selectedTemplateTitle} />
-        <TemplateContent
-          selectedTemplateTitle={selectedTemplateTitle}
-          setSelectedTemplateTitle={setSelectedTemplateTitle}
-        />
+        {children}
         <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
       </ModalContainer>
     </BackgroundDim>,
