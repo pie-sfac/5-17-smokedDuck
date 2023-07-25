@@ -43,6 +43,7 @@ export default function MediaManagementPage() {
       <ListBackGround>
         {list.map(item => (
           <MediaCard
+            key={item.id}
             id={item.id}
             title={item.title}
             description={item.description}
