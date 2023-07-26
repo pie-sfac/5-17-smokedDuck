@@ -44,8 +44,8 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
     };
     updateFormCompletion();
     setDescription((youtubeVideo && youtubeVideo.description) || '');
-    setTitle((youtubeVideo && youtubeVideo.title) || '');
-  }, [youtubeVideo, title, category]);
+    setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
+  }, [youtubeVideo, category, title]);
 
   const handleSubmit = () => {
     const formData = {

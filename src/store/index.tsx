@@ -6,6 +6,7 @@ import { recordList, recordListType } from '@/utils/constants/recordList';
 type ContextType = {
   recordList: recordListType[];
   mediaList: mediaListType[];
+  addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   deleteRecordItem: (id: number) => void;
   deleteMediaItem: (id: number) => void;
   recordModalOpen: boolean;
@@ -27,6 +28,7 @@ export const MainContext = React.createContext<ContextType>({
   setMediaModalState: () => {},
   selectedTemplateTitle: '',
   setSelectedTemplateTitle: () => {},
+  addMediaItem: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -52,6 +54,16 @@ export default function MainContextProvider(props: {
     [storedMediaList]
   );
 
+  const addMediaItem = useCallback(
+    (mediaItemWithoutId: Omit<mediaListType, 'id'>) => {
+      setStoredMediaList(prevMediaList => [
+        ...prevMediaList,
+        { id: prevMediaList.length, ...mediaItemWithoutId },
+      ]);
+    },
+    []
+  );
+
   const contextValue: ContextType = {
     recordList: storedRecordList,
     mediaList: storedMediaList,
@@ -63,6 +75,7 @@ export default function MainContextProvider(props: {
     setMediaModalState: setMediaModalState,
     selectedTemplateTitle,
     setSelectedTemplateTitle,
+    addMediaItem: addMediaItem,
   };
   return (
     <MainContext.Provider value={contextValue}>
