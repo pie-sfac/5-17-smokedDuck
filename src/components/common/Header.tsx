@@ -10,7 +10,7 @@ import { categoryType } from '../../utils/constants/header';
 export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [clickedIdNum, setClickedIdNum] = useState<number>();
+  const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
   const handlePageMove = (item: categoryType) => {
     if (item.id === 2) {
