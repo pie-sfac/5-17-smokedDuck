@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import CategorySelector from '@/components/Media/CategorySelector';
-import MediaListContainer from '@/components/Media/MediaListContainer';
+import CategorySelector from '@/components/media/CategorySelector';
+import MediaListContainer from '@/components/media/MediaListContainer';
 
 export default function MediaManagementPage() {
   const [isOpen, setIsOpen] = useState(false);
