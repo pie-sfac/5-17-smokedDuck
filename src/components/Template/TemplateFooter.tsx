@@ -24,7 +24,7 @@ export default function TemplateFooter({ questions }: TemplateFooterProps) {
 }
 
 const FooterContainer = styled('div')`
-  height: 3.7rem;
+  height: 3.5rem;
   margin: 0.2rem 2rem 0.2rem 2rem;
   display: flex;
   justify-content: flex-end;
