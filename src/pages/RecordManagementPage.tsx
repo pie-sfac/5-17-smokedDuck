@@ -31,7 +31,6 @@ export default function RecordManagementPage() {
         <Modal
           width={selectedTemplateTitle.length === 0 ? 700 : undefined}
           height={selectedTemplateTitle.length === 0 ? 400 : undefined}
-          title={'템플릿 생성'}
           setIsOpen={setRecordModalState}
         >
           <Template
