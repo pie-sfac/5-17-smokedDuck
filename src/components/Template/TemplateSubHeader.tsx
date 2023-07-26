@@ -14,7 +14,7 @@ export default function TemplateSubHeader() {
 const TemplateContentContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  margin: 2rem;
+  margin: 2rem 2rem 1rem 2rem;
   font-size: 0.8rem;
 `;
 
