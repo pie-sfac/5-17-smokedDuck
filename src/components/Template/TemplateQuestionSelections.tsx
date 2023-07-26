@@ -9,7 +9,7 @@ import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
 
-import QuestionBox from '../common/QuestionBox';
+import QuestionBox from '../Common/QuestionBox';
 
 type TemplateQuestionSelectionsProps = {
   setQuestions: React.Dispatch<React.SetStateAction<string[]>>;

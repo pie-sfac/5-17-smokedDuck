@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import Template from '@/assets/Template.svg';
 
-import SelectionBox from '../common/SelectionBox';
+import SelectionBox from '../Common/SelectionBox';
 
 type TemplateSelectionsProps = {
   setSelectedTemplateTitle: React.Dispatch<React.SetStateAction<string>>;
