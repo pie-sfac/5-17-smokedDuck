@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import Modal from '@/components/common/Modal';
+import Modal from '@/components/Common/Modal';
 import LinkComponent from '@/components/Link';
 
 export default function MediaManagementPage() {
