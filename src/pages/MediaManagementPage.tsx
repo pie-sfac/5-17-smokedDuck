@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import Category from '@/components/Category';
 import Modal from '@/components/Common/Modal';
 import LinkComponent from '@/components/Link';
+import CategorySelector from '@/components/Media/CategorySelector';
 import MediaListContainer from '@/components/Media/MediaListContainer';
 import { MainContext } from '@/store';
 
