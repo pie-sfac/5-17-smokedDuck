@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 
-import RecordCard from '@/components/record/RecordCard';
+import RecordCard from '@/components/Record/RecordCard';
 import { MainContext } from '@/store';
 import { recordListType } from '@/utils/constants/recordList';
 

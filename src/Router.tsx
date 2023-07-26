@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Header from '@/components/common/Header';
+import Header from '@/components/Common/Header';
 import LoginPage from '@/pages/LoginPage';
 import MediaManagementPage from '@/pages/MediaManagementPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import RecordManagementPage from '@/pages/RecordManagementPage';
 
-import Footer from './components/common/Footer';
+import Footer from './components/Common/Footer';
 
 export default function AppRouter() {
   return (

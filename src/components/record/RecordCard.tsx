@@ -1,7 +1,7 @@
 import { SkeletonText, useMediaQuery } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import EditBox from '../common/EditBox';
+import EditBox from '../Common/EditBox';
 
 export default function RecordCard(props: { title: string; id: number }) {
   const [isLowerThan800] = useMediaQuery('(max-height: 800px)');

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
-import Modal from '@/components/common/Modal';
-import RecordListContainer from '@/components/record/RecordListContainer';
-import TypeSelector from '@/components/record/TypeSelector';
+import Modal from '@/components/Common/Modal';
+import RecordListContainer from '@/components/Record/RecordListContainer';
+import TypeSelector from '@/components/Record/TypeSelector';
 import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
