@@ -1,16 +1,14 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
 import Template from '@/assets/Template.svg';
+import { MainContext } from '@/store';
 
 import SelectionBox from '../Common/SelectionBox';
 
-type TemplateSelectionsProps = {
-  setSelectedTemplateTitle: React.Dispatch<React.SetStateAction<string>>;
-};
+export default function TemplateSelections() {
+  const { setSelectedTemplateTitle } = useContext(MainContext);
 
-export default function TemplateSelections({
-  setSelectedTemplateTitle,
-}: TemplateSelectionsProps) {
   return (
     <SelectionBoxContainer>
       <SelectionBox

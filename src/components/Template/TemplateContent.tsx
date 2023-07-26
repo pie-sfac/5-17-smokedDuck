@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+import { MainContext } from '@/store';
 
 import TemplateFooter from './TemplateFooter';
 import TemplateQuestionSelections from './TemplateQuestionSelections';
@@ -6,22 +8,14 @@ import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContain
 import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
-type TemplateContentProps = {
-  selectedTemplateTitle: string;
-  setSelectedTemplateTitle: React.Dispatch<React.SetStateAction<string>>;
-};
-
-export default function TemplateContent({
-  selectedTemplateTitle,
-  setSelectedTemplateTitle,
-}: TemplateContentProps) {
+export default function TemplateContent() {
+  const { selectedTemplateTitle } = useContext(MainContext);
   const [questions, setQuestions] = useState<string[]>([]);
+
   return (
     <div>
       {selectedTemplateTitle.length === 0 ? (
-        <TemplateSelections
-          setSelectedTemplateTitle={setSelectedTemplateTitle}
-        />
+        <TemplateSelections />
       ) : (
         <>
           <TemplateSubHeader />

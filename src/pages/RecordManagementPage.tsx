@@ -8,15 +8,19 @@ import Template from '@/components/Template';
 import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
-  const { recordModalOpen, setRecordModalState } = useContext(MainContext);
+  const {
+    recordModalOpen,
+    setRecordModalState,
+    selectedTemplateTitle,
+    setSelectedTemplateTitle,
+  } = useContext(MainContext);
   const [templateType, setTemplateType] = useState('history');
-  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
 
   useEffect(() => {
     if (!recordModalOpen) {
       setSelectedTemplateTitle('');
     }
-  }, [recordModalOpen]);
+  }, [recordModalOpen, setSelectedTemplateTitle]);
 
   return (
     <PageContainer>
@@ -33,10 +37,7 @@ export default function RecordManagementPage() {
           height={selectedTemplateTitle.length === 0 ? 400 : undefined}
           setIsOpen={setRecordModalState}
         >
-          <Template
-            selectedTemplateTitle={selectedTemplateTitle}
-            setSelectedTemplateTitle={setSelectedTemplateTitle}
-          />
+          <Template />
         </Modal>
       )}
     </PageContainer>
