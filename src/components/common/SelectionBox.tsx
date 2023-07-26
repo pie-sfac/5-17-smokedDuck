@@ -36,14 +36,8 @@ export default function SelectionBox({
         <div style={{ fontSize: '0.8rem' }}>{titleDescription}</div>
       </TitleContainer>
       <IconContainer>
-        <StyledImage>
-          <img
-            id={'templateImg'}
-            src={image}
-            alt="템플릿 아이콘"
-            width={16}
-            height={20}
-          />
+        <StyledImage id={'styledImage'}>
+          <img src={image} alt="템플릿 아이콘" width={16} height={20} />
         </StyledImage>
       </IconContainer>
     </SelectionBoxContainer>
@@ -62,10 +56,10 @@ const SelectionBoxContainer = styled('div')`
     * {
       color: #2d62ea;
     }
-    .css-19njikn {
+    #styledImage {
       background-color: #ebf1ff;
     }
-    #templateImg {
+    img {
       filter: opacity(0.5) drop-shadow(0 0 0 #ebf1ff);
     }
   }
