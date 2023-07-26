@@ -1,10 +1,8 @@
-import styled from '@emotion/styled';
 import { useState } from 'react';
-
-import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 
 import TemplateFooter from './TemplateFooter';
 import TemplateQuestionSelections from './TemplateQuestionSelections';
+import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContainer';
 import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
@@ -28,41 +26,10 @@ export default function TemplateContent({
         <>
           <TemplateSubHeader />
           <TemplateQuestionSelections setQuestions={setQuestions} />
-          <ContentContainer>
-            {questions.length === 0 && (
-              <EmptyQuestionContainer>
-                <img
-                  src={EmptyQuestion}
-                  alt="문항 없음 이미지"
-                  style={{ marginBottom: '0.7rem' }}
-                />
-                문항이 없습니다.
-              </EmptyQuestionContainer>
-            )}
-          </ContentContainer>
+          <TemplateSelectedQuestionContainer questions={questions} />
           <TemplateFooter questions={questions} />
         </>
       )}
     </div>
   );
 }
-
-const ContentContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 13rem;
-  width: 940;
-  margin: 0 2rem 0 2rem;
-  overflow: auto;
-`;
-
-const EmptyQuestionContainer = styled('div')`
-  width: 7em;
-  height: 7rem;
-  color: #aeaeae;
-  font-size: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
