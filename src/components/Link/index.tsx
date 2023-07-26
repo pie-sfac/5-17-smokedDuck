@@ -1,38 +1,26 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import LinkCreateComponent from '@/components/Link/LinkForm';
 import LinkViewComponent from '@/components/Link/LinkView';
 
-const MessageBox = styled.div`
-  display: flex;
-  position: relative;
-  bottom: 20px;
-  width: 992px;
-  background-color: #2d62ea;
-  color: white;
-  border-radius: 10px;
-  height: 40px;
-`;
-
-const MessageText = styled.p`
-  color: white;
-  font-size: 14px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-`;
+interface FormData {
+  category: string;
+  linkUrl: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+}
 
 export default function LinkComponent() {
-  const [formData, setFormData] = useState<any>(null);
+  const [formData, setFormData] = useState<FormData | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
 
-  const handleFormSubmit = (data: any) => {
-    setFormData(data);
+  const handleFormSubmit = (data: unknown) => {
+    if (typeof data === 'object' && data !== null) {
+      setFormData(data as FormData);
+    }
   };
 
   useEffect(() => {
@@ -40,7 +28,7 @@ export default function LinkComponent() {
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
-      }, 2000);
+      }, 4000);
 
       return () => clearTimeout(timer);
     }
@@ -70,3 +58,43 @@ export default function LinkComponent() {
     </div>
   );
 }
+
+const slideUpFadeOutAnimation = keyframes`
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+`;
+
+const MessageBox = styled.div`
+  display: flex;
+  position: relative;
+  bottom: 20px;
+  width: 992px;
+  background-color: #2d62ea;
+  color: white;
+  border-radius: 10px;
+  height: 40px;
+  animation: ${slideUpFadeOutAnimation} 4s ease-in-out;
+`;
+
+const MessageText = styled.p`
+  color: white;
+  font-size: 14px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+`;
