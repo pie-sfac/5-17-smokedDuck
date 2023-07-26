@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { fetchYoutubeVideo } from '@/apis/Youtube';
+import { getYoutubeVideoFromMetadata } from '@/hooks/useGetYoutubeVideoFromMetadata';
+import { extractVideoIdFromUrl } from '@/hooks/UseYoutubeVideo';
 
 import EditBox from '../Common/EditBox';
 import MediaContent from './MediaContent';
@@ -8,16 +12,29 @@ type MediaCardProps = {
   id: number;
   title: string;
   description: string;
+  linkUrl: string;
 };
 
-export default function MediaCard({ id, title, description }: MediaCardProps) {
+export default function MediaCard({
+  id,
+  title,
+  description,
+  linkUrl,
+}: MediaCardProps) {
   const [isEdit, setIsEdit] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  useEffect(() => {
+    fetchYoutubeVideo(extractVideoIdFromUrl(linkUrl)).then(data => {
+      setThumbnailUrl(getYoutubeVideoFromMetadata(data.items[0]).thumbnailUrl);
+    });
+  }, [linkUrl]);
 
   return (
     <MediaContainer>
       <MediaContent
         title={title}
         description={description}
+        thumbnailUrl={thumbnailUrl}
         onMoreClick={() => setIsEdit(!isEdit)}
       />
       <EditBox top={0} right={13} id={id} />

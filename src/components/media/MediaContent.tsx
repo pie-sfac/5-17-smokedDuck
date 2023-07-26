@@ -3,16 +3,21 @@ import styled from '@emotion/styled';
 type MediaContentProps = {
   title: string;
   description: string;
+  thumbnailUrl?: string;
   onMoreClick: () => void;
 };
 
 export default function MediaContent({
   title,
   description,
+  thumbnailUrl,
 }: MediaContentProps) {
   return (
     <MediaContentContainer>
-      <MediaImg src="https://placehold.co/24x24" alt="linkImage" />
+      <MediaImg
+        src={thumbnailUrl || 'https://placehold.co/24x24'}
+        alt="linkImage"
+      />
       <MediaDiv>
         <MediaTitle>{title}</MediaTitle>
         <Mediadescription>{description}</Mediadescription>
