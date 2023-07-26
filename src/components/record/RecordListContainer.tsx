@@ -1,12 +1,18 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 
+import Modal from '@/components/Common/Modal';
 import RecordCard from '@/components/Record/RecordCard';
+import CheckOutRecordTemplate from '@/components/Template/CheckOutTemplate';
 import { MainContext } from '@/store';
 import { recordListType } from '@/utils/constants/recordList';
 
 export default function RecordListContainer(props: { templateType: string }) {
-  const { recordList } = useContext(MainContext);
+  const { recordList, setSelectedRecordCard, setSelectedTemplateTitle } =
+    useContext(MainContext);
+
+  const [CheckOutRecordTemplateOpen, setCheckOutRecordTemplateOpen] =
+    useState(false);
 
   const [list, setList] = useState<recordListType[]>(
     recordList.filter(listitem => listitem.type === props.templateType)
@@ -18,14 +24,38 @@ export default function RecordListContainer(props: { templateType: string }) {
     );
   }, [props.templateType, recordList]);
 
+  useEffect(() => {
+    if (!CheckOutRecordTemplateOpen) {
+      setSelectedRecordCard('');
+      setSelectedTemplateTitle('');
+    }
+  }, [
+    CheckOutRecordTemplateOpen,
+    setSelectedRecordCard,
+    setSelectedTemplateTitle,
+  ]);
+
   return (
-    <ListBackGround>
-      <ListContainer>
-        {list.map(item => (
-          <RecordCard title={item.title} key={item.id} id={item.id} />
-        ))}
-      </ListContainer>
-    </ListBackGround>
+    <>
+      <ListBackGround>
+        <ListContainer>
+          {list.map(item => (
+            <RecordCard
+              title={item.title}
+              key={item.id}
+              id={item.id}
+              setIsOpen={setCheckOutRecordTemplateOpen}
+            />
+          ))}
+        </ListContainer>
+      </ListBackGround>
+
+      {CheckOutRecordTemplateOpen && (
+        <Modal setIsOpen={setCheckOutRecordTemplateOpen}>
+          <CheckOutRecordTemplate />
+        </Modal>
+      )}
+    </>
   );
 }
 
