@@ -40,9 +40,15 @@ const MediaDiv = styled('div')`
 const MediaTitle = styled('p')`
   width: 240px;
   margin-bottom: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Mediadescription = styled('p')`
   width: 240px;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

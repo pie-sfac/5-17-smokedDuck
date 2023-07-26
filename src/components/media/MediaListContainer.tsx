@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
+import MediaCard from '@/components/Media/MediaCard';
 import { MainContext } from '@/store';
-
-import MediaCard from './MediaCard';
 
 export default function MediaListContainer() {
   const { mediaList } = useContext(MainContext);
