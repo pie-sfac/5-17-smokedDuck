@@ -1,25 +1,24 @@
-import { Button, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext } from 'react';
 
-import Modal from '@/components/common/Modal';
+import Modal from '@/components/Common/Modal';
 import CategorySelector from '@/components/media/CategorySelector';
 import MediaListContainer from '@/components/media/MediaListContainer';
+import { MainContext } from '@/store';
 
 export default function MediaManagementPage() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { mediaModalOpen, setMediaModalState } = useContext(MainContext);
 
   return (
     <MediaContainer>
       <CategorySelector />
       <MediaListContainer />
-      <BlueButton onClick={() => setIsOpen(true)}>+ 링크 추가</BlueButton>
-      {isOpen && (
+      {mediaModalOpen && (
         <Modal
           width={700}
           height={400}
-          title={'센터 링크 추가'}
-          setIsOpen={setIsOpen}
+          title={'센터 링크 생성'}
+          setIsOpen={setMediaModalState}
         >
           {}
         </Modal>
@@ -32,15 +31,3 @@ const MediaContainer = styled('div')`
   position: relative;
   margin: 4rem auto 0 auto;
 `;
-
-const BlueButton = chakra(Button, {
-  baseStyle: {
-    width: '146px',
-    height: '44px',
-    border: 'none',
-    background: '#2d62ea',
-    color: '#ffffff',
-    position: 'absolute',
-    right: '1rem',
-  },
-});

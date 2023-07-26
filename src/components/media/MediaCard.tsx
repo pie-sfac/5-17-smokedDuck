@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import EditBox from '../common/EditBox';
+import EditBox from '../Common/EditBox';
 import MediaContent from './MediaContent';
 
 type MediaCardProps = {
