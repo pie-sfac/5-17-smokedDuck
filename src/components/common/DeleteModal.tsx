@@ -19,7 +19,8 @@ export default function DeleteModal({
   title,
   text,
 }: DeleteModalPropsType) {
-  const { deleteRecordItem } = useContext(MainContext);
+  const { deleteRecordItem, deleteMediaItem } = useContext(MainContext);
+
   const { pathname } = useLocation();
 
   const handleDeleteClick = () => {
@@ -28,7 +29,7 @@ export default function DeleteModal({
     }
 
     if (pathname === '/media') {
-      //media Card 삭제하는 함수 추가할곳
+      deleteMediaItem(id);
     }
   };
 
