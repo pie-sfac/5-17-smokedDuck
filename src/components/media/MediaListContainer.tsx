@@ -1,26 +1,21 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useContext } from 'react';
 
-import { mediaList } from '@/utils/constants/mediaList';
+import { MainContext } from '@/store';
 
 import MediaCard from './MediaCard';
 
 export default function MediaListContainer() {
-  const [list, setList] = useState(mediaList);
-
-  const handleDeleteList = useCallback((id: number) => {
-    setList(prevList => prevList.filter(item => item.id !== id));
-  }, []);
+  const { mediaList } = useContext(MainContext);
 
   return (
     <ListBackGround>
-      {list.map(item => (
+      {mediaList.map(item => (
         <MediaCard
           key={item.id}
           id={item.id}
           title={item.title}
           description={item.description}
-          onDelete={() => handleDeleteList(item.id)}
         />
       ))}
     </ListBackGround>

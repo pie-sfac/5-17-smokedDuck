@@ -1,41 +1,27 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import MediaContent from '@/components/media/MediaContent';
+import MediaContent from '@/components/Media/MediaContent';
 
-type MediaCardProp = {
+import EditBox from '../common/EditBox';
+
+type MediaCardProps = {
   id: number;
   title: string;
   description: string;
-  onDelete: (id: number) => void;
 };
 
-export default function MediaCard({
-  id,
-  title,
-  description,
-  onDelete,
-}: MediaCardProp) {
+export default function MediaCard({ id, title, description }: MediaCardProps) {
   const [isEdit, setIsEdit] = useState(false);
-
-  const handleDelete = () => {
-    setIsEdit(false);
-    onDelete(id);
-  };
 
   return (
     <MediaContainer>
-      {isEdit && (
-        <EditItemArea>
-          <EditItem>편집</EditItem>
-          <EditItem onClick={handleDelete}>삭제</EditItem>
-        </EditItemArea>
-      )}
       <MediaContent
         title={title}
         description={description}
         onMoreClick={() => setIsEdit(!isEdit)}
       />
+      <EditBox top={0} right={13} id={id} />
     </MediaContainer>
   );
 }
