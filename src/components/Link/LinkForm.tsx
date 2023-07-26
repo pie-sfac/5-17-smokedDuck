@@ -12,58 +12,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useYoutubeVideo } from '@/hooks/useYoutubeVideo';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 912px;
-`;
-
-const CreateHeader = styled.div`
-  margin-bottom: 15px;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-`;
-
-const InputTitle = styled.h4`
-  margin-bottom: 10px;
-  margin-top: 10px;
-`;
-
-const DescriptionBox = styled.div`
-  position: relative;
-`;
-
-const CharacterCount = styled.p`
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  font-size: 12px;
-  color: #777;
-`;
-
-const ButtonPlace = styled.div`
-  position: absolute;
-  right: 34px;
-  bottom: 14px;
-`;
-
-const StyledButton = styled(Button)`
-  border: none;
-  border-radius: 70;
-  width: 40px;
-  font-size: 12px;
-  height: 24px;
-  background-color: ${props => (props.disabled ? '#f4f4f4' : '#2D62EA')};
-  color: ${props => (props.disabled ? '#aeaeae' : '#ffffff')};
-  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-`;
-
 interface LinkCreateComponentProps {
   onSubmit: (data: unknown) => void;
 }
@@ -199,3 +147,55 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
 }
 
 export default LinkCreateComponent;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 912px;
+`;
+
+const CreateHeader = styled.div`
+  margin-bottom: 15px;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+`;
+
+const InputTitle = styled.h4`
+  margin-bottom: 10px;
+  margin-top: 10px;
+`;
+
+const DescriptionBox = styled.div`
+  position: relative;
+`;
+
+const CharacterCount = styled.p`
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: #777;
+`;
+
+const ButtonPlace = styled.div`
+  position: absolute;
+  right: 34px;
+  bottom: 14px;
+`;
+
+const StyledButton = styled(Button)`
+  border: none;
+  border-radius: 70;
+  width: 40px;
+  font-size: 12px;
+  height: 24px;
+  background-color: ${props => (props.disabled ? '#f4f4f4' : '#2D62EA')};
+  color: ${props => (props.disabled ? '#aeaeae' : '#ffffff')};
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+`;

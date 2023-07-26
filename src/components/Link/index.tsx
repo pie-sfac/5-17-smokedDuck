@@ -4,8 +4,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-import LinkCreateComponent from './LinkCreateComponent';
-import LinkViewComponent from './LinkViewComponent';
+import LinkCreateComponent from '@/components/Link/LinkForm';
+import LinkViewComponent from '@/components/Link/LinkView';
 
 const MessageBox = styled.div`
   display: flex;
