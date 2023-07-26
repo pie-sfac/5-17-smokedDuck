@@ -1,11 +1,12 @@
 import { Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
-type TemplateFooterProps = {
-  questions: string[];
-};
+import { MainContext } from '@/store';
 
-export default function TemplateFooter({ questions }: TemplateFooterProps) {
+export default function TemplateFooter() {
+  const { questionList } = useContext(MainContext);
+
   return (
     <FooterContainer>
       <Button
@@ -15,7 +16,7 @@ export default function TemplateFooter({ questions }: TemplateFooterProps) {
           color: '#F2F0F0',
         }}
         borderRadius={'20px 20px 20px 20px'}
-        isDisabled={questions.length < 1 ? true : false}
+        isDisabled={questionList.length < 1 ? true : false}
       >
         저장
       </Button>

@@ -1,22 +1,22 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
+import { MainContext } from '@/store';
 
-type TemplateSelectedQuestionContainerProps = {
-  questions: string[];
-};
+import Question from '../Question';
 
-export default function TemplateSelectedQuestionContainer({
-  questions,
-}: TemplateSelectedQuestionContainerProps) {
+export default function TemplateSelectedQuestionContainer() {
+  const { questionList } = useContext(MainContext);
+
   return (
     <ContentContainer
       style={{
         backgroundColor:
-          questions.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
+          questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questions.length === 0 ? (
+      {questionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -26,7 +26,7 @@ export default function TemplateSelectedQuestionContainer({
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questions.map(question => <div>{question}</div>)
+        questionList.map(question => <Question key={question._id} />)
       )}
     </ContentContainer>
   );

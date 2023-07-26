@@ -11,13 +11,7 @@ import Text from '@/assets/Text.svg';
 
 import QuestionBox from '../Common/QuestionBox';
 
-type TemplateQuestionSelectionsProps = {
-  setQuestions: React.Dispatch<React.SetStateAction<string[]>>;
-};
-
-export default function TemplateQuestionSelections({
-  setQuestions,
-}: TemplateQuestionSelectionsProps) {
+export default function TemplateQuestionSelections() {
   const [selectedQuestion, setSelectedQuestion] = useState('');
   return (
     <EntireQuestionContainer>
@@ -67,7 +61,6 @@ export default function TemplateQuestionSelections({
             description={'텍스트 형식의 답변을 입력하는 문항입니다.'}
             tagName={'기본'}
             margin={'0.4rem'}
-            onClick={setQuestions}
           />
           <QuestionBox
             image={Media}
@@ -75,14 +68,12 @@ export default function TemplateQuestionSelections({
             description={'이미지 혹은 영상을 답변으로 첨부하는 문항입니다. '}
             tagName={'기본'}
             margin={'0.4rem'}
-            onClick={setQuestions}
           />
           <QuestionBox
             image={Selections}
             title={'선택형'}
             description={'보기 중 선택해서 답변하는 문항입니다.'}
             tagName={'기본'}
-            onClick={setQuestions}
           />
         </QuestionBoxContainer>
       )}
@@ -94,7 +85,6 @@ export default function TemplateQuestionSelections({
             description={'회원의 통증 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
-            onClick={setQuestions}
           />
           <QuestionBox
             image={Condition}
@@ -102,7 +92,6 @@ export default function TemplateQuestionSelections({
             description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
-            onClick={setQuestions}
           />
           <QuestionBox
             image={PainQuestion}
@@ -111,7 +100,6 @@ export default function TemplateQuestionSelections({
               '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
             }
             tagName={'전문'}
-            onClick={setQuestions}
           />
         </QuestionBoxContainer>
       )}
