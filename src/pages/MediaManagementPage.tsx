@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import LinkComponent from '@/utils/parsing/LinkComponent';
+import LinkComponent from '@/components/link/LinkComponent';
 
 export default function MediaManagementPage() {
   const [isOpen, setIsOpen] = useState(false);

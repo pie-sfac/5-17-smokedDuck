@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { fetchYoutubeVideo } from '@/apis/Youtube';
 import {
@@ -8,9 +8,7 @@ import {
 
 export function useYoutubeVideo() {
   const [youtubeVideo, setYoutubeVideo] = useState<YoutubeVideo | null>(null);
-  const handler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const youtubeVideoUrl = event.target.value;
-
+  const handler = (youtubeVideoUrl: string) => {
     if (!youtubeVideoUrl.trim()) {
       setYoutubeVideo(null);
       return;
@@ -20,11 +18,11 @@ export function useYoutubeVideo() {
       setYoutubeVideo(getYoutubeVideoFromMetadata(data.items[0]));
     });
   };
-  function extractVideoIdFromUrl(url: string) {
+  const extractVideoIdFromUrl = (url: string) => {
     const match = url.match(
       /(?:[?&]v=|\/embed\/|\/v\/|youtu\.be\/)([^&\n?#]+)/
     );
     return match ? match[1] : '';
-  }
+  };
   return { youtubeVideo, handler };
 }

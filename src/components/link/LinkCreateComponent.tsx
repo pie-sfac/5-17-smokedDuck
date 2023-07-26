@@ -80,7 +80,7 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const link = event.target.value;
       setLinkUrl(link);
-      handler(event);
+      handler(link);
     },
     [handler]
   );
@@ -89,13 +89,14 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
     const updateFormCompletion = () => {
       const isCategoryValid = category.trim() !== '';
       const isTitleValid =
-        title.trim() !== '' || youtubeVideo?.title?.trim() !== '';
+        title.trim() !== '' ||
+        (youtubeVideo && youtubeVideo.title.trim() !== '');
 
-      setIsFormComplete(isCategoryValid && isTitleValid);
+      setIsFormComplete(!!isCategoryValid && !!isTitleValid);
     };
     updateFormCompletion();
-    setDescription(youtubeVideo?.description || '');
-    setTitle(youtubeVideo?.title || '');
+    setDescription((youtubeVideo && youtubeVideo.description) || '');
+    setTitle((youtubeVideo && youtubeVideo.title) || '');
   }, [youtubeVideo, title, category]);
 
   const handleSubmit = () => {
@@ -108,8 +109,8 @@ function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
 
     onSubmit({
       ...formData,
-      thumbnailUrl: youtubeVideo?.thumbnailUrl || '',
-      linkTitle: title || youtubeVideo?.title || '',
+      thumbnailUrl: (youtubeVideo && youtubeVideo.thumbnailUrl) || '',
+      linkTitle: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   };
 

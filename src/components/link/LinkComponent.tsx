@@ -1,12 +1,63 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 import LinkCreateComponent from './LinkCreateComponent';
 import LinkViewComponent from './LinkViewComponent';
+
+interface FormData {
+  category: string;
+  linkUrl: string;
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+}
+
+export default function LinkComponent() {
+  const [formData, setFormData] = useState<FormData | null>(null);
+  const [showCompletionMessage, setShowCompletionMessage] = useState(false);
+
+  const handleFormSubmit = (data: unknown) => {
+    if (typeof data === 'object' && data !== null) {
+      setFormData(data as FormData);
+    }
+  };
+
+  useEffect(() => {
+    if (formData) {
+      setShowCompletionMessage(true);
+      const timer = setTimeout(() => {
+        setShowCompletionMessage(false);
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [formData]);
+
+  return (
+    <div>
+      {!formData ? (
+        <LinkCreateComponent onSubmit={handleFormSubmit} />
+      ) : (
+        <>
+          <LinkViewComponent
+            category={formData.category}
+            linkUrl={formData.linkUrl}
+            linkTitle={formData.title}
+            description={formData.description}
+            thumbnailUrl={formData.thumbnailUrl}
+            title={formData.title}
+          />
+          {showCompletionMessage && (
+            <MessageBox>
+              <MessageText color="white">저장되었습니다.</MessageText>
+            </MessageBox>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
 
 const slideUpFadeOutAnimation = keyframes`
   0% {
@@ -47,47 +98,3 @@ const MessageText = styled.p`
   align-items: center;
   margin-left: 20px;
 `;
-
-export default function LinkComponent() {
-  const [formData, setFormData] = useState<any>(null);
-  const [showCompletionMessage, setShowCompletionMessage] = useState(false);
-
-  const handleFormSubmit = (data: any) => {
-    setFormData(data);
-  };
-
-  useEffect(() => {
-    if (formData) {
-      setShowCompletionMessage(true);
-      const timer = setTimeout(() => {
-        setShowCompletionMessage(false);
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [formData]);
-
-  return (
-    <div>
-      {!formData ? (
-        <LinkCreateComponent onSubmit={handleFormSubmit} />
-      ) : (
-        <>
-          <LinkViewComponent
-            category={formData.category}
-            linkUrl={formData.linkUrl}
-            linkTitle={formData.title}
-            description={formData.description}
-            thumbnailUrl={formData.thumbnailUrl}
-            title={formData.title}
-          />
-          {showCompletionMessage && (
-            <MessageBox>
-              <MessageText color="white">저장되었습니다.</MessageText>
-            </MessageBox>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
