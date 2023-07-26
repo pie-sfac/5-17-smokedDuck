@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import Modal from '@/components/common/Modal';
+import Modal from '@/components/Common/Modal';
 import { MainContext } from '@/store';
 
 type DeleteModalPropsType = {

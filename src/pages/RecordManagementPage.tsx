@@ -1,13 +1,13 @@
-import { Button, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
-import Modal from '@/components/common/Modal';
-import RecordListContainer from '@/components/record/RecordListContainer';
-import TypeSelector from '@/components/record/TypeSelector';
+import Modal from '@/components/Common/Modal';
+import RecordListContainer from '@/components/Record/RecordListContainer';
+import TypeSelector from '@/components/Record/TypeSelector';
+import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { recordModalOpen, setRecordModalState } = useContext(MainContext);
   const [templateType, setTemplateType] = useState('history');
   return (
     <PageContainer>
@@ -18,13 +18,12 @@ export default function RecordManagementPage() {
       />
       <RecordListContainer templateType={templateType} />
 
-      <BlueButton onClick={() => setIsOpen(true)}>+ 템플릿 추가</BlueButton>
-      {isOpen && (
+      {recordModalOpen && (
         <Modal
           width={700}
           height={400}
           title={'템플릿 생성'}
-          setIsOpen={setIsOpen}
+          setIsOpen={setRecordModalState}
         >
           {}
         </Modal>
@@ -32,19 +31,6 @@ export default function RecordManagementPage() {
     </PageContainer>
   );
 }
-
-const BlueButton = chakra(Button, {
-  baseStyle: {
-    width: '146px',
-    height: '44px',
-    border: 'none',
-    background: '#2d62ea',
-    color: '#ffffff',
-    position: 'absolute',
-    bottom: '-3.5rem',
-    right: '0',
-  },
-});
 
 const PageTitle = styled.span`
   font-size: 20px;
