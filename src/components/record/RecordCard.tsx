@@ -17,14 +17,10 @@ export default function RecordCard({
   id,
   setIsOpen,
 }: RecordCardPropsType) {
-  const [isLowerThan800] = useMediaQuery('(max-height: 800px)');
-
   const { setSelectedTemplateTitle, setSelectedRecordCard } =
     useContext(MainContext);
 
-  const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-
+  const cardClickHandler = () => {
     setIsOpen(true);
     setSelectedTemplateTitle(title);
     setSelectedRecordCard(title);
