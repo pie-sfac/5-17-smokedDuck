@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
-import DeleteModal from '@/components/common/DeleteModal';
+import DeleteModal from '@/components/Common/DeleteModal';
 
 import Modal from './Modal';
 
