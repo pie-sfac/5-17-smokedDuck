@@ -19,6 +19,7 @@ type ModalProps = {
 export default function Modal({
   width = 940,
   height = 640,
+  title,
   setIsOpen,
   children,
 }: ModalProps) {
@@ -75,6 +76,13 @@ const ModalContainer = styled('div')`
   transform: translate(-50%, -50%);
   background-color: #ffffff;
   border-radius: 10px 10px 10px 10px;
+`;
+
+const ModalTitle = styled('div')`
+  font-size: 14px;
+  margin: 2rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e7e7e7;
 `;
 
 const ModalCloseButton = styled('button')`
