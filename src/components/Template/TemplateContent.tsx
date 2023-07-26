@@ -51,9 +51,10 @@ const ContentContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 24rem;
+  height: 13rem;
   width: 940;
   margin: 0 2rem 0 2rem;
+  overflow: auto;
 `;
 
 const EmptyQuestionContainer = styled('div')`
