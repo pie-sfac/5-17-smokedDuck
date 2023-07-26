@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom';
 type ModalProps = {
   width?: number;
   height?: number;
-  title: string;
+  title?: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
 };
@@ -50,7 +50,8 @@ export default function Modal({
           ...modalContainerStyle,
         }}
       >
-        <ModalTitle>{title}</ModalTitle>
+        {title && <ModalTitle>{title}</ModalTitle>}
+
         {children}
         <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
       </ModalContainer>
