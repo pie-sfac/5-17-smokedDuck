@@ -1,10 +1,16 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
-type TemplateTitleProps = {
-  title: string;
-};
-export default function TemplateTitle({ title }: TemplateTitleProps) {
-  return <ModalTitle>{title.length === 0 ? '템플릿' : title} 생성</ModalTitle>;
+import { MainContext } from '@/store';
+
+export default function TemplateTitle() {
+  const { selectedTemplateTitle } = useContext(MainContext);
+  return (
+    <ModalTitle>
+      {selectedTemplateTitle.length === 0 ? '템플릿' : selectedTemplateTitle}{' '}
+      생성
+    </ModalTitle>
+  );
 }
 
 const ModalTitle = styled('div')`
