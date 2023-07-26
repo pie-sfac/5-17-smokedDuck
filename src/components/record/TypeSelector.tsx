@@ -9,20 +9,14 @@ export default function TypeSelector({
   templateType,
   setTemplateType,
 }: TypeSelectorProps) {
-  const handleTypeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setTemplateType(e.currentTarget.id);
-  };
-
   return (
     <TypeSelectorArea>
       <TypeContainer
-        id="history"
-        onClick={handleTypeClick}
+        onClick={() => setTemplateType('history')}
         className={templateType === 'history' ? 'active' : ''}
       >{`문진(00)`}</TypeContainer>
       <TypeContainer
-        id="treatment"
-        onClick={handleTypeClick}
+        onClick={() => setTemplateType('treatment')}
         className={templateType === 'treatment' ? 'active' : ''}
       >{`처치(00)`}</TypeContainer>
     </TypeSelectorArea>
