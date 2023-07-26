@@ -14,6 +14,8 @@ type ContextType = {
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   selectedTemplateTitle: string;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
+  selectedRecordCard: string;
+  setSelectedRecordCard: Dispatch<SetStateAction<string>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -27,6 +29,8 @@ export const MainContext = React.createContext<ContextType>({
   setMediaModalState: () => {},
   selectedTemplateTitle: '',
   setSelectedTemplateTitle: () => {},
+  selectedRecordCard: '',
+  setSelectedRecordCard: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -37,6 +41,7 @@ export default function MainContextProvider(props: {
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
+  const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
 
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
@@ -63,6 +68,8 @@ export default function MainContextProvider(props: {
     setMediaModalState: setMediaModalState,
     selectedTemplateTitle,
     setSelectedTemplateTitle,
+    selectedRecordCard,
+    setSelectedRecordCard,
   };
   return (
     <MainContext.Provider value={contextValue}>
