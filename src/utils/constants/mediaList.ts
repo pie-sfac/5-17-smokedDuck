@@ -1,4 +1,4 @@
-type mediaListType = {
+export type mediaListType = {
   id: number;
   category: string;
   title: string;

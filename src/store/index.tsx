@@ -1,9 +1,11 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
+import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
 
 type ContextType = {
   recordList: recordListType[];
+  mediaList: mediaListType[];
   deleteRecordItem: (id: number) => void;
   recordModalOpen: boolean;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
@@ -15,6 +17,7 @@ type ContextType = {
 
 export const MainContext = React.createContext<ContextType>({
   recordList: [],
+  mediaList: [],
   deleteRecordItem: () => {},
   recordModalOpen: false,
   setRecordModalState: () => {},
@@ -33,12 +36,24 @@ export default function MainContextProvider(props: {
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
 
+  const [storedMediaList, setStoredMediaList] =
+    useState<mediaListType[]>(mediaList);
+
   const deleteRecordItemHandler = (id: number) => {
     setStoredRecordList(storedRecordList.filter(item => item.id !== id));
   };
 
+  const deleteMediaItemHandler = useCallback(
+    (id: number) => {
+      setStoredMediaList(storedMediaList.filter(item => item.id !== id));
+    },
+    [storedMediaList]
+  );
+
   const contextValue: ContextType = {
     recordList: storedRecordList,
+    mediaList: storedMediaList,
+    deleteMediaItem: deleteMediaItemHandler,
     deleteRecordItem: deleteRecordItemHandler,
     recordModalOpen: recordModalState,
     setRecordModalState: setRecordModalState,
