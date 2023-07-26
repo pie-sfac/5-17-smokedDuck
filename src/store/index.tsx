@@ -21,6 +21,8 @@ type ContextType = {
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Question[]>>;
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
+  selectedRecordCard: string;
+  setSelectedRecordCard: Dispatch<SetStateAction<string>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -39,6 +41,8 @@ export const MainContext = React.createContext<ContextType>({
   setQuestionList: () => {},
   setStoredCategoryList: () => {},
   addMediaItem: () => {},
+  selectedRecordCard: '',
+  setSelectedRecordCard: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -50,6 +54,8 @@ export default function MainContextProvider(props: {
   const [storedRecordList, setStoredRecordList] =
     useState<recordListType[]>(recordList);
   const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
+  const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
+
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
 
@@ -93,6 +99,8 @@ export default function MainContextProvider(props: {
     addMediaItem: addMediaItem,
     setStoredCategoryList,
     storedCategoryList,
+    selectedRecordCard,
+    setSelectedRecordCard,
   };
 
   return (
