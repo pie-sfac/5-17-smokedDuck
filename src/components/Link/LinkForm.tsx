@@ -10,7 +10,7 @@ import {
 import styled from '@emotion/styled';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useYoutubeVideo } from '@/hooks/useYoutubeVideo';
+import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
 interface LinkCreateComponentProps {
   onSubmit: (data: unknown) => void;
