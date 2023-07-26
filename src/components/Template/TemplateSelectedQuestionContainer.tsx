@@ -26,7 +26,14 @@ export default function TemplateSelectedQuestionContainer() {
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questionList.map(question => <Question key={question._id} />)
+        questionList.map(question => (
+          <Question
+            key={question._id}
+            _id={question._id}
+            title={question.questionTitle}
+            tagName={question.tagName}
+          />
+        ))
       )}
     </ContentContainer>
   );
@@ -34,7 +41,7 @@ export default function TemplateSelectedQuestionContainer() {
 
 const ContentContainer = styled('div')`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   height: 13rem;
   width: 940;
