@@ -20,7 +20,7 @@ export default function TemplateQuestionSelections({
 }: TemplateQuestionSelectionsProps) {
   const [selectedQuestion, setSelectedQuestion] = useState('');
   return (
-    <div>
+    <EntireQuestionContainer>
       <QeustionsContainer>
         <Box
           as="button"
@@ -115,9 +115,13 @@ export default function TemplateQuestionSelections({
           />
         </QuestionBoxContainer>
       )}
-    </div>
+    </EntireQuestionContainer>
   );
 }
+
+const EntireQuestionContainer = styled('div')`
+  height: 9rem;
+`;
 
 const QeustionsContainer = styled('div')`
   display: flex;
