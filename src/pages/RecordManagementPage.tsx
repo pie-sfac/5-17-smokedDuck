@@ -1,14 +1,27 @@
 import styled from '@emotion/styled';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import RecordListContainer from '@/components/Record/RecordListContainer';
 import TypeSelector from '@/components/Record/TypeSelector';
+import Template from '@/components/Template';
 import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
-  const { recordModalOpen, setRecordModalState } = useContext(MainContext);
+  const {
+    recordModalOpen,
+    setRecordModalState,
+    selectedTemplateTitle,
+    setSelectedTemplateTitle,
+  } = useContext(MainContext);
   const [templateType, setTemplateType] = useState('history');
+
+  useEffect(() => {
+    if (!recordModalOpen) {
+      setSelectedTemplateTitle('');
+    }
+  }, [recordModalOpen, setSelectedTemplateTitle]);
+
   return (
     <PageContainer>
       <PageTitle>기록 템플릿</PageTitle>
@@ -20,12 +33,11 @@ export default function RecordManagementPage() {
 
       {recordModalOpen && (
         <Modal
-          width={700}
-          height={400}
-          title={'템플릿 생성'}
+          width={selectedTemplateTitle.length === 0 ? 700 : undefined}
+          height={selectedTemplateTitle.length === 0 ? 400 : undefined}
           setIsOpen={setRecordModalState}
         >
-          {}
+          <Template />
         </Modal>
       )}
     </PageContainer>

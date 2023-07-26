@@ -48,10 +48,10 @@ export default function Modal({
       <ModalContainer
         style={{
           ...modalContainerStyle,
+          transition: 'all ease 0.2s',
         }}
       >
         {title && <ModalTitle>{title}</ModalTitle>}
-
         {children}
         <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
       </ModalContainer>

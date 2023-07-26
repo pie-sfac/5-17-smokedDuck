@@ -9,6 +9,8 @@ type ContextType = {
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   mediaModalOpen: boolean;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
+  selectedTemplateTitle: string;
+  setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -18,6 +20,8 @@ export const MainContext = React.createContext<ContextType>({
   setRecordModalState: () => {},
   mediaModalOpen: false,
   setMediaModalState: () => {},
+  selectedTemplateTitle: '',
+  setSelectedTemplateTitle: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -27,6 +31,7 @@ export default function MainContextProvider(props: {
     useState<recordListType[]>(recordList);
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
+  const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
 
   const deleteRecordItemHandler = (id: number) => {
     setStoredRecordList(storedRecordList.filter(item => item.id !== id));
@@ -39,6 +44,8 @@ export default function MainContextProvider(props: {
     setRecordModalState: setRecordModalState,
     mediaModalOpen: mediaModalState,
     setMediaModalState: setMediaModalState,
+    selectedTemplateTitle,
+    setSelectedTemplateTitle,
   };
   return (
     <MainContext.Provider value={contextValue}>
