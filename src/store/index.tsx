@@ -7,6 +7,7 @@ type ContextType = {
   recordList: recordListType[];
   mediaList: mediaListType[];
   deleteRecordItem: (id: number) => void;
+  deleteMediaItem: (id: number) => void;
   recordModalOpen: boolean;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   mediaModalOpen: boolean;
@@ -19,6 +20,7 @@ export const MainContext = React.createContext<ContextType>({
   recordList: [],
   mediaList: [],
   deleteRecordItem: () => {},
+  deleteMediaItem: () => {},
   recordModalOpen: false,
   setRecordModalState: () => {},
   mediaModalOpen: false,
