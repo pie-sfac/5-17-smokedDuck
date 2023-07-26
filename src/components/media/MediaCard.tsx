@@ -37,30 +37,3 @@ const MediaContainer = styled('div')`
   margin: 8px;
   box-shadow: 0px 1px 3px -2px rgba(0, 0, 0, 0.75);
 `;
-
-const EditItemArea = styled('div')`
-  position: absolute;
-  right: 40px;
-  width: 80px;
-  height: 96px;
-  text-align: center;
-  background-color: #fff;
-  border: 1px solid #e7e7e7;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px 2px rgba(231, 231, 231, 0.8);
-  overflow: hidden;
-  cursor: pointer;
-`;
-
-const EditItem = styled('div')`
-  width: 100%;
-  height: 3rem;
-  line-height: 3rem;
-  &:first-of-type {
-    border-bottom: 1px solid #e7e7e7;
-  }
-  &:hover {
-    color: #fff;
-    background-color: #6691ff;
-  }
-`;
