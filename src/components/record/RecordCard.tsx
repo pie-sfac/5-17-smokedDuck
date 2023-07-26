@@ -1,16 +1,40 @@
 import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { Dispatch, SetStateAction, useContext } from 'react';
+
+import { MainContext } from '@/store';
 
 import EditBox from '../Common/EditBox';
 
-export default function RecordCard(props: { title: string; id: number }) {
+type RecordCardPropsType = {
+  title: string;
+  id: number;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function RecordCard({
+  title,
+  id,
+  setIsOpen,
+}: RecordCardPropsType) {
+  const [isLowerThan800] = useMediaQuery('(max-height: 800px)');
+
+  const { setSelectedTemplateTitle, setSelectedRecordCard } =
+    useContext(MainContext);
+
+  const cardClickHandler = () => {
+    setIsOpen(true);
+    setSelectedTemplateTitle(title);
+    setSelectedRecordCard(title);
+  };
+
   return (
-    <CardContainer>
-      <CardTitle>{props.title}</CardTitle>
+    <CardContainer onClick={cardClickHandler}>
+      <CardTitle>{title}</CardTitle>
       <LineArea>
         <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
       </LineArea>
-      <EditBox top={0} right={13} id={props.id} />
+      <EditBox top={0} right={13} id={id} />
     </CardContainer>
   );
 }
