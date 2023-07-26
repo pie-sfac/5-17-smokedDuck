@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
-import RecordDeleteModal from '@/components/record/RecordDeleteModal';
+import DeleteModal from '@/components/common/DeleteModal';
 
 import Modal from './Modal';
 
@@ -43,7 +43,12 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
         </Modal>
       )}
       {deleteModalOpen && (
-        <RecordDeleteModal id={id} setDeleteModalOpen={setDeleteModalOpen} />
+        <DeleteModal
+          id={id}
+          setDeleteModalOpen={setDeleteModalOpen}
+          title={'템플릿 삭제'}
+          text={'템플릿을 삭제하시겠습니까?'}
+        />
       )}
     </>
   );

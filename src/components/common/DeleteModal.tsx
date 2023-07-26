@@ -1,34 +1,48 @@
 import { Button, ButtonGroup, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Modal from '@/components/common/Modal';
 import { MainContext } from '@/store';
 
-type RecordDeleteModalPropsType = {
+type DeleteModalPropsType = {
   id: number;
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
+  title: string;
+  text: string;
 };
 
-export default function RecordDeleteModal({
+export default function DeleteModal({
   id,
   setDeleteModalOpen,
-}: RecordDeleteModalPropsType) {
+  title,
+  text,
+}: DeleteModalPropsType) {
   const { deleteRecordItem } = useContext(MainContext);
+  const { pathname } = useLocation();
+
+  const handleDeleteClick = () => {
+    if (pathname === '/record') {
+      deleteRecordItem(id);
+    }
+
+    if (pathname === '/media') {
+      //media Card 삭제하는 함수 추가할곳
+    }
+  };
 
   return (
     <Modal width={340} height={180} setIsOpen={setDeleteModalOpen}>
       {
         <DeleteContainer>
-          <TitleArea>{'템플릿 삭제'}</TitleArea>
-          <TextArea>{'템플릿을 삭제하시겠습니끼?'}</TextArea>
+          <TitleArea>{title}</TitleArea>
+          <TextArea>{text}</TextArea>
           <ButtonGroup gap="2">
-            <GreyButton onClick={() => setDeleteModalOpen(false)}>
+            <GrayButton onClick={() => setDeleteModalOpen(false)}>
               {'취소'}
-            </GreyButton>
-            <BlueButton onClick={() => deleteRecordItem(id)}>
-              {'삭제'}
-            </BlueButton>
+            </GrayButton>
+            <BlueButton onClick={handleDeleteClick}>{'삭제'}</BlueButton>
           </ButtonGroup>
         </DeleteContainer>
       }
@@ -63,7 +77,7 @@ const BlueButton = chakra(Button, {
     color: '#ffffff',
   },
 });
-const GreyButton = chakra(Button, {
+const GrayButton = chakra(Button, {
   baseStyle: {
     width: '146px',
     height: '44px',
