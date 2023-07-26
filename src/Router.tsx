@@ -6,6 +6,8 @@ import MediaManagementPage from '@/pages/MediaManagementPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import RecordManagementPage from '@/pages/RecordManagementPage';
 
+import Footer from './components/common/Footer';
+
 export default function AppRouter() {
   return (
     <Router>
@@ -16,6 +18,7 @@ export default function AppRouter() {
         <Route path="/media" element={<MediaManagementPage />} />
         <Route path="/*" element={<NotFoundPage />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }
