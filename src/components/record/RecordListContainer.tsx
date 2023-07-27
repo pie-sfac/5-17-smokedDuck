@@ -58,6 +58,7 @@ const ListBackGround = styled.div`
   padding: 2rem 6rem;
   margin-top: 1rem;
   border: 1px solid #e7e7e7;
+
   @media screen and (max-height: 965px) {
     padding: 1rem 8rem;
     margin-top: 0.5rem;
