@@ -34,7 +34,7 @@ const CardContainer = styled.div`
   height: 19rem;
   position: relative;
 
-  @media screen and (max-height: 750px) {
+  @media screen and (max-height: 965px) {
     height: 14rem;
     padding: 0.4rem;
     box-shadow: 0px 1px 3px -2px rgba(0, 0, 0, 0.75);
