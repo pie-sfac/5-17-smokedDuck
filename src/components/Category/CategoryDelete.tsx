@@ -1,60 +1,44 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
-import { categoryList } from '@/utils/constants/categoryList';
+import { MainContext } from '@/store';
 
-type CheckedItems = {
-  [key: string]: boolean;
-};
-
-type CategoryListItemProps = {
-  isChecked: boolean;
-};
-
-type CategoryItem = {
-  id: number;
-  title: string;
-};
-
-type CategoryDeleteProp = {
-  onDeleteCategory: (updatedCategoryList: CategoryItem[]) => void;
-};
-
-export default function CategoryDelete({
-  onDeleteCategory,
-}: CategoryDeleteProp) {
-  const [checkedItems, setCheckedItems] = useState<CheckedItems>({});
-  const [filteredCategoryList, setFilteredCategoryList] =
-    useState<CategoryItem[]>(categoryList);
+export default function CategoryDelete() {
+  const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedItems({
-      ...checkedItems,
-      [event.target.value]: event.target.checked,
+    const { value, checked } = event.target;
+    setSelectedIds(prevSelectedIds => {
+      if (checked) {
+        return [...prevSelectedIds, parseInt(value)];
+      } else {
+        return prevSelectedIds.filter(id => id !== parseInt(value));
+      }
     });
   };
 
-  const handleDeleteButtonClick = () => {
-    const selectedIds = Object.keys(checkedItems).filter(
-      key => checkedItems[key]
+  const handleDeleteButtonClick = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const updatedCategoryList = storedCategoryList.filter(
+      item => !selectedIds.includes(item.id)
     );
-    const updatedCategoryList = categoryList.filter(
-      item => !selectedIds.includes(item.id.toString())
-    );
-    setFilteredCategoryList(updatedCategoryList); // 삭제된 항목이 보이지 않도록 새로운 리스트로 업데이트
-    onDeleteCategory(updatedCategoryList);
-  };
+    setStoredCategoryList(updatedCategoryList);
+  }, [storedCategoryList, setStoredCategoryList, selectedIds]);
 
   return (
     <>
       <CategoryListContainer>
-        {filteredCategoryList.map(item => (
-          <CategoryListItem key={item.id} isChecked={checkedItems[item.id]}>
+        {storedCategoryList.map(item => (
+          <CategoryListItem
+            key={item.id}
+            isChecked={selectedIds.includes(item.id)}
+          >
             <input
               type="checkbox"
               id={`item_${item.id}`}
               value={item.id}
-              checked={checkedItems[item.id] || false}
+              checked={selectedIds.includes(item.id)}
               onChange={handleCheckboxChange}
             />
             <label style={{ paddingLeft: '10px' }} htmlFor={`item_${item.id}`}>
@@ -70,14 +54,14 @@ export default function CategoryDelete({
   );
 }
 
-const CategoryListContainer = styled('div')`
+const CategoryListContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
   width: 1400px;
 `;
 
-const CategoryListItem = styled('div')<CategoryListItemProps>`
+const CategoryListItem = styled.div<{ isChecked: boolean }>`
   width: 680px;
   height: 80px;
   border-radius: 12px;
@@ -89,7 +73,7 @@ const CategoryListItem = styled('div')<CategoryListItemProps>`
   color: ${props => (props.isChecked ? '#6691FF' : '#1D1D1D')};
 `;
 
-const CategoryDeleteButton = styled('div')`
+const CategoryDeleteButton = styled.button`
   width: 1384px;
   height: 40px;
   border-radius: 10px;
@@ -100,4 +84,11 @@ const CategoryDeleteButton = styled('div')`
   color: #aeaeae;
   margin-top: 50px;
   cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    color: white;
+    background-color: #2d62ea;
+  }
 `;

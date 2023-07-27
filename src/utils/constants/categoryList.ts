@@ -1,4 +1,4 @@
-type categoryListType = {
+export type categoryListType = {
   id: number;
   title: string;
 };
