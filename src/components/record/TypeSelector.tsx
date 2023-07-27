@@ -37,4 +37,5 @@ const TypeContainer = styled.button`
 
 const TypeSelectorArea = styled.div`
   display: flex;
+  margin-top: 3rem;
 `;
