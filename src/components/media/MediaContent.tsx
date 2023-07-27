@@ -4,16 +4,17 @@ type MediaContentProps = {
   title: string;
   description: string;
   thumbnailUrl?: string;
-  onMoreClick: () => void;
+  onClick(): void;
 };
 
 export default function MediaContent({
   title,
   description,
   thumbnailUrl,
+  onClick,
 }: MediaContentProps) {
   return (
-    <MediaContentContainer>
+    <MediaContentContainer onClick={onClick}>
       <MediaImg
         src={thumbnailUrl || 'https://placehold.co/24x24'}
         alt="linkImage"

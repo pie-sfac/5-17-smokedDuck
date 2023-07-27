@@ -3,14 +3,14 @@ import { useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
 import DeleteModal from '@/components/Common/DeleteModal';
-
-import Modal from './Modal';
+import Modal from '@/components/Common/Modal';
 
 type EditBoxProps = {
   top?: number;
   right?: number;
   bottom?: number;
   id: number;
+  onClick?: () => void;
 };
 
 export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
