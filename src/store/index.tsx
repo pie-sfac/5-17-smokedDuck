@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
 import { Question } from '@/types/question.interface';
+import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
 
@@ -11,18 +12,21 @@ type ContextType = {
   recordList: recordListType[];
   mediaList: mediaListType[];
   questionList: Question[];
+  storedCategoryList: categoryListType[];
   deleteRecordItem: (id: number) => void;
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Question[]>>;
+  setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
 };
 
 export const MainContext = React.createContext<ContextType>({
   recordList: [],
   mediaList: [],
   questionList: [],
+  storedCategoryList: [],
   recordModalOpen: false,
   mediaModalOpen: false,
   selectedTemplateTitle: '',
@@ -32,6 +36,7 @@ export const MainContext = React.createContext<ContextType>({
   setMediaModalState: () => {},
   setSelectedTemplateTitle: () => {},
   setQuestionList: () => {},
+  setStoredCategoryList: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -45,6 +50,9 @@ export default function MainContextProvider(props: {
   const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
+
+  const [storedCategoryList, setStoredCategoryList] =
+    useState<categoryListType[]>(categoryList);
 
   const deleteRecordItemHandler = (id: number) => {
     setStoredRecordList(storedRecordList.filter(item => item.id !== id));
@@ -70,6 +78,8 @@ export default function MainContextProvider(props: {
     selectedTemplateTitle,
     setSelectedTemplateTitle,
     setQuestionList: setStoredQuestionList,
+    setStoredCategoryList,
+    storedCategoryList,
   };
 
   return (

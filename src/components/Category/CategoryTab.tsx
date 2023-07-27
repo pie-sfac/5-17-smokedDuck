@@ -1,20 +1,14 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { categoryList } from '@/utils/constants/categoryList';
+import { MainContext } from '@/store';
 
 import CategoryDelete from './CategoryDelete';
 
-type CategoryItem = {
-  id: number;
-  title: string;
-};
-
 export default function CategoryTab() {
+  const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
   const [isDeleteMode, setIsDeleteMode] = useState(true);
-  const [filteredCategoryList, setFilteredCategoryList] =
-    useState<CategoryItem[]>(categoryList);
 
   const navigate = useNavigate();
 
@@ -25,11 +19,16 @@ export default function CategoryTab() {
           <>
             <div style={{ paddingTop: '1rem' }}>카테고리 편집</div>
             <CategotyEditList>
-              <CategoryEdit>+카테고리 추가</CategoryEdit>{' '}
+              <CategoryEdit>+카테고리 추가</CategoryEdit>
               <CategoryEdit onClick={() => setIsDeleteMode(!isDeleteMode)}>
                 삭제
               </CategoryEdit>
-              <CategoryEdit onClick={() => navigate('/media')}>
+              <CategoryEdit
+                onClick={() => {
+                  setStoredCategoryList(storedCategoryList);
+                  navigate('/media');
+                }}
+              >
                 완료
               </CategoryEdit>
             </CategotyEditList>
@@ -53,17 +52,13 @@ export default function CategoryTab() {
       )}
       <CategoryListContainer>
         {isDeleteMode ? (
-          filteredCategoryList.map(item => (
+          storedCategoryList.map(item => (
             <ul key={item.id} style={{ listStyle: 'none' }}>
               <CategoryListItem>{item.title}</CategoryListItem>
             </ul>
           ))
         ) : (
-          <CategoryDelete
-            onDeleteCategory={updateCategoryList => {
-              setFilteredCategoryList(updateCategoryList);
-            }}
-          />
+          <CategoryDelete />
         )}
       </CategoryListContainer>
     </>
