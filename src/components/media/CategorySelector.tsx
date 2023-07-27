@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { categoryList } from '@/utils/constants/categoryList';
 
 export default function CategorySelector() {
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0].id);
+
+  const navigate = useNavigate();
 
   return (
     <CategoryTitle>
@@ -23,7 +26,7 @@ export default function CategorySelector() {
         </ul>
       ))}
       <EditButton>
-        <button>편집</button>
+        <button onClick={() => navigate('/category')}>편집</button>
       </EditButton>
     </CategoryTitle>
   );
