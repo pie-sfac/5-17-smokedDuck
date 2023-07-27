@@ -16,4 +16,5 @@ const AppContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
   position: relative;
+  padding: 0 1rem;
 `;
