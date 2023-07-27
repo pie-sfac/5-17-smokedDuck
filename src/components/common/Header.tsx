@@ -13,12 +13,7 @@ export default function Header() {
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
   const handlePageMove = (item: categoryType) => {
-    if (item.id === 2) {
-      navigate(`${item.name}`);
-      setClickedIdNum(item.id);
-    }
-
-    if (item.id === 3) {
+    if (item.id === 2 || item.id === 3) {
       navigate(`${item.name}`);
       setClickedIdNum(item.id);
     }
