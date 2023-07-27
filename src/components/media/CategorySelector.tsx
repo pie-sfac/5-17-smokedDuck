@@ -7,42 +7,49 @@ export default function CategorySelector() {
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0].id);
 
   return (
-    <CategoryTitle>
-      {categoryList.map(item => (
-        <ul key={item.id}>
-          <li
+    <>
+      <CategoryTitle>
+        {categoryList.map(item => (
+          <CategoryItem
             onClick={() => setSelectedCategory(item.id)}
-            style={{
-              color: selectedCategory === item.id ? '#6691FF' : 'inherit',
-              borderBottom:
-                selectedCategory === item.id ? '1px solid #6691FF' : 'inherit',
-            }}
+            className={selectedCategory === item.id ? 'active' : ''}
+            key={item.id}
           >
             {item.title}
-          </li>
-        </ul>
-      ))}
+          </CategoryItem>
+        ))}
+      </CategoryTitle>
       <EditButton>
         <button>편집</button>
       </EditButton>
-    </CategoryTitle>
+    </>
   );
 }
 
-const CategoryTitle = styled('div')`
+const CategoryTitle = styled('ul')`
   display: flex;
-  position: relative;
-  margin-top: 2rem;
-  & > ul {
-    list-style: none;
-    cursor: pointer;
-    padding: 0 1rem;
+  margin-top: 3rem;
+
+  list-style: none;
+  cursor: pointer;
+  padding: 0 1rem;
+`;
+
+const CategoryItem = styled('li')`
+  padding: 0.5rem;
+  font-weight: 600;
+  border-bottom: 0.15rem solid #cfcfcf;
+  color: #cfcfcf;
+  &.active {
+    color: #6691ff;
+    border-bottom: 0.18rem solid #6691ff;
   }
 `;
 
 const EditButton = styled('div')`
   position: absolute;
-  right: 1rem;
+  right: 0;
+  top: 0;
   width: 64px;
   height: 32px;
   text-align: center;
