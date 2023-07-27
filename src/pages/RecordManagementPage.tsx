@@ -13,14 +13,16 @@ export default function RecordManagementPage() {
     setRecordModalState,
     selectedTemplateTitle,
     setSelectedTemplateTitle,
+    setQuestionList,
   } = useContext(MainContext);
   const [templateType, setTemplateType] = useState('history');
 
   useEffect(() => {
     if (!recordModalOpen) {
       setSelectedTemplateTitle('');
+      setQuestionList([]);
     }
-  }, [recordModalOpen, setSelectedTemplateTitle]);
+  }, [recordModalOpen, setQuestionList, setSelectedTemplateTitle]);
 
   return (
     <PageContainer>

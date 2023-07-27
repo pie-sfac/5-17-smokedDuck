@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import { MainContext } from '@/store';
 
@@ -10,7 +10,6 @@ import TemplateSubHeader from './TemplateSubHeader';
 
 export default function TemplateContent() {
   const { selectedTemplateTitle } = useContext(MainContext);
-  const [questions, setQuestions] = useState<string[]>([]);
 
   return (
     <div>
@@ -19,9 +18,9 @@ export default function TemplateContent() {
       ) : (
         <>
           <TemplateSubHeader />
-          <TemplateQuestionSelections setQuestions={setQuestions} />
-          <TemplateSelectedQuestionContainer questions={questions} />
-          <TemplateFooter questions={questions} />
+          <TemplateQuestionSelections />
+          <TemplateSelectedQuestionContainer />
+          <TemplateFooter />
         </>
       )}
     </div>

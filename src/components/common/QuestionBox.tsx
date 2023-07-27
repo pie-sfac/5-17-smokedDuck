@@ -1,4 +1,7 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
+
+import { MainContext } from '@/store';
 
 type QuestionBoxProps = {
   image: string;
@@ -6,7 +9,6 @@ type QuestionBoxProps = {
   description: string;
   tagName: string;
   margin?: string;
-  onClick: React.Dispatch<React.SetStateAction<string[]>>;
 };
 export default function QuestionBox({
   image,
@@ -14,14 +16,27 @@ export default function QuestionBox({
   description,
   tagName,
   margin,
-  onClick,
 }: QuestionBoxProps) {
+  const { questionList, setQuestionList } = useContext(MainContext);
+
   return (
     <QuestionBoxConatiner
       style={{
         marginRight: margin,
       }}
-      onClick={() => onClick(prevQeusions => [...prevQeusions, title])}
+      onClick={() => {
+        setQuestionList(prevQeusions => [
+          ...prevQeusions,
+          {
+            _id:
+              questionList.length === 0
+                ? 1
+                : questionList[questionList.length - 1]._id + 1,
+            questionTitle: title,
+            tagName,
+          },
+        ]);
+      }}
     >
       <TagNameContainer>
         <StyledTagName

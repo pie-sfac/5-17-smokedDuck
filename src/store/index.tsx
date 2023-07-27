@@ -1,43 +1,48 @@
 import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 
+import { Question } from '@/types/question.interface';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
 
 type ContextType = {
+  recordModalOpen: boolean;
+  mediaModalOpen: boolean;
+  selectedTemplateTitle: string;
   recordList: recordListType[];
   mediaList: mediaListType[];
+  questionList: Question[];
   deleteRecordItem: (id: number) => void;
   deleteMediaItem: (id: number) => void;
-  recordModalOpen: boolean;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
-  mediaModalOpen: boolean;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
-  selectedTemplateTitle: string;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
+  setQuestionList: Dispatch<SetStateAction<Question[]>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
   recordList: [],
   mediaList: [],
+  questionList: [],
+  recordModalOpen: false,
+  mediaModalOpen: false,
+  selectedTemplateTitle: '',
   deleteRecordItem: () => {},
   deleteMediaItem: () => {},
-  recordModalOpen: false,
   setRecordModalState: () => {},
-  mediaModalOpen: false,
   setMediaModalState: () => {},
-  selectedTemplateTitle: '',
   setSelectedTemplateTitle: () => {},
+  setQuestionList: () => {},
 });
 
 export default function MainContextProvider(props: {
   children: React.ReactNode;
 }) {
-  const [storedRecordList, setStoredRecordList] =
-    useState<recordListType[]>(recordList);
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
-
+  const [storedRecordList, setStoredRecordList] =
+    useState<recordListType[]>(recordList);
+  const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
 
@@ -55,15 +60,18 @@ export default function MainContextProvider(props: {
   const contextValue: ContextType = {
     recordList: storedRecordList,
     mediaList: storedMediaList,
+    questionList: storedQuestionList,
     deleteMediaItem: deleteMediaItemHandler,
     deleteRecordItem: deleteRecordItemHandler,
     recordModalOpen: recordModalState,
-    setRecordModalState: setRecordModalState,
+    setRecordModalState,
     mediaModalOpen: mediaModalState,
-    setMediaModalState: setMediaModalState,
+    setMediaModalState,
     selectedTemplateTitle,
     setSelectedTemplateTitle,
+    setQuestionList: setStoredQuestionList,
   };
+
   return (
     <MainContext.Provider value={contextValue}>
       {props.children}
