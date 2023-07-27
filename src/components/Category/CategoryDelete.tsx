@@ -54,7 +54,7 @@ export default function CategoryDelete() {
   );
 }
 
-const CategoryListContainer = styled.div`
+const CategoryListContainer = styled('div')`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
