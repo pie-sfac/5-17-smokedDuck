@@ -34,6 +34,6 @@ const BlueButton = chakra(Button, {
     color: '#ffffff',
     position: 'absolute',
     bottom: '1rem',
-    right: '0',
+    right: '1rem',
   },
 });
