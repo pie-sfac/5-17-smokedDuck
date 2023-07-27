@@ -1,24 +1,23 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
-import MediaCard from '@/components/Media/MediaCard';
 import { MainContext } from '@/store';
+
+import MediaCard from './MediaCard';
 
 export default function MediaListContainer() {
   const { mediaList } = useContext(MainContext);
+
   return (
     <ListBackGround>
-      {mediaList.map(item => {
-        return (
-          <MediaCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            linkUrl={item.linkUrl || ''}
-          />
-        );
-      })}
+      {mediaList.map(item => (
+        <MediaCard
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          description={item.description}
+        />
+      ))}
     </ListBackGround>
   );
 }
@@ -37,7 +36,6 @@ const ListBackGround = styled('div')`
   padding: 16px;
   background-color: rgba(235, 241, 255, 0.8);
   border-radius: 16px;
-
   &::-webkit-scrollbar {
     display: none;
   }

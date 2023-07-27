@@ -1,10 +1,9 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import LinkForm from '@/components/Link/LinkForm';
-import LinkView from '@/components/Link/LinkView';
-import { MainContext } from '@/store';
+import LinkCreateComponent from '@/components/Link/LinkForm';
+import LinkViewComponent from '@/components/Link/LinkView';
 
 interface FormData {
   category: string;
@@ -17,17 +16,15 @@ interface FormData {
 export default function LinkComponent() {
   const [formData, setFormData] = useState<FormData | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
-  const { addMediaItem } = useContext(MainContext);
 
-  const handleFormSubmit = (data: FormData) => {
+  const handleFormSubmit = (data: unknown) => {
     if (typeof data === 'object' && data !== null) {
-      setFormData(data);
+      setFormData(data as FormData);
     }
   };
 
   useEffect(() => {
     if (formData) {
-      addMediaItem(formData);
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
@@ -35,15 +32,15 @@ export default function LinkComponent() {
 
       return () => clearTimeout(timer);
     }
-  }, [addMediaItem, formData]);
+  }, [formData]);
 
   return (
     <div>
       {!formData ? (
-        <LinkForm onSubmit={handleFormSubmit} />
+        <LinkCreateComponent onSubmit={handleFormSubmit} />
       ) : (
         <>
-          <LinkView
+          <LinkViewComponent
             category={formData.category}
             linkUrl={formData.linkUrl}
             linkTitle={formData.title}
@@ -85,7 +82,7 @@ const MessageBox = styled.div`
   display: flex;
   position: relative;
   bottom: 20px;
-  width: 900px;
+  width: 992px;
   background-color: #2d62ea;
   color: white;
   border-radius: 10px;
