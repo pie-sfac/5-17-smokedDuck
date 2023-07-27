@@ -12,10 +12,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
-interface LinkFormProps {
-  onSubmit: (data: LinkFormData) => void;
-}
-
 interface LinkFormData {
   category: string;
   linkUrl: string;
@@ -23,6 +19,10 @@ interface LinkFormData {
   description: string;
   thumbnailUrl: string;
   linkTitle: string;
+}
+
+interface LinkFormProps {
+  onSubmit: (data: LinkFormData) => void;
 }
 
 function LinkForm({ onSubmit }: LinkFormProps) {
