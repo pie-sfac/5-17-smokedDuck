@@ -54,7 +54,7 @@ export default function CategoryDelete() {
   );
 }
 
-const CategoryListContainer = styled.div`
+const CategoryListContainer = styled('div')`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
@@ -73,7 +73,7 @@ const CategoryListItem = styled.div<{ isChecked: boolean }>`
   color: ${props => (props.isChecked ? '#6691FF' : '#1D1D1D')};
 `;
 
-const CategoryDeleteButton = styled.button`
+const CategoryDeleteButton = styled('div')`
   width: 1384px;
   height: 40px;
   border-radius: 10px;
