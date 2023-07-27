@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
+import EditBox from '@/components/Common/EditBox';
+import MediaContent from '@/components/Media/MediaContent';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-
-import EditBox from '../Common/EditBox';
-import MediaContent from './MediaContent';
 
 type MediaCardProps = {
   id: number;

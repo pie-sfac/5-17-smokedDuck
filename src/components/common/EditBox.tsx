@@ -3,8 +3,7 @@ import { useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
 import DeleteModal from '@/components/Common/DeleteModal';
-
-import Modal from './Modal';
+import Modal from '@/components/Common/Modal';
 
 type EditBoxProps = {
   top?: number;
