@@ -88,4 +88,11 @@ const CategoryDeleteButton = styled('div')`
   color: #aeaeae;
   margin-top: 50px;
   cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    color: white;
+    background-color: #2d62ea;
+  }
 `;
