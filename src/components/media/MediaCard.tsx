@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-import { fetchYoutubeVideo } from '@/apis/Youtube';
-import { getYoutubeVideoFromMetadata } from '@/hooks/useGetYoutubeVideoFromMetadata';
-import { extractVideoIdFromUrl } from '@/hooks/UseYoutubeVideo';
+import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
 import EditBox from '../Common/EditBox';
 import MediaContent from './MediaContent';
@@ -23,11 +21,18 @@ export default function MediaCard({
 }: MediaCardProps) {
   const [isEdit, setIsEdit] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState('');
+
+  const { youtubeVideo, handler } = useYoutubeVideo();
+
   useEffect(() => {
-    fetchYoutubeVideo(extractVideoIdFromUrl(linkUrl)).then(data => {
-      setThumbnailUrl(getYoutubeVideoFromMetadata(data.items[0]).thumbnailUrl);
-    });
-  }, [linkUrl]);
+    handler(linkUrl);
+  }, [linkUrl, handler]);
+
+  useEffect(() => {
+    if (youtubeVideo) {
+      setThumbnailUrl(youtubeVideo.thumbnailUrl);
+    }
+  }, [youtubeVideo]);
 
   return (
     <MediaContainer>
