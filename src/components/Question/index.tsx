@@ -14,7 +14,7 @@ export default function Question({ _id, title, tagName }: QuestionProps) {
   return (
     <QuestionContainer>
       <QuestionHeader id={_id} title={title} tagName={tagName} />
-      <QuestionContent />
+      {tagName === '기본' && <QuestionContent title={title} />}
       <QuestionFooter />
     </QuestionContainer>
   );
