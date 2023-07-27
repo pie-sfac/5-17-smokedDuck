@@ -33,6 +33,12 @@ export default function QuestionContent({ title }: QuestionContentProps) {
     setCurrentSelection('');
   }, [currentSelection]);
 
+  const handleDeleteSelection = useCallback((targetId: number) => {
+    setAddedSelections(prevAddedSelections =>
+      prevAddedSelections.filter(selection => selection._id !== targetId)
+    );
+  }, []);
+
   return (
     <QuestionContentContainer>
       <StyledLabel htmlFor="questionTitle">문항 제목</StyledLabel>
@@ -99,8 +105,11 @@ export default function QuestionContent({ title }: QuestionContentProps) {
             <AddedSelectionContainer>
               {addedSelections.map(addedSelection => (
                 <StyledSelection key={addedSelection._id}>
-                  {addedSelection._id}. {addedSelection.selectionName}
-                  <ChangeMediaButton style={{ marginLeft: '1rem' }}>
+                  {addedSelection.selectionName}
+                  <ChangeMediaButton
+                    style={{ marginLeft: '1rem' }}
+                    onClick={() => handleDeleteSelection(addedSelection._id)}
+                  >
                     삭제
                   </ChangeMediaButton>
                 </StyledSelection>
