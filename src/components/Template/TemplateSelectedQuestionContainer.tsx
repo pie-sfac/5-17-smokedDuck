@@ -40,21 +40,27 @@ export default function TemplateSelectedQuestionContainer() {
 }
 
 const ContentContainer = styled('div')`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 13rem;
   width: 940;
+  height: 13rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin: 0 2rem 0 2rem;
+  padding-top: 1rem;
+  border: 1px solid rgba(235, 241, 255, 0.26);
+  border-radius: 10px 10px 10px 10px;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const EmptyQuestionContainer = styled('div')`
   width: 7em;
-  height: 7rem;
+  height: 100%;
   color: #aeaeae;
   font-size: 0.8rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
 `;
