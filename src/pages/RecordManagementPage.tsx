@@ -51,7 +51,7 @@ const PageTitle = styled.span`
   font-weight: 800;
   display: block;
   margin: 2rem 0;
-  @media screen and (max-height: 750px) {
+  @media screen and (max-height: 965px) {
     margin: 0.5rem 0;
   }
 `;
@@ -59,7 +59,7 @@ const PageTitle = styled.span`
 const PageContainer = styled.div`
   margin-top: 2rem;
   position: relative;
-  @media screen and (max-height: 750px) {
+  @media screen and (max-height: 965px) {
     margin-top: 1rem;
   }
 `;
