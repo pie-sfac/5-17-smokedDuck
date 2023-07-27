@@ -12,20 +12,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
-interface LinkFormProps {
-  onSubmit: (data: LinkFormData) => void;
+interface LinkCreateComponentProps {
+  onSubmit: (data: unknown) => void;
 }
 
-interface LinkFormData {
-  category: string;
-  linkUrl: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-  linkTitle: string;
-}
-
-function LinkForm({ onSubmit }: LinkFormProps) {
+function LinkCreateComponent({ onSubmit }: LinkCreateComponentProps) {
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -53,8 +44,8 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     };
     updateFormCompletion();
     setDescription((youtubeVideo && youtubeVideo.description) || '');
-    setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-  }, [youtubeVideo, category, title]);
+    setTitle((youtubeVideo && youtubeVideo.title) || '');
+  }, [youtubeVideo, title, category]);
 
   const handleSubmit = () => {
     const formData = {
@@ -74,7 +65,7 @@ function LinkForm({ onSubmit }: LinkFormProps) {
   return (
     <Container>
       <CreateHeader>
-        <Heading as="h5" size="sm">
+        <Heading as="h5" size="md">
           센터 링크
         </Heading>
         <p>센터에 미리 운동 영상 링크를 정리하세요.</p>
@@ -86,7 +77,7 @@ function LinkForm({ onSubmit }: LinkFormProps) {
 
         <Select
           placeholder="카테고리를 선택해 주세요."
-          marginBottom="10px"
+          marginBottom="20px"
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
             setCategory(event.target.selectedOptions[0].text);
           }}
@@ -102,8 +93,8 @@ function LinkForm({ onSubmit }: LinkFormProps) {
             type="text"
             onChange={handleLinkChange}
             placeholder="URL을 입력해주세요"
-            width="800px"
-            marginBottom="10px"
+            width="912px"
+            marginBottom="20px"
           />
         </InputWrapper>
 
@@ -116,8 +107,8 @@ function LinkForm({ onSubmit }: LinkFormProps) {
             setTitle(event.target.value);
           }}
           placeholder="링크 제목을 입력해 주세요."
-          width="800px"
-          marginBottom="10px"
+          width="912px"
+          marginBottom="20px"
         />
       </FormControl>
       <InputTitle>메모</InputTitle>
@@ -131,8 +122,8 @@ function LinkForm({ onSubmit }: LinkFormProps) {
           }}
           placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
           resize="none"
-          height="120px"
-          width="800px"
+          height="150px"
+          width="912px"
         />
 
         <CharacterCount>{description.length} / 500</CharacterCount>
@@ -155,30 +146,29 @@ function LinkForm({ onSubmit }: LinkFormProps) {
   );
 }
 
-export default LinkForm;
+export default LinkCreateComponent;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 800px;
+  width: 912px;
 `;
 
 const CreateHeader = styled.div`
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-bottom: 15px;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 `;
 
 const InputTitle = styled.h4`
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 const DescriptionBox = styled.div`

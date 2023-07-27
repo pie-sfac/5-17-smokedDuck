@@ -3,21 +3,16 @@ import styled from '@emotion/styled';
 type MediaContentProps = {
   title: string;
   description: string;
-  thumbnailUrl?: string;
   onMoreClick: () => void;
 };
 
 export default function MediaContent({
   title,
   description,
-  thumbnailUrl,
 }: MediaContentProps) {
   return (
     <MediaContentContainer>
-      <MediaImg
-        src={thumbnailUrl || 'https://placehold.co/24x24'}
-        alt="linkImage"
-      />
+      <MediaImg src="https://placehold.co/24x24" alt="linkImage" />
       <MediaDiv>
         <MediaTitle>{title}</MediaTitle>
         <Mediadescription>{description}</Mediadescription>
@@ -45,15 +40,9 @@ const MediaDiv = styled('div')`
 const MediaTitle = styled('p')`
   width: 240px;
   margin-bottom: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const Mediadescription = styled('p')`
   width: 240px;
   font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
