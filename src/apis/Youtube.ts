@@ -12,7 +12,6 @@ export async function fetchYoutubeVideo(
   const requestUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${
     import.meta.env.VITE_APP_GA_API_KEY
   }`;
-
   const responseData: AxiosResponse<YoutubeVideoAPIResponse> = await axios.get(
     requestUrl
   );

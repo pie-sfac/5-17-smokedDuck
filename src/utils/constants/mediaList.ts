@@ -3,6 +3,7 @@ export type mediaListType = {
   category: string;
   title: string;
   description: string;
+  linkUrl?: string;
 };
 
 export const mediaList: mediaListType[] = [
