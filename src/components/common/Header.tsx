@@ -1,23 +1,21 @@
 import { Avatar } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import Logo from '../../assets/Logo.svg';
-import { category, userName } from '../../utils/constants/header';
-import { categoryType } from '../../utils/constants/header';
+import Logo from '@/assets/Logo.svg';
+import { category, userName } from '@/utils/constants/header';
+import { categoryType } from '@/utils/constants/header';
 
 export default function Header() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
   const handlePageMove = (item: categoryType) => {
-    if (item.id === 2) {
+    if (item.id === 2 || item.id === 3) {
       navigate(`${item.name}`);
-    }
-
-    if (item.id === 3) {
-      navigate(`${item.name}`);
+      setClickedIdNum(item.id);
     }
   };
 
@@ -38,6 +36,7 @@ export default function Header() {
           <HeaderCategoryListItem
             key={item.id}
             onClick={() => handlePageMove(item)}
+            className={item.id === clickedIdNum ? 'active' : ''}
           >
             {item.text}
           </HeaderCategoryListItem>
@@ -66,6 +65,9 @@ const HeaderCategoryList = styled.ul`
   display: flex;
   list-style: none;
   padding: 0;
+  .active {
+    color: #2d62ea;
+  }
 `;
 const HeaderCategoryListItem = styled.li`
   padding: 0;
@@ -74,6 +76,7 @@ const HeaderCategoryListItem = styled.li`
   &:hover {
     color: #2d62ea;
   }
+
   cursor: pointer;
 `;
 
