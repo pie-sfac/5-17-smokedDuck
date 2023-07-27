@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { fetchYoutubeVideo } from '@/apis/Youtube';
 import {
@@ -13,12 +13,12 @@ export function extractVideoIdFromUrl(url: string) {
 
 export function useYoutubeVideo() {
   const [youtubeVideo, setYoutubeVideo] = useState<YoutubeVideo | null>(null);
-  const handler = (youtubeVideoUrl: string | undefined) => {
+  const handler = useCallback((youtubeVideoUrl: string | undefined) => {
     if (youtubeVideoUrl) {
       fetchYoutubeVideo(extractVideoIdFromUrl(youtubeVideoUrl)).then(data => {
         setYoutubeVideo(getYoutubeVideoFromMetadata(data.items[0]));
       });
     }
-  };
+  }, []);
   return { youtubeVideo, handler };
 }

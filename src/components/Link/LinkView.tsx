@@ -32,7 +32,13 @@ function LinkView({
           링크
         </Heading>
         <Text marginBottom="10px">{linkUrl}</Text>
-        <Box borderRadius="lg" bg="white" borderWidth="1px" height="56px">
+        <Box
+          borderRadius="lg"
+          bg="white"
+          borderWidth="1px"
+          height="56px"
+          width="378px"
+        >
           <Image
             src={thumbnailUrl}
             alt={title}
@@ -75,7 +81,7 @@ function LinkView({
           display="flex"
           justifyItems="center"
         >
-          <Text>{description}</Text>
+          <Text whiteSpace="pre-wrap">{description}</Text>
           <CharacterCount>{description.length} / 500</CharacterCount>
         </Box>
       </MemoBox>
@@ -101,25 +107,26 @@ const StyledImg = styled.img`
   height: 56px;
   margin-bottom: 40px;
   margin-top: 40px;
+  margin-left: -10px;
 `;
 
 const LinkInfo = styled.div`
   height: 376px;
-  margin-right: 60px;
+  margin-right: 32px;
   font-size: 14px;
 `;
 
 const Divider = styled.div`
   width: 1px;
-  height: 472px;
+  height: 464px;
   background-color: #e7e7e7;
   margin: 20px 0;
 `;
 
 const MemoBox = styled.div`
-  width: 360px;
+  width: 378px;
   height: 320px;
-  margin-left: 40px;
+  margin-left: 30px;
 `;
 
 const CharacterCount = styled.p`
