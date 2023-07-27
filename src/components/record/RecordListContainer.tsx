@@ -44,7 +44,10 @@ const ListContainer = styled.div`
   @media screen and (max-height: 965px) {
     padding: 3px;
     gap: 1rem;
-    height: calc(28rem + 1.5rem + 3px);
+    height: calc(625px - 2rem);
+  }
+  @media screen and (max-height: 860px) {
+    height: 31.5rem;
   }
 `;
 
@@ -55,9 +58,13 @@ const ListBackGround = styled.div`
   padding: 2rem 6rem;
   margin-top: 1rem;
   border: 1px solid #e7e7e7;
+
   @media screen and (max-height: 965px) {
     padding: 1rem 8rem;
     margin-top: 0.5rem;
-    height: calc(28rem + 1.5rem + 3px + 2rem);
+    height: 625px;
+  }
+  @media screen and (max-height: 860px) {
+    height: 34rem;
   }
 `;
