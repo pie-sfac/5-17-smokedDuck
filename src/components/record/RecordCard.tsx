@@ -20,9 +20,7 @@ export default function RecordCard({
   const { setSelectedTemplateTitle, setSelectedRecordCard } =
     useContext(MainContext);
 
-  const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-
+  const cardClickHandler = () => {
     setIsOpen(true);
     setSelectedTemplateTitle(title);
     setSelectedRecordCard(title);
