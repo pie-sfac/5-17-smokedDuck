@@ -7,17 +7,19 @@ export default function CategoryDelete() {
   const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = event.target;
-    setSelectedIds(prevSelectedIds => {
-      if (checked) {
-        return [...prevSelectedIds, parseInt(value)];
-      } else {
-        return prevSelectedIds.filter(id => id !== parseInt(value));
-      }
-    });
-  };
-
+  const handleCheckboxChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value, checked } = event.target;
+      setSelectedIds(prevSelectedIds => {
+        if (checked) {
+          return [...prevSelectedIds, parseInt(value)];
+        } else {
+          return prevSelectedIds.filter(id => id !== parseInt(value));
+        }
+      });
+    },
+    []
+  );
   const handleDeleteButtonClick = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const updatedCategoryList = storedCategoryList.filter(
