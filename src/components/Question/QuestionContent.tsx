@@ -5,14 +5,33 @@ type QuestionContentProps = {
   title: string;
 };
 
+interface AddedSelection {
+  _id: number;
+  selectionName: string;
+}
+
 export default function QuestionContent({ title }: QuestionContentProps) {
   const [addedFile, setAddedFile] = useState<File>();
+  const [currentSelection, setCurrentSelection] = useState('');
+  const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
 
   const handleAddedFile = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== undefined && e.target.files !== null) {
       setAddedFile(e.target.files[0]);
     }
   }, []);
+
+  const handleAddedSelections = useCallback(() => {
+    setAddedSelections(prevAddedSelections => [
+      ...prevAddedSelections,
+      {
+        _id:
+          prevAddedSelections.length === 0 ? 1 : prevAddedSelections.length + 1,
+        selectionName: currentSelection,
+      },
+    ]);
+    setCurrentSelection('');
+  }, [currentSelection]);
 
   return (
     <QuestionContentContainer>
@@ -50,16 +69,46 @@ export default function QuestionContent({ title }: QuestionContentProps) {
             />
           </AddMediaButton>
           {addedFile !== undefined && (
-            <div>
+            <>
               <ChangeMediaButton onClick={() => setAddedFile(undefined)}>
                 파일 변경
               </ChangeMediaButton>
               {addedFile?.name}
-            </div>
+            </>
           )}
         </AddMediaContainer>
       )}
-      {title === '선택형' && <div>보기 추가</div>}
+      {title === '선택형' && (
+        <AddSelectionContainer>
+          <StyledLabel htmlFor="questionDescription">보기</StyledLabel>
+          <SelectionField>
+            <StyledInput
+              type="text"
+              name="selection"
+              id="selection"
+              value={currentSelection}
+              style={{ width: '95%', height: '2rem' }}
+              placeholder="옵션명을 적어주세요."
+              onChange={e => setCurrentSelection(e.target.value)}
+            />
+            <AddSelectionButton onClick={handleAddedSelections}>
+              +
+            </AddSelectionButton>
+          </SelectionField>
+          {addedSelections.length !== 0 && (
+            <AddedSelectionContainer>
+              {addedSelections.map(addedSelection => (
+                <StyledSelection key={addedSelection._id}>
+                  {addedSelection._id}. {addedSelection.selectionName}
+                  <ChangeMediaButton style={{ marginLeft: '1rem' }}>
+                    삭제
+                  </ChangeMediaButton>
+                </StyledSelection>
+              ))}
+            </AddedSelectionContainer>
+          )}
+        </AddSelectionContainer>
+      )}
     </QuestionContentContainer>
   );
 }
@@ -67,7 +116,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
 const QuestionContentContainer = styled('div')`
   display: flex;
   flex-direction: column;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 0.5rem 0 1rem 0;
 `;
 
 const StyledLabel = styled('label')`
@@ -126,4 +175,41 @@ const ChangeMediaButton = styled('button')`
   margin-right: 0.4rem;
   padding: 0.3rem;
   border-radius: 10px 10px 10px 10px;
+`;
+
+const AddSelectionContainer = styled('div')`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SelectionField = styled('div')`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const AddSelectionButton = styled('button')`
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  border: 1px solid #e7e7e7;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #f4f4f4;
+  padding: 0;
+`;
+
+const AddedSelectionContainer = styled('div')`
+  background-color: rgba(244, 244, 244, 0.5);
+  border-radius: 10px 10px 10px 10px;
+  margin-top: 1rem;
+`;
+
+const StyledSelection = styled('div')`
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 1rem 1rem 1rem;
 `;
