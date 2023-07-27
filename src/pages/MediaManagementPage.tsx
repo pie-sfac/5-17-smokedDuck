@@ -16,8 +16,8 @@ export default function MediaManagementPage() {
       <MediaListContainer />
       {mediaModalOpen && (
         <Modal
-          width={1064}
-          height={736}
+          width={940}
+          height={640}
           title={'센터 링크 생성'}
           setIsOpen={setMediaModalState}
         >
