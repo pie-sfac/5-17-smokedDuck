@@ -3,10 +3,6 @@ import { useCallback, useContext, useState } from 'react';
 
 import { MainContext } from '@/store';
 
-interface CategoryListItemProps {
-  isChecked: boolean;
-}
-
 export default function CategoryDelete() {
   const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -58,14 +54,14 @@ export default function CategoryDelete() {
   );
 }
 
-const CategoryListContainer = styled('div')`
+const CategoryListContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin: 0 auto;
   width: 1400px;
 `;
 
-const CategoryListItem = styled('div')<CategoryListItemProps>`
+const CategoryListItem = styled.div<{ isChecked: boolean }>`
   width: 680px;
   height: 80px;
   border-radius: 12px;
@@ -77,7 +73,7 @@ const CategoryListItem = styled('div')<CategoryListItemProps>`
   color: ${props => (props.isChecked ? '#6691FF' : '#1D1D1D')};
 `;
 
-const CategoryDeleteButton = styled('div')`
+const CategoryDeleteButton = styled.button`
   width: 1384px;
   height: 40px;
   border-radius: 10px;
@@ -88,4 +84,11 @@ const CategoryDeleteButton = styled('div')`
   color: #aeaeae;
   margin-top: 50px;
   cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:hover {
+    color: white;
+    background-color: #2d62ea;
+  }
 `;
