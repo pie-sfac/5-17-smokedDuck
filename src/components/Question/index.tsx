@@ -22,12 +22,12 @@ export default function Question({ _id, title, tagName }: QuestionProps) {
 
 const QuestionContainer = styled('div')`
   width: 96%;
+  padding: 1rem;
+  margin-bottom: 1rem;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #ffffff;
   border: 1px solid #e7e7e7;
   border-radius: 10px 10px 10px 10px;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1rem;
-  margin: 1rem 1rem 0 1rem;
 `;
