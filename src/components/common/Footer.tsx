@@ -33,7 +33,7 @@ const BlueButton = chakra(Button, {
     background: '#2d62ea',
     color: '#ffffff',
     position: 'absolute',
-    bottom: '2rem',
+    bottom: '1rem',
     right: '1rem',
   },
 });
