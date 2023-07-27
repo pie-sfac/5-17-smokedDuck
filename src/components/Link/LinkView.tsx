@@ -12,7 +12,7 @@ interface LinkViewProps {
   title: string;
 }
 
-function LinkViewComponent({
+function LinkView({
   category,
   linkUrl,
   linkTitle,
@@ -24,11 +24,11 @@ function LinkViewComponent({
     <Container>
       <LinkInfo>
         <StyledImg src={Logo} alt="logo" />
-        <Heading as="h5" size="md" marginBottom="10px">
+        <Heading as="h6" size="sm" marginBottom="10px">
           카테고리
         </Heading>
-        <Text marginBottom="60px">{category}</Text>
-        <Heading as="h5" size="md" marginBottom="10px">
+        <Text marginBottom="40px">{category}</Text>
+        <Heading as="h6" size="sm" marginBottom="10px">
           링크
         </Heading>
         <Text marginBottom="10px">{linkUrl}</Text>
@@ -46,11 +46,11 @@ function LinkViewComponent({
           />
           <Title>{title}</Title>
         </Box>
-        <Heading as="h5" size="md" marginBottom="10px" marginTop="70px">
+        <Heading as="h6" size="sm" marginBottom="10px" marginTop="40px">
           링크 제목
         </Heading>
         <Text
-          marginBottom="30px"
+          marginBottom="10px"
           width="350px"
           overflow="hidden"
           textOverflow="ellipsis"
@@ -61,14 +61,14 @@ function LinkViewComponent({
       </LinkInfo>
       <Divider />
       <MemoBox>
-        <Heading as="h5" size="md" marginBottom="10px" marginTop="50px">
+        <Heading as="h6" size="sm" marginBottom="10px" marginTop="40px">
           메모
         </Heading>
         <Box
           bg="white"
           borderWidth="1px"
           borderRadius="lg"
-          height="440px"
+          height="400px"
           px={4}
           alignItems="center"
           fontSize="sm"
@@ -83,13 +83,13 @@ function LinkViewComponent({
   );
 }
 
-export default LinkViewComponent;
+export default LinkView;
 
 const Container = styled.div`
   display: flex;
-  width: 992px;
+  width: 900px;
   background-color: #fafbff;
-  height: 600px;
+  height: 500px;
   justify-content: center;
   border-radius: 10px;
   border-width: 1px;
@@ -97,34 +97,35 @@ const Container = styled.div`
 `;
 
 const StyledImg = styled.img`
-  width: 192px;
-  height: 64px;
-  margin-bottom: 48px;
+  width: 184px;
+  height: 56px;
+  margin-bottom: 40px;
   margin-top: 40px;
 `;
 
 const LinkInfo = styled.div`
-  width: 400px;
   height: 376px;
-  margin-right: 40px;
+  margin-right: 60px;
+  font-size: 14px;
 `;
 
 const Divider = styled.div`
   width: 1px;
-  height: 536px;
+  height: 472px;
   background-color: #e7e7e7;
   margin: 20px 0;
 `;
 
 const MemoBox = styled.div`
-  width: 400px;
+  width: 360px;
+  height: 320px;
   margin-left: 40px;
 `;
 
 const CharacterCount = styled.p`
   position: fixed;
-  bottom: 130px;
-  right: 110px;
+  bottom: 80px;
+  right: 80px;
   font-size: 12px;
   color: #777;
 `;
@@ -132,10 +133,10 @@ const CharacterCount = styled.p`
 const Title = styled.div`
   font-size: 14px;
   float: left;
-  margin-top: 18px;
+  margin-top: 15px;
   height: 40px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 300px;
+  width: 240px;
 `;
