@@ -65,7 +65,9 @@ function LinkView({
           {linkTitle}
         </Text>
       </LinkInfo>
+
       <Divider />
+
       <MemoBox>
         <Heading as="h6" size="sm" marginBottom="10px" marginTop="40px">
           메모
