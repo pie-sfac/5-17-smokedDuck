@@ -10,7 +10,7 @@ type EditBoxProps = {
   right?: number;
   bottom?: number;
   id: number;
-  onClick(): void;
+  onClick?: () => void;
 };
 
 export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
