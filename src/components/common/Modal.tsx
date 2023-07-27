@@ -37,9 +37,11 @@ export default function Modal({
         | React.MouseEvent<HTMLDivElement, MouseEvent>
         | React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
+      e.stopPropagation();
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
     },
+
     [setIsOpen]
   );
 
