@@ -1,25 +1,72 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
+import Modal from '@/components/Common/Modal';
+import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
 import { MainContext } from '@/store';
 
 export default function MediaListContainer() {
   const { mediaList } = useContext(MainContext);
+  const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<{
+    index: number;
+    thumbnailUrl: string;
+  }>({
+    index: -1,
+    thumbnailUrl: '',
+  });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleMediaCardClick = (index: number, thumbnailUrl: string) => {
+    setActiveMediaCardInfo({
+      index,
+      thumbnailUrl,
+    });
+    setIsModalOpen(true);
+  };
   return (
-    <ListBackGround>
-      {mediaList.map(item => {
-        return (
-          <MediaCard
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            description={item.description}
-            linkUrl={item.linkUrl || ''}
-          />
-        );
-      })}
-    </ListBackGround>
+    <>
+      <ListBackGround>
+        {mediaList.map(item => {
+          return (
+            <MediaCard
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              description={item.description}
+              linkUrl={item.linkUrl || ''}
+              onClick={handleMediaCardClick}
+            />
+          );
+        })}
+      </ListBackGround>
+      {isModalOpen && (
+        <Modal
+          setIsOpen={setIsModalOpen}
+          width={940}
+          height={640}
+          title={'센터 링크'}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            <LinkView
+              category={mediaList[activeMediaCardInfo.index].category}
+              linkUrl={mediaList[activeMediaCardInfo.index].linkUrl || ''}
+              title={mediaList[activeMediaCardInfo.index].title}
+              description={mediaList[activeMediaCardInfo.index].description}
+              linkTitle={mediaList[activeMediaCardInfo.index].title}
+              thumbnailUrl={activeMediaCardInfo.thumbnailUrl}
+            />
+          </div>
+        </Modal>
+      )}
+    </>
   );
 }
 
