@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useRef, useState } from 'react';
 
 type QuestionContentProps = {
   title: string;
@@ -14,6 +14,8 @@ export default function QuestionContent({ title }: QuestionContentProps) {
   const [addedFile, setAddedFile] = useState<File>();
   const [currentSelection, setCurrentSelection] = useState('');
   const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAddedFile = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== undefined && e.target.files !== null) {
@@ -64,14 +66,27 @@ export default function QuestionContent({ title }: QuestionContentProps) {
       />
       {title === '미디어' && (
         <AddMediaContainer>
-          <AddMediaButton>
-            <label htmlFor="mediaFile">+ 답변자 미디어 첨부</label>
+          <AddMediaButton
+            htmlFor="mediaFile"
+            onClickCapture={e => {
+              e.stopPropagation();
+            }}
+            onClick={() => {
+              if (fileInputRef !== null && fileInputRef.current) {
+                fileInputRef.current.click();
+              }
+            }}
+          >
+            + 답변자 미디어 첨부
             <input
               type="file"
               name="mediaFile"
               id="mediaFile"
-              onChange={e => handleAddedFile(e)}
+              onChange={e => {
+                handleAddedFile(e);
+              }}
               style={{ display: 'none' }}
+              ref={fileInputRef}
             />
           </AddMediaButton>
           {addedFile !== undefined && (
@@ -160,7 +175,7 @@ const AddMediaContainer = styled('div')`
   align-items: center;
 `;
 
-const AddMediaButton = styled('div')`
+const AddMediaButton = styled('label')`
   width: 18rem;
   height: 2.4rem;
   display: flex;
