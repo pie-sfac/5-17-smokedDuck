@@ -20,8 +20,8 @@ export default function CategoryDelete() {
     },
     []
   );
+
   const handleDeleteButtonClick = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const updatedCategoryList = storedCategoryList.filter(
       item => !selectedIds.includes(item.id)
     );
