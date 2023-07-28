@@ -82,6 +82,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
               type="file"
               name="mediaFile"
               id="mediaFile"
+              accept="image/*, video/*"
               onChange={e => {
                 handleAddedFile(e);
               }}
