@@ -12,7 +12,6 @@ import {
 } from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
-import { MainContext } from '@/store';
 
 export interface FormData {
   category: number;
