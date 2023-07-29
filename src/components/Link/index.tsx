@@ -1,13 +1,13 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { createLink, CreateLinkProps, CreateLinkResponse } from '@/apis/Link';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
-import { MainContext } from '@/store';
 
-interface FormData {
-  category: string;
+export interface FormData {
+  category: number;
   linkUrl: string;
   title: string;
   description: string;
@@ -15,19 +15,27 @@ interface FormData {
 }
 
 export default function LinkComponent() {
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [createLinkResponseData, setCreateLinkResponseData] =
+    useState<CreateLinkResponse | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
-  const { addMediaItem } = useContext(MainContext);
 
   const handleFormSubmit = (data: FormData) => {
     if (typeof data === 'object' && data !== null) {
-      setFormData(data);
+      const requestData: CreateLinkProps = {
+        categoryId: data.category || 0,
+        url: `${data.linkUrl};${data.thumbnailUrl}`,
+        title: data.title,
+        description: data.description,
+      };
+
+      createLink(requestData).then((responseData: CreateLinkResponse) => {
+        setCreateLinkResponseData(responseData);
+      });
     }
   };
 
   useEffect(() => {
-    if (formData) {
-      addMediaItem(formData);
+    if (createLinkResponseData) {
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
@@ -35,28 +43,21 @@ export default function LinkComponent() {
 
       return () => clearTimeout(timer);
     }
-  }, [addMediaItem, formData]);
+  }, [createLinkResponseData]);
 
   return (
     <div>
-      {!formData ? (
-        <LinkForm onSubmit={handleFormSubmit} />
-      ) : (
+      {createLinkResponseData ? (
         <>
-          <LinkView
-            category={formData.category}
-            linkUrl={formData.linkUrl}
-            linkTitle={formData.title}
-            description={formData.description}
-            thumbnailUrl={formData.thumbnailUrl}
-            title={formData.title}
-          />
+          <LinkView linkId={createLinkResponseData.id} />
           {showCompletionMessage && (
             <MessageBox>
               <MessageText color="white">저장되었습니다.</MessageText>
             </MessageBox>
           )}
         </>
+      ) : (
+        <LinkForm onSubmit={handleFormSubmit} />
       )}
     </div>
   );

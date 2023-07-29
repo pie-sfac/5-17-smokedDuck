@@ -2,24 +2,15 @@ import { Box, Heading, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import Logo from '@/assets/Logo.svg';
+import { useMedia } from '@/hooks/useMedia';
+import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 interface LinkViewProps {
-  category: string;
-  linkUrl: string;
-  linkTitle: string;
-  description: string;
-  thumbnailUrl: string;
-  title: string;
+  linkId: number;
 }
 
-function LinkView({
-  category,
-  linkUrl,
-  linkTitle,
-  description,
-  thumbnailUrl,
-  title,
-}: LinkViewProps) {
+function LinkView({ linkId }: LinkViewProps) {
+  const { media } = useMedia(linkId);
   return (
     <Container>
       <LinkInfo>
@@ -27,11 +18,18 @@ function LinkView({
         <Heading as="h6" size="sm" marginBottom="10px">
           카테고리
         </Heading>
-        <Text marginBottom="40px">{category}</Text>
+        <Text marginBottom="40px">{media?.category.title}</Text>
         <Heading as="h6" size="sm" marginBottom="10px">
           링크
         </Heading>
-        <Text marginBottom="10px">{linkUrl}</Text>
+        <Text
+          marginBottom="10px"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {media?.url}
+        </Text>
         <Box
           borderRadius="lg"
           bg="white"
@@ -40,8 +38,8 @@ function LinkView({
           width="378px"
         >
           <Image
-            src={thumbnailUrl}
-            alt={title}
+            src={getLinkUrlInfo(media?.url || '').thumbnailUrl}
+            alt={media?.title}
             width="40px"
             height="40px"
             float="left"
@@ -50,7 +48,7 @@ function LinkView({
             marginRight="8px"
             borderRadius="lg"
           />
-          <Title>{title}</Title>
+          <Title>{media?.title}</Title>
         </Box>
         <Heading as="h6" size="sm" marginBottom="10px" marginTop="40px">
           링크 제목
@@ -62,7 +60,7 @@ function LinkView({
           textOverflow="ellipsis"
           whiteSpace="nowrap"
         >
-          {linkTitle}
+          {media?.title}
         </Text>
       </LinkInfo>
 
@@ -83,8 +81,10 @@ function LinkView({
           display="flex"
           justifyItems="center"
         >
-          <Text whiteSpace="pre-wrap">{description}</Text>
-          <CharacterCount>{description.length} / 500</CharacterCount>
+          <Text height="380px" width="350px">
+            {media?.description}
+          </Text>
+          <CharacterCount>{media?.description.length} / 500</CharacterCount>
         </Box>
       </MemoBox>
     </Container>
@@ -116,6 +116,7 @@ const LinkInfo = styled.div`
   height: 376px;
   margin-right: 32px;
   font-size: 14px;
+  width: 378px;
 `;
 
 const Divider = styled.div`
@@ -134,7 +135,7 @@ const MemoBox = styled.div`
 const CharacterCount = styled.p`
   position: fixed;
   bottom: 80px;
-  right: 80px;
+  right: 70px;
   font-size: 12px;
   color: #777;
 `;

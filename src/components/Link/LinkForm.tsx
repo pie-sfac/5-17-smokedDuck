@@ -10,26 +10,27 @@ import {
 import styled from '@emotion/styled';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import {
+  CategoryListResponseDTO,
+  CategoryResponseDTO,
+  getCategoryList,
+} from '@/apis/Category';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
-interface LinkFormProps {
-  onSubmit: (data: LinkFormData) => void;
-}
+import { FormData } from '.';
 
-interface LinkFormData {
-  category: string;
-  linkUrl: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-  linkTitle: string;
+interface LinkFormProps {
+  onSubmit: (data: FormData) => void;
 }
 
 function LinkForm({ onSubmit }: LinkFormProps) {
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState<CategoryResponseDTO[] | null>(
+    null
+  );
+  const [category, setCategory] = useState(-1);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
@@ -44,21 +45,24 @@ function LinkForm({ onSubmit }: LinkFormProps) {
 
   useEffect(() => {
     const updateFormCompletion = () => {
-      const isCategoryValid = category.trim() !== '';
       const isTitleValid =
         title.trim() !== '' ||
         (youtubeVideo && youtubeVideo.title.trim() !== '');
 
-      setIsFormComplete(!!isCategoryValid && !!isTitleValid);
+      setIsFormComplete(!!isTitleValid);
     };
     updateFormCompletion();
+
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-  }, [youtubeVideo, category, title]);
+    getCategoryList().then((value: CategoryListResponseDTO) => {
+      setCategories(value.categories);
+    });
+  }, [youtubeVideo, title]);
 
   const handleSubmit = () => {
     const formData = {
-      category,
+      category: categories![category - 1].id,
       linkUrl,
       title,
       description,
@@ -67,7 +71,7 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     onSubmit({
       ...formData,
       thumbnailUrl: (youtubeVideo && youtubeVideo.thumbnailUrl) || '',
-      linkTitle: title || (youtubeVideo && youtubeVideo.title) || '',
+      title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   };
 
@@ -88,11 +92,14 @@ function LinkForm({ onSubmit }: LinkFormProps) {
           placeholder="카테고리를 선택해 주세요."
           marginBottom="10px"
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(event.target.selectedOptions[0].text);
+            setCategory(event.target.selectedOptions[0].index);
           }}
         >
-          <option value="1">test 1</option>
-          <option value="2">test 2</option>
+          {categories?.map((category: CategoryResponseDTO, index) => (
+            <option key={index} value={category.title}>
+              {category.title}
+            </option>
+          ))}
         </Select>
 
         <FormLabel>링크</FormLabel>
