@@ -11,6 +11,30 @@ export default function CategoryTab() {
   const [isDeleteMode, setIsDeleteMode] = useState(true);
 
   const navigate = useNavigate();
+  const handleAddCategory = () => {
+    if (storedCategoryList.length >= 10) {
+      return;
+    }
+    const newCategory = {
+      id: storedCategoryList.length + 1,
+      title: '카테고리명을 입력해주세요',
+    };
+    setStoredCategoryList(prevCategory => [...prevCategory, newCategory]);
+  };
+
+  const handleUpdateCategory = (categoryId: number, updateText: string) => {
+    if (updateText.length > 15) {
+      return;
+    }
+    setStoredCategoryList(prevCategory => {
+      return prevCategory.map(storedCategoryList => {
+        if (storedCategoryList.id === categoryId) {
+          return { ...storedCategoryList, title: updateText };
+        }
+        return storedCategoryList;
+      });
+    });
+  };
 
   return (
     <>
@@ -19,7 +43,9 @@ export default function CategoryTab() {
           <>
             <div style={{ paddingTop: '1rem' }}>카테고리 편집</div>
             <CategotyEditList>
-              <CategoryEdit>+카테고리 추가</CategoryEdit>
+              <CategoryEdit onClick={handleAddCategory}>
+                +카테고리 추가
+              </CategoryEdit>
               <CategoryEdit onClick={() => setIsDeleteMode(!isDeleteMode)}>
                 삭제
               </CategoryEdit>
@@ -53,9 +79,11 @@ export default function CategoryTab() {
       <CategoryListContainer>
         {isDeleteMode ? (
           storedCategoryList.map(item => (
-            <ul key={item.id} style={{ listStyle: 'none' }}>
-              <CategoryListItem>{item.title}</CategoryListItem>
-            </ul>
+            <CategoryListItem
+              key={item.id}
+              value={item.title}
+              onChange={e => handleUpdateCategory(item.id, e.target.value)}
+            />
           ))
         ) : (
           <CategoryDelete />
@@ -90,6 +118,10 @@ const CategoryEdit = styled('div')`
   margin-left: 8px;
   &:first-of-type {
     width: 120px;
+    &:active {
+      background-color: #2d62ea;
+      color: #fff;
+    }
   }
 `;
 
@@ -106,7 +138,7 @@ const CategoryListContainer = styled('div')`
   flex-wrap: wrap;
 `;
 
-const CategoryListItem = styled('li')`
+const CategoryListItem = styled('input')`
   width: 680px;
   height: 80px;
   border-radius: 12px;
@@ -114,4 +146,9 @@ const CategoryListItem = styled('li')`
   padding: 25px 20px;
   margin: 10px;
   font-weight: bold;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 2px #6691ff;
+    border-color: #6691ff;
+  }
 `;
