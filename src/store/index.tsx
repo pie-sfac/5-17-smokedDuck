@@ -20,9 +20,7 @@ type ContextType = {
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Question[]>>;
-  setStoredCategoryList: React.Dispatch<
-    React.SetStateAction<categoryListType[]>
-  >;
+  setStoredCategoryList: Dispatch<SetStateAction<categoryListType[]>>;
 };
 
 export const MainContext = React.createContext<ContextType>({

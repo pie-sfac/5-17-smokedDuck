@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { MainContext } from '@/store';
@@ -9,9 +9,12 @@ import CategoryDelete from './CategoryDelete';
 export default function CategoryTab() {
   const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
   const [isDeleteMode, setIsDeleteMode] = useState(true);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const newCategoryInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
-  const handleAddCategory = () => {
+
+  const handleAddCategory = useCallback(() => {
     if (storedCategoryList.length >= 10) {
       return;
     }
@@ -20,21 +23,29 @@ export default function CategoryTab() {
       title: '카테고리명을 입력해주세요',
     };
     setStoredCategoryList(prevCategory => [...prevCategory, newCategory]);
-  };
+    setIsAddingCategory(true);
+  }, [setStoredCategoryList, storedCategoryList.length]);
 
-  const handleUpdateCategory = (categoryId: number, updateText: string) => {
-    if (updateText.length > 15) {
-      return;
-    }
-    setStoredCategoryList(prevCategory => {
-      return prevCategory.map(storedCategoryList => {
-        if (storedCategoryList.id === categoryId) {
-          return { ...storedCategoryList, title: updateText };
-        }
-        return storedCategoryList;
+  const handleUpdateCategory = useCallback(
+    (categoryId: number, updateText: string) => {
+      setStoredCategoryList(prevCategory => {
+        return prevCategory.map(storedCategoryList => {
+          if (storedCategoryList.id === categoryId) {
+            return { ...storedCategoryList, title: updateText };
+          }
+          return storedCategoryList;
+        });
       });
-    });
-  };
+    },
+    [setStoredCategoryList]
+  );
+
+  useEffect(() => {
+    if (isAddingCategory && newCategoryInputRef.current) {
+      setIsAddingCategory(false);
+      newCategoryInputRef.current.focus();
+    }
+  }, [isAddingCategory]);
 
   return (
     <>
@@ -43,7 +54,10 @@ export default function CategoryTab() {
           <>
             <div style={{ paddingTop: '1rem' }}>카테고리 편집</div>
             <CategotyEditList>
-              <CategoryEdit onClick={handleAddCategory}>
+              <CategoryEdit
+                onClick={handleAddCategory}
+                disabled={storedCategoryList.length >= 10}
+              >
                 +카테고리 추가
               </CategoryEdit>
               <CategoryEdit onClick={() => setIsDeleteMode(!isDeleteMode)}>
@@ -83,6 +97,13 @@ export default function CategoryTab() {
               key={item.id}
               value={item.title}
               onChange={e => handleUpdateCategory(item.id, e.target.value)}
+              readOnly={item.id === 0}
+              maxLength={15}
+              ref={
+                item.id === storedCategoryList.length
+                  ? newCategoryInputRef
+                  : null
+              }
             />
           ))
         ) : (
@@ -108,7 +129,7 @@ const CategotyEditList = styled('div')`
   cursor: pointer;
 `;
 
-const CategoryEdit = styled('div')`
+const CategoryEdit = styled('button')`
   width: 64px;
   height: 32px;
   text-align: center;
@@ -118,7 +139,12 @@ const CategoryEdit = styled('div')`
   margin-left: 8px;
   &:first-of-type {
     width: 120px;
-    &:active {
+    &:disabled:hover {
+      background-color: #ccc;
+      cursor: not-allowed;
+      color: #666;
+    }
+    &:not(:disabled):active {
       background-color: #2d62ea;
       color: #fff;
     }
