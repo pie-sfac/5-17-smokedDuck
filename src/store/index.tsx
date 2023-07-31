@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import useSWR from 'swr';
 
-import { tokenType } from '@/types';
 import { Question } from '@/types/question.interface';
+import { tokenType } from '@/types/token.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
