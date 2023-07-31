@@ -11,12 +11,19 @@ interface AddedSelection {
   _id: number;
   selectionName: string;
 }
+
 export default function QuestionContent({ title }: QuestionContentProps) {
   const [addedFiles, setAddedFiles] = useState<AddedFile[]>([]);
   const [currentSelection, setCurrentSelection] = useState('');
   const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const clickMediaAttatchmentButton = useCallback(() => {
+    if (fileInputRef !== null && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }, []);
 
   const handleAddedFile = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
@@ -101,11 +108,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
             onClickCapture={e => {
               e.stopPropagation();
             }}
-            onClick={() => {
-              if (fileInputRef !== null && fileInputRef.current) {
-                fileInputRef.current.click();
-              }
-            }}
+            onClick={clickMediaAttatchmentButton}
           >
             + 답변자 미디어 첨부
             <input
@@ -134,10 +137,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
                             prevAddedFile => prevAddedFile._id !== addedFile._id
                           )
                         );
-
-                        if (fileInputRef !== null && fileInputRef.current) {
-                          fileInputRef.current.click();
-                        }
+                        clickMediaAttatchmentButton();
                       }}
                     >
                       파일 변경
