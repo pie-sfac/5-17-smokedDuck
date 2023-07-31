@@ -1,22 +1,24 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
+
 type TypeSelectorProps = {
   templateType: string;
   setTemplateType: Dispatch<SetStateAction<string>>;
+  changeListType: (type: string) => void;
 };
 
 export default function TypeSelector({
   templateType,
-  setTemplateType,
+  changeListType,
 }: TypeSelectorProps) {
   return (
     <TypeSelectorArea>
       <TypeContainer
-        onClick={() => setTemplateType('history')}
+        onClick={() => changeListType('history')}
         className={templateType === 'history' ? 'active' : ''}
       >{`문진(00)`}</TypeContainer>
       <TypeContainer
-        onClick={() => setTemplateType('treatment')}
+        onClick={() => changeListType('treatment')}
         className={templateType === 'treatment' ? 'active' : ''}
       >{`처치(00)`}</TypeContainer>
     </TypeSelectorArea>

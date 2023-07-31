@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import useSWR from 'swr';
 
-import { tokenType } from '@/types';
 import { Question } from '@/types/question.interface';
+import { tokenType } from '@/types/token.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
@@ -19,7 +19,7 @@ type ContextType = {
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   selectedTemplateTitle: string;
-  recordList: recordListType[];
+  recordListData: recordListType[];
   mediaList: mediaListType[];
   questionList: Question[];
   storedCategoryList: categoryListType[];
@@ -36,7 +36,7 @@ type ContextType = {
 
 export const MainContext = React.createContext<ContextType>({
   loginToken: { accessToken: '', refreshToken: '', message: '' },
-  recordList: [],
+  recordListData: [],
   mediaList: [],
   questionList: [],
   storedCategoryList: [],
@@ -108,7 +108,7 @@ export default function MainContextProvider(props: {
 
   const contextValue: ContextType = {
     loginToken: loginToken,
-    recordList: storedRecordList,
+    recordListData: storedRecordList,
     mediaList: storedMediaList,
     questionList: storedQuestionList,
     deleteMediaItem: deleteMediaItemHandler,

@@ -1,45 +1,26 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import RecordCard from '@/components/Record/RecordCard';
 import CheckOutRecordTemplate from '@/components/Template/CheckOutTemplate';
-import { MainContext } from '@/store';
 import { recordListType } from '@/utils/constants/recordList';
 
-export default function RecordListContainer(props: { templateType: string }) {
-  const { recordList, setSelectedRecordCard, setSelectedTemplateTitle } =
-    useContext(MainContext);
+type recordListPropsType = {
+  recordList: recordListType[];
+};
 
+export default function RecordListContainer({
+  recordList,
+}: recordListPropsType) {
   const [CheckOutRecordTemplateOpen, setCheckOutRecordTemplateOpen] =
     useState(false);
-
-  const [list, setList] = useState<recordListType[]>(
-    recordList.filter(listitem => listitem.type === props.templateType)
-  );
-
-  useEffect(() => {
-    setList(
-      recordList.filter(listitem => listitem.type === props.templateType)
-    );
-  }, [props.templateType, recordList]);
-
-  useEffect(() => {
-    if (!CheckOutRecordTemplateOpen) {
-      setSelectedRecordCard('');
-      setSelectedTemplateTitle('');
-    }
-  }, [
-    CheckOutRecordTemplateOpen,
-    setSelectedRecordCard,
-    setSelectedTemplateTitle,
-  ]);
 
   return (
     <>
       <ListBackGround>
         <ListContainer>
-          {list.map(item => (
+          {recordList.map(item => (
             <RecordCard
               title={item.title}
               key={item.id}
