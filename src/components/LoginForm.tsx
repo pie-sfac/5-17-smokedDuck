@@ -3,23 +3,22 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 
 import Logo from '@/assets/Logo.svg';
 import VisibilityOn from '@/assets/VisibilityOn.svg';
-
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
+import { tokenType } from '@/types';
 interface StyledPasswordIconProps {
   password: string;
 }
 
 export default function LoginForm() {
+  const baseUrl = import.meta.env.VITE_BASE_URL as string;
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { mutate } = useSWR<tokenType>('getToken');
 
   const navigate = useNavigate();
 
@@ -36,16 +35,13 @@ export default function LoginForm() {
           Authorization: `Basic ${basicToken}`,
           'Content-Type': 'application/json',
         };
-        const data = {
-          Username: username,
-          Password: password,
-        };
-        const response = await axios.post<LoginResponse>(
-          'http://223.130.161.221/api/v1/admins/login',
-          { data },
+        const response = await axios.post<tokenType>(
+          `${baseUrl}/admins/login`,
+          '',
           { headers }
         );
 
+        mutate(response.data);
         window.localStorage.setItem('token', response.data.accessToken);
         window.localStorage.setItem('refreshToken', response.data.refreshToken);
 
@@ -55,7 +51,7 @@ export default function LoginForm() {
         console.error('error');
       }
     },
-    [username, password, navigate]
+    [username, password, navigate, mutate, baseUrl]
   );
 
   return (

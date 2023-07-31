@@ -1,11 +1,20 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import useSWR from 'swr';
 
+import { tokenType } from '@/types';
 import { Question } from '@/types/question.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
 
 type ContextType = {
+  loginToken: tokenType;
   recordModalOpen: boolean;
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
@@ -24,6 +33,7 @@ type ContextType = {
 };
 
 export const MainContext = React.createContext<ContextType>({
+  loginToken: { accessToken: '', refreshToken: '', message: '' },
   recordList: [],
   mediaList: [],
   questionList: [],
@@ -44,6 +54,19 @@ export const MainContext = React.createContext<ContextType>({
 export default function MainContextProvider(props: {
   children: React.ReactNode;
 }) {
+  const { data: tokenData } = useSWR<tokenType>('getToken');
+  const [loginToken, setLoginToken] = useState<tokenType>({
+    accessToken: '',
+    refreshToken: '',
+    message: '',
+  });
+
+  useEffect(() => {
+    if (tokenData) {
+      setLoginToken(tokenData);
+    }
+  }, [tokenData]);
+
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
@@ -78,6 +101,7 @@ export default function MainContextProvider(props: {
   );
 
   const contextValue: ContextType = {
+    loginToken: loginToken,
     recordList: storedRecordList,
     mediaList: storedMediaList,
     questionList: storedQuestionList,
