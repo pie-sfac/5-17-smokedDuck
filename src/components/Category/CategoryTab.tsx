@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,20 +11,28 @@ export default function CategoryTab() {
   const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
   const [isDeleteMode, setIsDeleteMode] = useState(true);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const newCategoryInputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
   const handleAddCategory = useCallback(() => {
     if (storedCategoryList.length >= 10) {
+      setIsDisabled(true);
+      alert('카테고리는 10개까지 추가할 수있습니다.');
       return;
     }
     const newCategory = {
-      id: storedCategoryList.length + 1,
-      title: '카테고리명을 입력해주세요',
+      id: Date.now(),
+      title: '',
     };
     setStoredCategoryList(prevCategory => [...prevCategory, newCategory]);
     setIsAddingCategory(true);
+
+    if (storedCategoryList.length + 1 < 10) {
+      setIsDisabled(false);
+    }
   }, [setStoredCategoryList, storedCategoryList.length]);
 
   const handleUpdateCategory = useCallback(
@@ -47,6 +56,12 @@ export default function CategoryTab() {
     }
   }, [isAddingCategory]);
 
+  useEffect(() => {
+    if (storedCategoryList.length < 10) {
+      setIsDisabled(false);
+    }
+  }, [storedCategoryList]);
+
   return (
     <>
       <CategoryTabContainer>
@@ -54,13 +69,14 @@ export default function CategoryTab() {
           <>
             <div style={{ paddingTop: '1rem' }}>카테고리 편집</div>
             <CategotyEditList>
-              <CategoryEdit
-                onClick={handleAddCategory}
-                disabled={storedCategoryList.length >= 10}
-              >
+              <CategoryEdit onClick={handleAddCategory} disabled={isDisabled}>
                 +카테고리 추가
               </CategoryEdit>
-              <CategoryEdit onClick={() => setIsDeleteMode(!isDeleteMode)}>
+              <CategoryEdit
+                onClick={() =>
+                  setIsDeleteMode(prevIsDeleteMode => !prevIsDeleteMode)
+                }
+              >
                 삭제
               </CategoryEdit>
               <CategoryEdit
@@ -77,7 +93,11 @@ export default function CategoryTab() {
           <>
             <div style={{ paddingTop: '1rem' }}>카테고리 삭제</div>
             <CategotyEditList>
-              <CategoryEdit onClick={() => setIsDeleteMode(!isDeleteMode)}>
+              <CategoryEdit
+                onClick={() =>
+                  setIsDeleteMode(prevIsDeleteMode => !prevIsDeleteMode)
+                }
+              >
                 취소
               </CategoryEdit>
             </CategotyEditList>
@@ -97,13 +117,13 @@ export default function CategoryTab() {
               key={item.id}
               value={item.title}
               onChange={e => handleUpdateCategory(item.id, e.target.value)}
-              readOnly={item.id === 0}
               maxLength={15}
               ref={
                 item.id === storedCategoryList.length
                   ? newCategoryInputRef
                   : null
               }
+              placeholder="카테고리명을 입력하세요"
             />
           ))
         ) : (
@@ -137,17 +157,22 @@ const CategoryEdit = styled('button')`
   border-radius: 10px;
   padding-top: 4px;
   margin-left: 8px;
+
   &:first-of-type {
     width: 120px;
-    &:disabled:hover {
-      background-color: #ccc;
-      cursor: not-allowed;
-      color: #666;
-    }
-    &:not(:disabled):active {
+    &:active {
       background-color: #2d62ea;
       color: #fff;
     }
+    ${props =>
+      props.disabled &&
+      css`
+        &:hover {
+          cursor: default;
+          background-color: inherit;
+          color: #666;
+        }
+      `}
   }
 `;
 
@@ -176,5 +201,9 @@ const CategoryListItem = styled('input')`
     outline: none;
     box-shadow: 0 0 2px #6691ff;
     border-color: #6691ff;
+  }
+  ::placeholder {
+    color: #999;
+    font-weight: normal;
   }
 `;
