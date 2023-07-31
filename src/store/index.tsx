@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 import useSWR from 'swr';
 
-import { tokenType } from '@/types';
 import { Question } from '@/types/question.interface';
+import { tokenType } from '@/types/token.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 import { recordList, recordListType } from '@/utils/constants/recordList';
@@ -19,7 +19,7 @@ type ContextType = {
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   selectedTemplateTitle: string;
-  recordList: recordListType[];
+  recordListData: recordListType[];
   mediaList: mediaListType[];
   questionList: Question[];
   storedCategoryList: categoryListType[];
@@ -30,11 +30,13 @@ type ContextType = {
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Question[]>>;
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
+  selectedRecordCard: string;
+  setSelectedRecordCard: Dispatch<SetStateAction<string>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
   loginToken: { accessToken: '', refreshToken: '', message: '' },
-  recordList: [],
+  recordListData: [],
   mediaList: [],
   questionList: [],
   storedCategoryList: [],
@@ -49,6 +51,8 @@ export const MainContext = React.createContext<ContextType>({
   setQuestionList: () => {},
   setStoredCategoryList: () => {},
   addMediaItem: () => {},
+  selectedRecordCard: '',
+  setSelectedRecordCard: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -73,6 +77,8 @@ export default function MainContextProvider(props: {
   const [storedRecordList, setStoredRecordList] =
     useState<recordListType[]>(recordList);
   const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
+  const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
+
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
 
@@ -102,7 +108,7 @@ export default function MainContextProvider(props: {
 
   const contextValue: ContextType = {
     loginToken: loginToken,
-    recordList: storedRecordList,
+    recordListData: storedRecordList,
     mediaList: storedMediaList,
     questionList: storedQuestionList,
     deleteMediaItem: deleteMediaItemHandler,
@@ -117,6 +123,8 @@ export default function MainContextProvider(props: {
     addMediaItem: addMediaItem,
     setStoredCategoryList,
     storedCategoryList,
+    selectedRecordCard,
+    setSelectedRecordCard,
   };
 
   return (

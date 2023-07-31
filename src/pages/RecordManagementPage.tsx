@@ -14,8 +14,18 @@ export default function RecordManagementPage() {
     selectedTemplateTitle,
     setSelectedTemplateTitle,
     setQuestionList,
+    recordListData,
   } = useContext(MainContext);
+
   const [templateType, setTemplateType] = useState('history');
+  const [recordList, setRecordList] = useState(
+    recordListData.filter(item => item.type === 'history')
+  );
+
+  const changeListType = (type: string) => {
+    setTemplateType(type);
+    setRecordList(recordListData.filter(item => item.type === type));
+  };
 
   useEffect(() => {
     if (!recordModalOpen) {
@@ -29,8 +39,9 @@ export default function RecordManagementPage() {
       <TypeSelector
         templateType={templateType}
         setTemplateType={setTemplateType}
+        changeListType={changeListType}
       />
-      <RecordListContainer templateType={templateType} />
+      <RecordListContainer recordList={recordList} />
 
       {recordModalOpen && (
         <Modal

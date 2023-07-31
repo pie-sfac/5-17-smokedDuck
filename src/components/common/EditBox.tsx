@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
 import DeleteModal from '@/components/Common/DeleteModal';
@@ -26,9 +26,14 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
     [top, right, bottom]
   );
 
+  const clickHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setEditOpen(prevOpen => !prevOpen);
+  }, []);
+
   return (
     <>
-      <EditContainer onClick={() => setEditOpen(!editOpen)}>
+      <EditContainer onClick={clickHandler}>
         <ImgContainer src={HambergerDot} alt="편집/삭제버튼" />
         {editOpen && (
           <EditItemArea style={{ ...EditBoxStyle }}>
@@ -38,7 +43,7 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
         )}
       </EditContainer>
       {editModalOpen && (
-        <Modal title={'템플릿 수정'} setIsOpen={setEditModalOpen}>
+        <Modal title={'템플릿 편집'} setIsOpen={setEditModalOpen}>
           {}
         </Modal>
       )}
@@ -89,4 +94,5 @@ const EditContainer = styled.div`
 const ImgContainer = styled.img`
   width: 1rem;
   height: 1rem;
+  z-index: 999;
 `;

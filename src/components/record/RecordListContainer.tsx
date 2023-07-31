@@ -1,31 +1,25 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
 
 import RecordCard from '@/components/Record/RecordCard';
-import { MainContext } from '@/store';
 import { recordListType } from '@/utils/constants/recordList';
 
-export default function RecordListContainer(props: { templateType: string }) {
-  const { recordList } = useContext(MainContext);
+type recordListPropsType = {
+  recordList: recordListType[];
+};
 
-  const [list, setList] = useState<recordListType[]>(
-    recordList.filter(listitem => listitem.type === props.templateType)
-  );
-
-  useEffect(() => {
-    setList(
-      recordList.filter(listitem => listitem.type === props.templateType)
-    );
-  }, [props.templateType, recordList]);
-
+export default function RecordListContainer({
+  recordList,
+}: recordListPropsType) {
   return (
-    <ListBackGround>
-      <ListContainer>
-        {list.map(item => (
-          <RecordCard title={item.title} key={item.id} id={item.id} />
-        ))}
-      </ListContainer>
-    </ListBackGround>
+    <>
+      <ListBackGround>
+        <ListContainer>
+          {recordList.map(item => (
+            <RecordCard title={item.title} key={item.id} id={item.id} />
+          ))}
+        </ListContainer>
+      </ListBackGround>
+    </>
   );
 }
 
