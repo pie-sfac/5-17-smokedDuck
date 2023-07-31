@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
 import DeleteModal from '@/components/Common/DeleteModal';
@@ -26,10 +26,10 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
     [top, right, bottom]
   );
 
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const clickHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setEditOpen(!editOpen);
-  };
+    setEditOpen(prevOpen => !prevOpen);
+  }, []);
 
   return (
     <>
