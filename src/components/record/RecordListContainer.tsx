@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
-import Modal from '@/components/Common/Modal';
 import RecordCard from '@/components/Record/RecordCard';
-import CheckOutRecordTemplate from '@/components/Template/CheckOutTemplate';
 import { recordListType } from '@/utils/constants/recordList';
 
 type recordListPropsType = {
@@ -13,29 +10,15 @@ type recordListPropsType = {
 export default function RecordListContainer({
   recordList,
 }: recordListPropsType) {
-  const [CheckOutRecordTemplateOpen, setCheckOutRecordTemplateOpen] =
-    useState(false);
-
   return (
     <>
       <ListBackGround>
         <ListContainer>
           {recordList.map(item => (
-            <RecordCard
-              title={item.title}
-              key={item.id}
-              id={item.id}
-              setIsOpen={setCheckOutRecordTemplateOpen}
-            />
+            <RecordCard title={item.title} key={item.id} id={item.id} />
           ))}
         </ListContainer>
       </ListBackGround>
-
-      {CheckOutRecordTemplateOpen && (
-        <Modal setIsOpen={setCheckOutRecordTemplateOpen}>
-          <CheckOutRecordTemplate />
-        </Modal>
-      )}
     </>
   );
 }

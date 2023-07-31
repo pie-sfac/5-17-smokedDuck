@@ -1,7 +1,10 @@
 import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { useContext } from 'react';
+import { useState } from 'react';
 
+import Modal from '@/components/Common/Modal';
+import CheckOutRecordTemplate from '@/components/Template/CheckOutTemplate';
 import { MainContext } from '@/store';
 
 import EditBox from '../Common/EditBox';
@@ -9,31 +12,35 @@ import EditBox from '../Common/EditBox';
 type RecordCardPropsType = {
   title: string;
   id: number;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function RecordCard({
-  title,
-  id,
-  setIsOpen,
-}: RecordCardPropsType) {
+export default function RecordCard({ title, id }: RecordCardPropsType) {
   const { setSelectedTemplateTitle, setSelectedRecordCard } =
     useContext(MainContext);
 
+  const [recordTemplateOpen, setRecordTemplateOpenn] = useState(false);
+
   const cardClickHandler = () => {
-    setIsOpen(true);
+    setRecordTemplateOpenn(true);
     setSelectedTemplateTitle(title);
     setSelectedRecordCard(title);
   };
 
   return (
-    <CardContainer onClick={cardClickHandler}>
-      <CardTitle>{title}</CardTitle>
-      <LineArea>
-        <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
-      </LineArea>
-      <EditBox top={0} right={13} id={id} />
-    </CardContainer>
+    <>
+      <CardContainer onClick={cardClickHandler}>
+        <CardTitle>{title}</CardTitle>
+        <LineArea>
+          <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
+        </LineArea>
+        <EditBox top={0} right={13} id={id} />
+      </CardContainer>
+      {recordTemplateOpen && (
+        <Modal setIsOpen={setRecordTemplateOpenn}>
+          <CheckOutRecordTemplate />
+        </Modal>
+      )}
+    </>
   );
 }
 
