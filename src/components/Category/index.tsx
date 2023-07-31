@@ -1,9 +1,9 @@
-import CategorySelector from './CategorySelector';
+import CategoryTab from './CategoryTab';
 
 export default function Category() {
   return (
     <>
-      <CategorySelector />
+      <CategoryTab />
     </>
   );
 }

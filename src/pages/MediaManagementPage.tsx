@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
-import Category from '@/components/Category';
+import CategorySelector from '@/components/Category/CategorySelector';
 import Modal from '@/components/Common/Modal';
 import LinkComponent from '@/components/Link/index';
 import MediaListContainer from '@/components/Media/MediaListContainer';
@@ -12,7 +12,7 @@ export default function MediaManagementPage() {
 
   return (
     <MediaContainer>
-      <Category />
+      <CategorySelector />
       <MediaListContainer />
       {mediaModalOpen && (
         <Modal

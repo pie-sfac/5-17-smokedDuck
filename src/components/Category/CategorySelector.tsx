@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { MainContext } from '@/store';
 
-import CategoryTab from './CategoryTab';
-
 export default function CategorySelector() {
   const { storedCategoryList } = useContext(MainContext);
-  const location = useLocation();
 
   const [selectedCategory, setSelectedCategory] = useState(
     storedCategoryList[0].id
@@ -18,31 +15,27 @@ export default function CategorySelector() {
 
   return (
     <>
-      {location.pathname.includes('category') ? (
-        <CategoryTab />
-      ) : (
-        <CategoryTitle>
-          {storedCategoryList.map(item => (
-            <ul key={item.id}>
-              <li
-                onClick={() => setSelectedCategory(item.id)}
-                style={{
-                  color: selectedCategory === item.id ? '#6691FF' : 'inherit',
-                  borderBottom:
-                    selectedCategory === item.id
-                      ? '1px solid #6691FF'
-                      : 'inherit',
-                }}
-              >
-                {item.title}
-              </li>
-            </ul>
-          ))}
-          <EditButton>
-            <button onClick={() => navigate('/category')}>편집</button>
-          </EditButton>
-        </CategoryTitle>
-      )}
+      <CategoryTitle>
+        {storedCategoryList.map(item => (
+          <ul key={item.id}>
+            <li
+              onClick={() => setSelectedCategory(item.id)}
+              style={{
+                color: selectedCategory === item.id ? '#6691FF' : 'inherit',
+                borderBottom:
+                  selectedCategory === item.id
+                    ? '1px solid #6691FF'
+                    : 'inherit',
+              }}
+            >
+              {item.title}
+            </li>
+          </ul>
+        ))}
+        <EditButton>
+          <button onClick={() => navigate('/category')}>편집</button>
+        </EditButton>
+      </CategoryTitle>
     </>
   );
 }
