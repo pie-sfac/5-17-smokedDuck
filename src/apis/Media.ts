@@ -51,34 +51,50 @@ export interface GetLinkDetailResponse {
   updatedAt: Date;
 }
 
-export const createLink = async (
-  requestData: CreateLinkProps
-): Promise<CreateLinkResponse> => {
-  const requestUrl = 'http://223.130.161.221/api/v1/archive-links';
-  const response: AxiosResponse<CreateLinkResponse> = await axios.post(
-    requestUrl,
-    requestData,
-    { headers: header() }
-  );
-  return response.data;
-};
+export class MediaAPIManager {
+  private static BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
+  public static LINK_URL = 'archive-links';
 
-export const getLinkList = async (): Promise<GetLinkListResponse> => {
-  const requestUrl = 'http://223.130.161.221/api/v1/archive-links';
-  const response: AxiosResponse<GetLinkListResponse> = await axios.get(
-    requestUrl,
-    { headers: header() }
-  );
-  return response.data;
-};
+  public static createLink = async (
+    requestData: CreateLinkProps,
+    token: string
+  ): Promise<CreateLinkResponse> => {
+    const requestUrl = `${MediaAPIManager.BASE_URL}/${MediaAPIManager.LINK_URL}`;
+    const response: AxiosResponse<CreateLinkResponse> = await axios.post(
+      requestUrl,
+      requestData,
+      { headers: header(token) }
+    );
+    return response.data;
+  };
 
-export const getLinkDetails = async (
-  archiveLinkId: number
-): Promise<GetLinkDetailResponse> => {
-  const requestUrl = `http://223.130.161.221/api/v1/archive-links/${archiveLinkId}`;
-  const response: AxiosResponse<GetLinkDetailResponse> = await axios.get(
-    requestUrl,
-    { headers: header() }
-  );
-  return response.data;
-};
+  public static getLinkList = async (token: string) => {
+    const requestUrl = `${MediaAPIManager.BASE_URL}/${MediaAPIManager.LINK_URL}`;
+    const response: AxiosResponse<GetLinkListResponse> = await axios.get(
+      requestUrl,
+      { headers: header(token) }
+    );
+    return response.data;
+  };
+
+  public static getLinkDetails = async (
+    linkId: number,
+    token: string
+  ): Promise<GetLinkDetailResponse> => {
+    const requestUrl = `${MediaAPIManager.BASE_URL}/${MediaAPIManager.LINK_URL}/${linkId}`;
+    const response: AxiosResponse<GetLinkDetailResponse> = await axios.get(
+      requestUrl,
+      { headers: header(token) }
+    );
+    return response.data;
+  };
+
+  public static deleteLink = async (linkId: number, token: string) => {
+    const requestUrl = `${MediaAPIManager.BASE_URL}/${MediaAPIManager.LINK_URL}/${linkId}`;
+    const response: AxiosResponse<GetLinkDetailResponse> = await axios.delete(
+      requestUrl,
+      { headers: header(token) }
+    );
+    return response.data;
+  };
+}

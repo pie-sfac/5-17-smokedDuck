@@ -1,19 +1,24 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import useSWR from 'swr';
 
+import { MediaAPIManager } from '@/apis/Media';
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
-import { useMediaList } from '@/hooks/useMedia';
+import { MainContext } from '@/store';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 export default function MediaListContainer() {
-  const mediaList = useMediaList();
+  const { loginToken } = useContext(MainContext);
+
+  const { data: mediaList } = useSWR(
+    [MediaAPIManager.LINK_URL, loginToken?.accessToken || ''],
+    ([_, accessToken]) => MediaAPIManager.getLinkList(accessToken)
+  );
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {}, []);
 
   return (
     <>

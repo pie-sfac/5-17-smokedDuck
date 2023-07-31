@@ -1,10 +1,18 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { ContextType, useContext, useEffect, useState } from 'react';
+import { mutate } from 'swr';
 
-import { createLink, CreateLinkProps, CreateLinkResponse } from '@/apis/Media';
+import {
+  CreateLinkProps,
+  CreateLinkResponse,
+  GetLinkDetailResponse,
+  GetLinkListResponse,
+  MediaAPIManager,
+} from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
+import { MainContext } from '@/store';
 
 export interface FormData {
   category: number;
@@ -18,6 +26,36 @@ export default function LinkComponent() {
   const [createLinkResponseData, setCreateLinkResponseData] =
     useState<CreateLinkResponse | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
+  const { loginToken } = useContext(MainContext);
+
+  const refreshLinkListCache = (
+    accessToken: string,
+    createdLinkDetail: GetLinkDetailResponse
+  ) => {
+    mutate(
+      [MediaAPIManager.LINK_URL, accessToken],
+      (data: GetLinkListResponse | undefined) => ({
+        archiveLinks: [...(data?.archiveLinks || []), createdLinkDetail],
+        message: data?.message || '',
+      }),
+      false
+    );
+  };
+
+  const createLink = async (requestData: CreateLinkProps) => {
+    const accessToken = loginToken?.accessToken || '';
+    const createdLinkResponseData = await MediaAPIManager.createLink(
+      requestData,
+      accessToken
+    );
+    const createdLinkId = createdLinkResponseData.id;
+    setCreateLinkResponseData(createdLinkResponseData);
+
+    const createdLinkDetail: GetLinkDetailResponse =
+      await MediaAPIManager.getLinkDetails(createdLinkId, accessToken);
+
+    refreshLinkListCache(accessToken, createdLinkDetail);
+  };
 
   const handleFormSubmit = (data: FormData) => {
     if (typeof data === 'object' && data !== null) {
@@ -27,10 +65,7 @@ export default function LinkComponent() {
         title: data.title,
         description: data.description,
       };
-
-      createLink(requestData).then((responseData: CreateLinkResponse) => {
-        setCreateLinkResponseData(responseData);
-      });
+      createLink(requestData);
     }
   };
 
