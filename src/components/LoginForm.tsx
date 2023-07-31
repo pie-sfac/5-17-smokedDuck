@@ -3,17 +3,106 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 
 import Logo from '@/assets/Logo.svg';
 import VisibilityOn from '@/assets/VisibilityOn.svg';
-
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
+import { tokenType } from '@/types/token.interface';
 interface StyledPasswordIconProps {
   password: string;
+}
+
+export default function LoginForm() {
+  const baseUrl = import.meta.env.VITE_BASE_URL as string;
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const { mutate } = useSWR<tokenType>('getToken');
+
+  const navigate = useNavigate();
+
+  const isButtonDisabled: boolean =
+    username.length === 0 || password.length === 0;
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      try {
+        const basicToken = btoa(`${username}:${password}`);
+        const headers = {
+          Authorization: `Basic ${basicToken}`,
+          'Content-Type': 'application/json',
+        };
+        const response = await axios.post<tokenType>(
+          `${baseUrl}/admins/login`,
+          '',
+          { headers }
+        );
+
+        mutate(response.data);
+        window.localStorage.setItem('token', response.data.accessToken);
+        window.localStorage.setItem('refreshToken', response.data.refreshToken);
+
+        navigate('record');
+      } catch (error) {
+        alert('아이디 또는 비밀번호가 틀렸습니다.');
+        console.error('error');
+      }
+    },
+    [username, password, navigate, mutate, baseUrl]
+  );
+
+  return (
+    <StyledLoginForm onSubmit={handleSubmit}>
+      <StyledImg src={Logo} alt="logo" />
+      <StyledUl>
+        <StyledLi>관리자 로그인</StyledLi>
+        <StyledLi>직원 로그인</StyledLi>
+      </StyledUl>
+      <div>
+        <label htmlFor="username">아이디</label>
+        <br />
+        <StyledInput
+          type="text"
+          id="username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+      </div>
+      <StyledDivInput>
+        <label htmlFor="password">비밀번호</label>
+        <br />
+        <StyledInput
+          type={showPassword ? 'text' : 'password'}
+          id="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <StyledPasswordIcon
+          src={VisibilityOn}
+          alt=""
+          password={password}
+          onClick={() => {
+            setShowPassword(prevShowPassword => !prevShowPassword);
+          }}
+        />
+      </StyledDivInput>
+      <StyledFind>
+        <span>아이디 찾기</span>
+        <span> / </span>
+        <span>비밀번호 찾기</span>
+      </StyledFind>
+      <StyledSignup>
+        <span>포인티 계정이 없으세요? |</span>
+        <span>회원가입</span>
+      </StyledSignup>
+      <StyledLoginButton type="submit" disabled={isButtonDisabled}>
+        로그인
+      </StyledLoginButton>
+    </StyledLoginForm>
+  );
 }
 
 const StyledLoginForm = styled.form`
@@ -102,96 +191,3 @@ const StyledLoginButton = styled.button`
       cursor: pointer;
     `}
 `;
-
-export default function LoginForm() {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const navigate = useNavigate();
-
-  const isButtonDisabled: boolean =
-    username.length === 0 || password.length === 0;
-
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      try {
-        const basicToken = btoa(`${username}:${password}`);
-        const headers = {
-          Authorization: `Basic ${basicToken}`,
-          'Content-Type': 'application/json',
-        };
-        const data = {
-          Username: username,
-          Password: password,
-        };
-        const response = await axios.post<LoginResponse>(
-          'http://223.130.161.221/api/v1/admins/login',
-          { data },
-          { headers }
-        );
-
-        window.localStorage.setItem('token', response.data.accessToken);
-        window.localStorage.setItem('refreshToken', response.data.refreshToken);
-
-        navigate('record');
-      } catch (error) {
-        alert('아이디 또는 비밀번호가 틀렸습니다.');
-        console.error('error');
-      }
-    },
-    [username, password, navigate]
-  );
-
-  return (
-    <StyledLoginForm onSubmit={handleSubmit}>
-      <StyledImg src={Logo} alt="logo" />
-      <StyledUl>
-        <StyledLi>관리자 로그인</StyledLi>
-        <StyledLi>직원 로그인</StyledLi>
-      </StyledUl>
-      <div>
-        <label htmlFor="username">아이디</label>
-        <br />
-        <StyledInput
-          type="text"
-          id="username"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-        />
-      </div>
-      <StyledDivInput>
-        <label htmlFor="password">비밀번호</label>
-        <br />
-        <StyledInput
-          type={showPassword ? 'text' : 'password'}
-          id="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <StyledPasswordIcon
-          src={VisibilityOn}
-          alt=""
-          password={password}
-          onClick={() => {
-            setShowPassword(prevShowPassword => !prevShowPassword);
-          }}
-        />
-      </StyledDivInput>
-      <StyledFind>
-        <span>아이디 찾기</span>
-        <span> / </span>
-        <span>비밀번호 찾기</span>
-      </StyledFind>
-      <StyledSignup>
-        <span>포인티 계정이 없으세요? |</span>
-        <span>회원가입</span>
-      </StyledSignup>
-      <StyledLoginButton type="submit" disabled={isButtonDisabled}>
-        로그인
-      </StyledLoginButton>
-    </StyledLoginForm>
-  );
-}
