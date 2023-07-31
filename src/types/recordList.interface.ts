@@ -1,10 +1,4 @@
-export interface tokenType {
-  accessToken: string;
-  refreshToken: string;
-  message: string;
-}
-
-export interface listFetcherResponseType {
+export interface recordListResponseType {
   templates: [
     {
       id: number;

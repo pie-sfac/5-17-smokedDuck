@@ -7,7 +7,7 @@ import useSWR from 'swr';
 
 import Logo from '@/assets/Logo.svg';
 import VisibilityOn from '@/assets/VisibilityOn.svg';
-import { tokenType } from '@/types';
+import { tokenType } from '@/types/token.interface';
 interface StyledPasswordIconProps {
   password: string;
 }
