@@ -125,7 +125,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
               ref={fileInputRef}
             />
           </AddMediaButton>
-          {addedFiles !== undefined && (
+          {addedFiles.length !== 0 && (
             <AddedFileContainer>
               {addedFiles &&
                 addedFiles.map(addedFile => (
