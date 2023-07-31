@@ -28,7 +28,7 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
 
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setEditOpen(!editOpen);
+    setEditOpen(prevOpen => !prevOpen);
   };
 
   return (
