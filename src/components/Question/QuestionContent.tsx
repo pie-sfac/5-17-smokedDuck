@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useCallback, useRef, useState } from 'react';
 
+import { AddedFile } from '@/types/question.interface';
+
 type QuestionContentProps = {
   title: string;
 };
@@ -9,19 +11,47 @@ interface AddedSelection {
   _id: number;
   selectionName: string;
 }
-
 export default function QuestionContent({ title }: QuestionContentProps) {
-  const [addedFile, setAddedFile] = useState<File>();
+  const [addedFiles, setAddedFiles] = useState<AddedFile[]>([]);
   const [currentSelection, setCurrentSelection] = useState('');
   const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAddedFile = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== undefined && e.target.files !== null) {
-      setAddedFile(e.target.files[0]);
-    }
-  }, []);
+  const handleAddedFile = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files !== undefined && e.target.files !== null) {
+        const currFile = e.target.files[0];
+        const currFileName = currFile.name;
+
+        const promise = new Promise(
+          (resolve: (arg: string | ArrayBuffer | null) => void) => {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(currFile);
+            reader.onload = function () {
+              resolve(reader.result);
+            };
+          }
+        );
+
+        await promise.then(value => {
+          setAddedFiles(prevAddedFiles => [
+            ...prevAddedFiles,
+            {
+              _id:
+                prevAddedFiles.length === 0
+                  ? 1
+                  : prevAddedFiles[prevAddedFiles.length - 1]._id + 1,
+              path: value,
+              filename: currFileName,
+            },
+          ]);
+        });
+      }
+    },
+    []
+  );
 
   const handleAddedSelections = useCallback(() => {
     setAddedSelections(prevAddedSelections => [
@@ -84,19 +114,38 @@ export default function QuestionContent({ title }: QuestionContentProps) {
               id="mediaFile"
               accept="image/*, video/*"
               onChange={e => {
-                handleAddedFile(e);
+                addedFiles.length >= 6
+                  ? alert('미디어는 6개까지 첨부 가능합니다.')
+                  : handleAddedFile(e);
               }}
               style={{ display: 'none' }}
               ref={fileInputRef}
             />
           </AddMediaButton>
-          {addedFile !== undefined && (
-            <>
-              <ChangeMediaButton onClick={() => setAddedFile(undefined)}>
-                파일 변경
-              </ChangeMediaButton>
-              {addedFile?.name}
-            </>
+          {addedFiles !== undefined && (
+            <AddedFileContainer>
+              {addedFiles &&
+                addedFiles.map(addedFile => (
+                  <div key={addedFile._id}>
+                    <ChangeMediaButton
+                      onClick={() => {
+                        setAddedFiles(prevAddedFiles =>
+                          prevAddedFiles.filter(
+                            prevAddedFile => prevAddedFile._id !== addedFile._id
+                          )
+                        );
+
+                        if (fileInputRef !== null && fileInputRef.current) {
+                          fileInputRef.current.click();
+                        }
+                      }}
+                    >
+                      파일 변경
+                    </ChangeMediaButton>
+                    {addedFile.filename}
+                  </div>
+                ))}
+            </AddedFileContainer>
           )}
         </AddMediaContainer>
       )}
@@ -190,6 +239,18 @@ const AddMediaButton = styled('label')`
   margin: 0.5rem 0.5rem 0.5rem 0;
   :hover {
     cursor: pointer;
+  }
+`;
+
+const AddedFileContainer = styled('div')`
+  height: 3rem;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
