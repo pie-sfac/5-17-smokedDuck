@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-import { createLink, CreateLinkProps, CreateLinkResponse } from '@/apis/Link';
+import { createLink, CreateLinkProps, CreateLinkResponse } from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
 

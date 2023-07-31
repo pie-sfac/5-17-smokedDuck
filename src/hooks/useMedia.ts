@@ -5,7 +5,7 @@ import {
   getLinkDetails,
   getLinkList,
   GetLinkListResponse,
-} from '@/apis/Link';
+} from '@/apis/Media';
 
 export const useMediaList = () => {
   const [mediaList, setMediaList] = useState<GetLinkListResponse | null>(null);
