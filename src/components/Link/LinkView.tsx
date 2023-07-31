@@ -11,6 +11,7 @@ interface LinkViewProps {
 
 function LinkView({ linkId }: LinkViewProps) {
   const { media } = useMedia(linkId);
+  const [mediaUrl] = (media?.url || '').split(';');
   return (
     <Container>
       <LinkInfo>
@@ -28,7 +29,7 @@ function LinkView({ linkId }: LinkViewProps) {
           textOverflow="ellipsis"
           whiteSpace="nowrap"
         >
-          {media?.url}
+          {mediaUrl}
         </Text>
         <Box
           borderRadius="lg"
