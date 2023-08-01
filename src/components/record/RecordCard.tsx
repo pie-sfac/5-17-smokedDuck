@@ -2,12 +2,11 @@ import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
+import Modal from '@/components/Common/Modal';
+import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
 import { MainContext } from '@/store';
 
 import EditBox from '../Common/EditBox';
-import Modal from '../Common/Modal';
-import RecordDetailTemplate from '../Template/RecordDetailTemplate';
-
 type RecordCardPropsType = {
   title: string;
   id: number;
