@@ -1,15 +1,19 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { MainContext } from '@/store';
 import { categoryList } from '@/utils/constants/categoryList';
 
-export default function CategorySelector() {
+export default function MediaCategorySelector() {
+  const { storedCategoryList } = useContext(MainContext);
   const [selectedCategory, setSelectedCategory] = useState(categoryList[0].id);
+  const navigate = useNavigate();
 
   return (
-    <>
+    <MediaCategorySelectorContainer>
       <CategoryTitle>
-        {categoryList.map(item => (
+        {storedCategoryList.map(item => (
           <CategoryItem
             onClick={() => setSelectedCategory(item.id)}
             className={selectedCategory === item.id ? 'active' : ''}
@@ -19,12 +23,14 @@ export default function CategorySelector() {
           </CategoryItem>
         ))}
       </CategoryTitle>
-      <EditButton>
-        <button>편집</button>
-      </EditButton>
-    </>
+      <EditButton onClick={() => navigate('/category')}>편집</EditButton>
+    </MediaCategorySelectorContainer>
   );
 }
+
+const MediaCategorySelectorContainer = styled('div')`
+  height: 2rem;
+`;
 
 const CategoryTitle = styled('ul')`
   display: flex;
@@ -46,7 +52,7 @@ const CategoryItem = styled('li')`
   }
 `;
 
-const EditButton = styled('div')`
+const EditButton = styled('button')`
   position: absolute;
   right: 0;
   top: 0;
