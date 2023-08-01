@@ -17,13 +17,12 @@ type ContextType = {
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   selectedTemplateTitle: string;
-
   mediaList: mediaListType[];
   questionList: Questions[];
   questions: Questions | undefined;
   setQuestions: Dispatch<SetStateAction<Questions | undefined>>;
   storedCategoryList: categoryListType[];
-
+  selectedRecordCardId: number;
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
@@ -35,11 +34,11 @@ type ContextType = {
   setLoginToken: Dispatch<SetStateAction<string>>;
   templateContent: Template | undefined;
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
+  setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
   loginToken: '',
-
   mediaList: [],
   questionList: [],
   storedCategoryList: [],
@@ -66,6 +65,7 @@ export const MainContext = React.createContext<ContextType>({
   },
   setTemplateContent: () => {},
   setQuestions: () => {},
+  selectedRecordCardId: 0,
   deleteMediaItem: () => {},
   setRecordModalState: () => {},
   setMediaModalState: () => {},
@@ -76,6 +76,7 @@ export const MainContext = React.createContext<ContextType>({
   selectedRecordCard: '',
   setSelectedRecordCard: () => {},
   setLoginToken: () => {},
+  setSeletedRecordCardId: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -96,6 +97,7 @@ export default function MainContextProvider(props: {
   const [templateContent, setTemplateContent] = useState<Template>();
   const [storedQuestionList, setStoredQuestionList] = useState<Questions[]>([]);
   const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
+  const [selectedRecordCardId, setSeletedRecordCardId] = useState(0);
 
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
@@ -142,6 +144,8 @@ export default function MainContextProvider(props: {
     setQuestions,
     templateContent,
     setTemplateContent,
+    selectedRecordCardId,
+    setSeletedRecordCardId,
   };
 
   return (
