@@ -10,8 +10,6 @@ export interface recordListResponseType {
   message: 'string';
 }
 
-export type recordListPropsType = Omit<recordListResponseType, 'message'>;
-
 export type recordListType = {
   id: number;
   category: string;
