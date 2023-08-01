@@ -1,16 +1,24 @@
 import styled from '@emotion/styled';
 
 import RecordCard from '@/components/Record/RecordCard';
-import { recordListPropsType } from '@/types/recordList.interface';
+import useRecord from '@/hooks/useRecord';
+
+type RecordListContainerPropsType = {
+  category: string;
+};
 
 export default function RecordListContainer({
-  templates,
-}: recordListPropsType) {
+  category,
+}: RecordListContainerPropsType) {
+  const { recordListData, isLoading } = useRecord(category);
+  if (isLoading || !recordListData) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <ListBackGround>
         <ListContainer>
-          {templates.map(item => (
+          {recordListData.map(item => (
             <RecordCard title={item.title} key={item.id} id={item.id} />
           ))}
         </ListContainer>
