@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
-import CheckOutRecordTemplate from '@/components/Template/CheckOutTemplate';
+import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
 import { MainContext } from '@/store';
 
 import EditBox from '../Common/EditBox';
@@ -15,15 +15,13 @@ type RecordCardPropsType = {
 };
 
 export default function RecordCard({ title, id }: RecordCardPropsType) {
-  const { setSelectedTemplateTitle, setSelectedRecordCard } =
-    useContext(MainContext);
+  const { setSeletedRecordCardId } = useContext(MainContext);
 
-  const [recordTemplateOpen, setRecordTemplateOpenn] = useState(false);
+  const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
 
   const cardClickHandler = () => {
-    setRecordTemplateOpenn(true);
-    setSelectedTemplateTitle(title);
-    setSelectedRecordCard(title);
+    setRecordTemplateOpen(true);
+    setSeletedRecordCardId(id);
   };
 
   return (
@@ -36,8 +34,8 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
         <EditBox top={0} right={13} id={id} />
       </CardContainer>
       {recordTemplateOpen && (
-        <Modal setIsOpen={setRecordTemplateOpenn}>
-          <CheckOutRecordTemplate />
+        <Modal setIsOpen={setRecordTemplateOpen}>
+          <RecordDetailTemplate />
         </Modal>
       )}
     </>
