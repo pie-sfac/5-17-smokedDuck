@@ -42,8 +42,6 @@ export default function DeleteModalContainer({
           populateCache: false,
         }
       );
-
-      mutate();
     }
 
     if (pathname === '/media') {

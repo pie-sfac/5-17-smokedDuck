@@ -4,7 +4,6 @@ import { useContext, useEffect } from 'react';
 import Modal from '@/components/Common/Modal';
 import Record from '@/components/Record';
 import Template from '@/components/Template';
-import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 
 export default function RecordManagementPage() {
@@ -16,8 +15,6 @@ export default function RecordManagementPage() {
     setQuestionList,
   } = useContext(MainContext);
 
-  const { recordListData, isLoading } = useRecord();
-
   useEffect(() => {
     if (!recordModalOpen) {
       setSelectedTemplateTitle('');
@@ -25,12 +22,9 @@ export default function RecordManagementPage() {
     }
   }, [recordModalOpen, setQuestionList, setSelectedTemplateTitle]);
 
-  if (isLoading || !recordListData) {
-    return <div>Loading...</div>;
-  }
   return (
     <PageContainer>
-      <Record templates={recordListData} />
+      <Record />
       {recordModalOpen && (
         <Modal
           width={selectedTemplateTitle.length === 0 ? 700 : undefined}

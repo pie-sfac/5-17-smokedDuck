@@ -1,31 +1,38 @@
 import styled from '@emotion/styled';
 
+import useRecord from '@/hooks/useRecord';
+
 type TypeSelectorProps = {
   templateType: string;
   changeListType: (type: string) => void;
-  interviewNum: number;
-  treatNum: number;
 };
 
 export default function TypeSelector({
   templateType,
   changeListType,
-  interviewNum,
-  treatNum,
 }: TypeSelectorProps) {
+  const { count, isLoading } = useRecord();
+
+  if (isLoading) {
+    return <></>;
+  }
   return (
     <TypeSelectorArea>
       <TypeContainer
         onClick={() => changeListType('INTERVIEW')}
         className={templateType === 'INTERVIEW' ? 'active' : ''}
       >{`문진(${
-        interviewNum < 10 ? '0' + String(interviewNum) : interviewNum
+        count.interviewCount < 10
+          ? '0' + String(count.interviewCount)
+          : count.interviewCount
       })`}</TypeContainer>
       <TypeContainer
         onClick={() => changeListType('TREATMENT')}
         className={templateType === 'TREATMENT' ? 'active' : ''}
       >{`처치(${
-        treatNum < 10 ? '0' + String(treatNum) : treatNum
+        count.treatmentCount < 10
+          ? '0' + String(count.treatmentCount)
+          : count.treatmentCount
       })`}</TypeContainer>
     </TypeSelectorArea>
   );
