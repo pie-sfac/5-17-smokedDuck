@@ -51,3 +51,15 @@ export function recordDetailFetcher([url, tokenData]: string[]) {
     })
     .then(res => res.data);
 }
+
+export function recordDetailFetcher([url, tokenData]: string[]) {
+  const headers = {
+    Authorization: `Bearer ${tokenData}`,
+    'Content-Type': 'application/json',
+  };
+  return axios
+    .get<recordDetailType>(`${baseUrl}/${url}`, {
+      headers,
+    })
+    .then(res => res.data);
+}
