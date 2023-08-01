@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useCallback, useRef } from 'react';
 
 import { categoryListType } from '@/utils/constants/categoryList';
 
@@ -8,6 +9,7 @@ type CategoryListContentsProps = {
   handleModifyCategory: (categoryId: number, updateText: string) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedIds: number[];
+  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
   newCategoryInputRef: React.RefObject<HTMLInputElement>;
   handleDeleteButtonClick: () => void;
 };
@@ -18,9 +20,25 @@ export default function CategoryListContents({
   addedCategory,
   handleCheckboxChange,
   selectedIds,
+  setSelectedIds,
   newCategoryInputRef,
   handleDeleteButtonClick,
 }: CategoryListContentsProps) {
+  const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleCategoryClick = useCallback(
+    (categoryId: number) => {
+      setSelectedIds(prevSelectedIds => {
+        if (prevSelectedIds.includes(categoryId)) {
+          return prevSelectedIds.filter(id => id !== categoryId);
+        } else {
+          return [...prevSelectedIds, categoryId];
+        }
+      });
+    },
+    [setSelectedIds]
+  );
+
   return (
     <>
       <CategoryListContentsContainer>
@@ -29,12 +47,14 @@ export default function CategoryListContents({
               <CategoryListContent
                 key={item.id}
                 isChecked={selectedIds.includes(item.id)}
+                onClick={() => handleCategoryClick(item.id)}
               >
                 <input
                   type="checkbox"
                   id={String(item.id)}
                   checked={selectedIds.includes(item.id)}
                   onChange={handleCheckboxChange}
+                  ref={el => (checkboxRefs.current[item.id - 1] = el)}
                 />
                 <label htmlFor={String(item.id)}>{item.title}</label>
               </CategoryListContent>
@@ -86,12 +106,12 @@ const CategoryListContent = styled('div')<{ isChecked: boolean }>`
   font-weight: bold;
   background-color: ${props => (props.isChecked ? '#ebf1ff' : 'transparent')};
   color: ${props => (props.isChecked ? '#6691FF' : '#1D1D1D')};
+  cursor: pointer;
 
   & label {
     cursor: pointer;
-    display: inline-block;
     padding-left: 1rem;
-    width: 100%;
+    pointer-events: none;
   }
 `;
 

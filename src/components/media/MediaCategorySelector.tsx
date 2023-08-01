@@ -11,7 +11,7 @@ export default function MediaCategorySelector() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <MediaCategorySelectorContainer>
       <CategoryTitle>
         {storedCategoryList.map(item => (
           <CategoryItem
@@ -23,12 +23,14 @@ export default function MediaCategorySelector() {
           </CategoryItem>
         ))}
       </CategoryTitle>
-      <EditButton>
-        <button onClick={() => navigate('/category')}>편집</button>
-      </EditButton>
-    </>
+      <EditButton onClick={() => navigate('/category')}>편집</EditButton>
+    </MediaCategorySelectorContainer>
   );
 }
+
+const MediaCategorySelectorContainer = styled('div')`
+  height: 2rem;
+`;
 
 const CategoryTitle = styled('ul')`
   display: flex;
@@ -50,7 +52,7 @@ const CategoryItem = styled('li')`
   }
 `;
 
-const EditButton = styled('div')`
+const EditButton = styled('button')`
   position: absolute;
   right: 0;
   top: 0;

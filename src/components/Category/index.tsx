@@ -59,7 +59,7 @@ export default function Category() {
         if (checked) {
           return [...prevSelectedIds, Number(id)];
         } else {
-          return prevSelectedIds.filter(id => id !== Number(id));
+          return prevSelectedIds.filter(prevId => prevId !== Number(id));
         }
       });
     },
@@ -71,6 +71,7 @@ export default function Category() {
       item => !selectedIds.includes(item.id)
     );
     setAddedCategory(updatedCategoryList);
+    setSelectedIds([]);
   }, [addedCategory, setAddedCategory, selectedIds]);
 
   const handleNavigate = () => {
@@ -97,7 +98,9 @@ export default function Category() {
         addedCategory={addedCategory}
         isDeleteMode={isDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
+        // handleCategoryClick={handleCategoryClick}
         handleModifyCategory={handleModifyCategory}
+        setSelectedIds={setSelectedIds}
         selectedIds={selectedIds}
         newCategoryInputRef={newCategoryInputRef}
         handleDeleteButtonClick={handleDeleteButtonClick}
