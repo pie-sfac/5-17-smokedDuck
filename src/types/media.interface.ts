@@ -5,10 +5,14 @@ export interface CreateLinkProps {
   description: string;
 }
 
+export interface UpdateLinkProps extends CreateLinkProps {}
+
 export interface CreateLinkResponse {
   id: number;
   message: string;
 }
+
+export interface UpdateLinkResponse extends CreateLinkResponse {}
 
 export interface GetLinkList {
   id: number;

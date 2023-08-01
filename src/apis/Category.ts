@@ -1,14 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 
-import {
-  CategoryListResponseDTO,
-  CategoryRequestDTO,
-  CategoryResponseDTO,
-} from '@/types/category.interface';
+import { CategoryListResponseDTO } from '@/types/category.interface';
 import { header } from '@/utils/validations/linkUtils';
 
 export const BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
-export const LINK_URL = 'archive-links';
+export const LINK_URL = 'archive-link-categories';
 
 export const deleteCategory = async () => {};
 

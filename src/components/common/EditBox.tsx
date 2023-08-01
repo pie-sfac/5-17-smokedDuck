@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import HambergerDot from '@/assets/hamburgerDots.svg';
 import Modal from '@/components/Common/Modal';
 
+import LinkComponent from '../Link';
 import DeleteModalContainer from './DeleteModal';
 
 type EditBoxProps = {
@@ -44,8 +45,21 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
         )}
       </EditContainer>
       {editModalOpen && (
-        <Modal title={'템플릿 편집'} setIsOpen={setEditModalOpen}>
-          {}
+        <Modal
+          title={'센터 링크 수정'}
+          setIsOpen={setEditModalOpen}
+          width={940}
+          height={640}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            <LinkComponent mode="UPDATE" linkId={id} />
+          </div>
         </Modal>
       )}
       {deleteModalOpen && (

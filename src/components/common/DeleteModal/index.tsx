@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { deleteLink } from '@/apis/Media';
 import DeleteModal from '@/components/Common/DeleteModal/DeleteModal';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
@@ -17,8 +18,6 @@ export default function DeleteModalContainer({
   id,
   setDeleteModalOpen,
 }: DeleteModalPropsType) {
-  const { deleteMediaItem } = useContext(MainContext);
-
   const { pathname } = useLocation();
 
   const { loginToken } = useContext(MainContext);
@@ -45,7 +44,7 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/media') {
-      deleteMediaItem(id);
+      deleteLink(id, loginToken.accessToken);
     }
 
     setDeleteModalOpen(false);

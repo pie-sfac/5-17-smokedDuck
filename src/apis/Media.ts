@@ -5,11 +5,27 @@ import {
   CreateLinkResponse,
   GetLinkDetailResponse,
   GetLinkListResponse,
+  UpdateLinkProps,
+  UpdateLinkResponse,
 } from '@/types/media.interface';
 import { header } from '@/utils/validations/linkUtils';
 
 export const BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
 export const LINK_URL = 'archive-links';
+
+export async function updateLink(
+  linkId: number,
+  requestData: UpdateLinkProps,
+  token: string
+): Promise<UpdateLinkResponse> {
+  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
+  const response: AxiosResponse<UpdateLinkResponse> = await axios.put(
+    requestUrl,
+    requestData,
+    { headers: header(token) }
+  );
+  return response.data;
+}
 
 export async function createLink(
   requestData: CreateLinkProps,
