@@ -19,10 +19,9 @@ export const createCategory = async () => {};
 export const getCategory = async () => {};
 
 export async function getCategoryList(
-  linkId: number,
   token: string
 ): Promise<CategoryListResponseDTO> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
+  const requestUrl = `${BASE_URL}/${LINK_URL}`;
   const response: AxiosResponse<CategoryListResponseDTO> = await axios.get(
     requestUrl,
     { headers: header(token) }

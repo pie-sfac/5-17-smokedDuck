@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { getCategoryList } from '@/apis/Category';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
+import { MainContext } from '@/store';
 import {
   CategoryListResponseDTO,
   CategoryResponseDTO,
@@ -32,6 +33,7 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
   const [category, setCategory] = useState(-1);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
+  const { loginToken } = useContext(MainContext);
 
   const handleLinkChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +43,6 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
     },
     [handler]
   );
-
-  const fetchCategories = useCallback(() => {
-    getCategoryList().then((value: CategoryListResponseDTO) => {
-      setCategories(value.categories);
-    });
-  }, []);
 
   useEffect(() => {
     const updateFormCompletion = () => {
@@ -60,10 +56,12 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
 
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-    fetchCategories();
-  }, [youtubeVideo, title, fetchCategories]);
+    getCategoryList().then((value: CategoryListResponseDTO) => {
+      setCategories(value.categories);
+    });
+  }, [youtubeVideo, title]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     const formData = {
       category: categories![category - 1].id,
       linkUrl,
@@ -76,7 +74,15 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
       thumbnailUrl: (youtubeVideo && youtubeVideo.thumbnailUrl) || '',
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
-  };
+  }, [
+    categories,
+    category,
+    linkUrl,
+    title,
+    description,
+    onSubmit,
+    youtubeVideo,
+  ]);
 
   return (
     <Container>
