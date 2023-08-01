@@ -10,8 +10,8 @@ type RecordListContainerPropsType = {
 export default function RecordListContainer({
   category,
 }: RecordListContainerPropsType) {
-  const { recordListData, isLoading } = useRecord(category);
-  if (isLoading || !recordListData) {
+  const { recordListData, isLoading, error } = useRecord(category);
+  if (isLoading || error || !recordListData) {
     return <div>Loading...</div>;
   }
   return (

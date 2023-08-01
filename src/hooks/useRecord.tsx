@@ -3,11 +3,16 @@ import useSWR from 'swr';
 
 import { recordListFetcher } from '@/apis/record';
 import { MainContext } from '@/store';
+import { recordListType } from '@/types/recordList.interface';
 
 export default function useRecord(category?: string) {
   const { loginToken } = useContext(MainContext);
 
-  const { data: recordList, mutate } = useSWR(
+  const {
+    data: recordList,
+    mutate,
+    error,
+  } = useSWR<recordListType, Error>(
     ['record-templates', loginToken.accessToken],
     recordListFetcher
   );
@@ -22,7 +27,8 @@ export default function useRecord(category?: string) {
 
   return {
     recordListData: recordList?.filter(item => item.category === category),
-    isLoading: !recordList,
+    isLoading: !recordList && !error,
+    error: error,
     mutate: mutate,
     count: {
       interviewCount: interviewCount ? interviewCount : 0,
