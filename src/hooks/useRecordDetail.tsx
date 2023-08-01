@@ -13,7 +13,7 @@ export default function useRecordDetail(id: number) {
     mutate,
     error,
   } = useSWR<recordDetailType, Error>(
-    [`record-templates/${id}`, loginToken.accessToken],
+    [`record-templates/${id}`, loginToken],
     recordDetailFetcher
   );
 
