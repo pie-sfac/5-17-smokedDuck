@@ -12,7 +12,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { getCategoryList } from '@/apis/Category';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-import { MainContext } from '@/store';
 import {
   CategoryListResponseDTO,
   CategoryResponseDTO,
@@ -33,7 +32,6 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
   const [category, setCategory] = useState(-1);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
-  const { loginToken } = useContext(MainContext);
 
   const handleLinkChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +54,7 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
 
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-    getCategoryList().then((value: CategoryListResponseDTO) => {
+    getCategoryList(token).then((value: CategoryListResponseDTO) => {
       setCategories(value.categories);
     });
   }, [youtubeVideo, title]);
