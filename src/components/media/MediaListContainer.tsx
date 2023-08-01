@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import useSWR from 'swr';
 
 import { getLinkList, LINK_URL } from '@/apis/Media';

@@ -34,7 +34,7 @@ export const useMedia = (linkId: number, token: string) => {
         setMedia(responseData);
       }
     );
-  }, [linkId]);
+  }, [linkId, token]);
 
   const memoizedMedia = useMemo(() => media, [media]);
   return { media: memoizedMedia };
