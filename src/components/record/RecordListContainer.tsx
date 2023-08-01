@@ -1,20 +1,16 @@
 import styled from '@emotion/styled';
 
 import RecordCard from '@/components/Record/RecordCard';
-import { recordListType } from '@/utils/constants/recordList';
-
-type recordListPropsType = {
-  recordList: recordListType[];
-};
+import { recordListPropsType } from '@/types/recordList.interface';
 
 export default function RecordListContainer({
-  recordList,
+  templates,
 }: recordListPropsType) {
   return (
     <>
       <ListBackGround>
         <ListContainer>
-          {recordList.map(item => (
+          {templates.map(item => (
             <RecordCard title={item.title} key={item.id} id={item.id} />
           ))}
         </ListContainer>
