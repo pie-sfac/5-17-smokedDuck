@@ -11,7 +11,6 @@ import { Question } from '@/types/question.interface';
 import { tokenType } from '@/types/token.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
-import { recordList, recordListType } from '@/utils/constants/recordList';
 
 type ContextType = {
   loginToken: tokenType;
@@ -19,11 +18,11 @@ type ContextType = {
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   selectedTemplateTitle: string;
-  recordListData: recordListType[];
+
   mediaList: mediaListType[];
   questionList: Question[];
   storedCategoryList: categoryListType[];
-  deleteRecordItem: (id: number) => void;
+
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
@@ -36,14 +35,14 @@ type ContextType = {
 
 export const MainContext = React.createContext<ContextType>({
   loginToken: { accessToken: '', refreshToken: '', message: '' },
-  recordListData: [],
+
   mediaList: [],
   questionList: [],
   storedCategoryList: [],
   recordModalOpen: false,
   mediaModalOpen: false,
   selectedTemplateTitle: '',
-  deleteRecordItem: () => {},
+
   deleteMediaItem: () => {},
   setRecordModalState: () => {},
   setMediaModalState: () => {},
@@ -74,8 +73,6 @@ export default function MainContextProvider(props: {
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
-  const [storedRecordList, setStoredRecordList] =
-    useState<recordListType[]>(recordList);
   const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
   const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
 
@@ -84,10 +81,6 @@ export default function MainContextProvider(props: {
 
   const [storedCategoryList, setStoredCategoryList] =
     useState<categoryListType[]>(categoryList);
-
-  const deleteRecordItemHandler = (id: number) => {
-    setStoredRecordList(storedRecordList.filter(item => item.id !== id));
-  };
 
   const deleteMediaItemHandler = useCallback(
     (id: number) => {
@@ -108,11 +101,9 @@ export default function MainContextProvider(props: {
 
   const contextValue: ContextType = {
     loginToken: loginToken,
-    recordListData: storedRecordList,
     mediaList: storedMediaList,
     questionList: storedQuestionList,
     deleteMediaItem: deleteMediaItemHandler,
-    deleteRecordItem: deleteRecordItemHandler,
     recordModalOpen: recordModalState,
     setRecordModalState,
     mediaModalOpen: mediaModalState,

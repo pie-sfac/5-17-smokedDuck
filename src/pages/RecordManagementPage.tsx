@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 
 import Modal from '@/components/Common/Modal';
-import RecordListContainer from '@/components/Record/RecordListContainer';
-import TypeSelector from '@/components/Record/TypeSelector';
+import Record from '@/components/Record';
 import Template from '@/components/Template';
 import { MainContext } from '@/store';
 
@@ -14,18 +13,7 @@ export default function RecordManagementPage() {
     selectedTemplateTitle,
     setSelectedTemplateTitle,
     setQuestionList,
-    recordListData,
   } = useContext(MainContext);
-
-  const [templateType, setTemplateType] = useState('history');
-  const [recordList, setRecordList] = useState(
-    recordListData.filter(item => item.type === 'history')
-  );
-
-  const changeListType = (type: string) => {
-    setTemplateType(type);
-    setRecordList(recordListData.filter(item => item.type === type));
-  };
 
   useEffect(() => {
     if (!recordModalOpen) {
@@ -36,13 +24,7 @@ export default function RecordManagementPage() {
 
   return (
     <PageContainer>
-      <TypeSelector
-        templateType={templateType}
-        setTemplateType={setTemplateType}
-        changeListType={changeListType}
-      />
-      <RecordListContainer recordList={recordList} />
-
+      <Record />
       {recordModalOpen && (
         <Modal
           width={selectedTemplateTitle.length === 0 ? 700 : undefined}
