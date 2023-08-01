@@ -1,26 +1,19 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ContextType, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
+import { createLink, getLinkDetails, LINK_URL } from '@/apis/Media';
+import LinkForm from '@/components/Link/LinkForm';
+import LinkView from '@/components/Link/LinkView';
+import { MainContext } from '@/store';
+import { FormData } from '@/types/media.interface';
 import {
   CreateLinkProps,
   CreateLinkResponse,
   GetLinkDetailResponse,
   GetLinkListResponse,
-  MediaAPIManager,
-} from '@/apis/Media';
-import LinkForm from '@/components/Link/LinkForm';
-import LinkView from '@/components/Link/LinkView';
-import { MainContext } from '@/store';
-
-export interface FormData {
-  category: number;
-  linkUrl: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-}
+} from '@/types/media.interface';
 
 export default function LinkComponent() {
   const [createLinkResponseData, setCreateLinkResponseData] =
@@ -33,7 +26,7 @@ export default function LinkComponent() {
     createdLinkDetail: GetLinkDetailResponse
   ) => {
     mutate(
-      [MediaAPIManager.LINK_URL, accessToken],
+      [LINK_URL, accessToken],
       (data: GetLinkListResponse | undefined) => ({
         archiveLinks: [...(data?.archiveLinks || []), createdLinkDetail],
         message: data?.message || '',
@@ -42,18 +35,16 @@ export default function LinkComponent() {
     );
   };
 
-  const createLink = async (requestData: CreateLinkProps) => {
+  const createLinkAPI = async (requestData: CreateLinkProps) => {
     const accessToken = loginToken?.accessToken || '';
-    const createdLinkResponseData = await MediaAPIManager.createLink(
-      requestData,
-      accessToken
-    );
+    const createdLinkResponseData = await createLink(requestData, accessToken);
     const createdLinkId = createdLinkResponseData.id;
     setCreateLinkResponseData(createdLinkResponseData);
 
-    const createdLinkDetail: GetLinkDetailResponse =
-      await MediaAPIManager.getLinkDetails(createdLinkId, accessToken);
-
+    const createdLinkDetail: GetLinkDetailResponse = await getLinkDetails(
+      createdLinkId,
+      accessToken
+    );
     refreshLinkListCache(accessToken, createdLinkDetail);
   };
 
@@ -65,7 +56,7 @@ export default function LinkComponent() {
         title: data.title,
         description: data.description,
       };
-      createLink(requestData);
+      createLinkAPI(requestData);
     }
   };
 

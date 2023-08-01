@@ -6,7 +6,6 @@ export const header = (token?: string) => {
 };
 
 export const getLinkUrlInfo = (combinedLink: string) => {
-  // ${youtubeVideoUrl};${thumbnailUrl}
   const [linkUrl, thumbnailUrl] = combinedLink.split(';');
   return {
     linkUrl,

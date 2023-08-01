@@ -1,17 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { getLinkDetails, getLinkList } from '@/apis/Media';
 import {
   GetLinkDetailResponse,
-  getLinkDetails,
-  getLinkList,
   GetLinkListResponse,
-} from '@/apis/Media';
+} from '@/types/media.interface';
 
-export const useMediaList = () => {
+export const useMediaList = (token: string) => {
   const [mediaList, setMediaList] = useState<GetLinkListResponse | null>(null);
 
   useEffect(() => {
-    getLinkList().then((responseData: GetLinkListResponse) => {
+    getLinkList(token).then((responseData: GetLinkListResponse) => {
       setMediaList(responseData);
     });
   }, []);
@@ -26,13 +25,15 @@ export const useMediaList = () => {
   return mediaListRef.current;
 };
 
-export const useMedia = (linkId: number) => {
+export const useMedia = (linkId: number, token: string) => {
   const [media, setMedia] = useState<GetLinkDetailResponse | null>(null);
 
   useEffect(() => {
-    getLinkDetails(linkId).then((responseData: GetLinkDetailResponse) => {
-      setMedia(responseData);
-    });
+    getLinkDetails(linkId, token).then(
+      (responseData: GetLinkDetailResponse) => {
+        setMedia(responseData);
+      }
+    );
   }, [linkId]);
 
   const memoizedMedia = useMemo(() => media, [media]);

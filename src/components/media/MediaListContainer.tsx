@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-import { MediaAPIManager } from '@/apis/Media';
+import { getLinkList, LINK_URL } from '@/apis/Media';
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
@@ -13,8 +13,8 @@ export default function MediaListContainer() {
   const { loginToken } = useContext(MainContext);
 
   const { data: mediaList } = useSWR(
-    [MediaAPIManager.LINK_URL, loginToken?.accessToken || ''],
-    ([_, accessToken]) => MediaAPIManager.getLinkList(accessToken)
+    [LINK_URL, loginToken?.accessToken || ''],
+    ([_, accessToken]) => getLinkList(accessToken)
   );
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 

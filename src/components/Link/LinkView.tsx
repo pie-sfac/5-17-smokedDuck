@@ -3,9 +3,10 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import useSWR from 'swr';
 
-import { GetLinkDetailResponse, MediaAPIManager } from '@/apis/Media';
+import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import Logo from '@/assets/Logo.svg';
 import { MainContext } from '@/store';
+import { GetLinkDetailResponse } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 interface LinkViewProps {
@@ -20,8 +21,8 @@ function LinkView({ linkId }: LinkViewProps) {
     never,
     [string, string]
   >(
-    [`${MediaAPIManager.LINK_URL}${linkId}`, loginToken?.accessToken || ''],
-    ([_, accessToken]) => MediaAPIManager.getLinkDetails(linkId, accessToken)
+    [`${LINK_URL}${linkId}`, loginToken?.accessToken || ''],
+    ([_, accessToken]) => getLinkDetails(linkId, accessToken)
   );
 
   const [mediaUrl] = (media?.url || '').split(';');

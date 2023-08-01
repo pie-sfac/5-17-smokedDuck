@@ -1,21 +1,14 @@
 import axios, { AxiosResponse } from 'axios';
 
+import {
+  CategoryListResponseDTO,
+  CategoryRequestDTO,
+  CategoryResponseDTO,
+} from '@/types/category.interface';
 import { header } from '@/utils/validations/linkUtils';
 
-export interface CategoryRequestDTO {
-  title: string;
-  description: string;
-}
-
-export interface CategoryResponseDTO extends CategoryRequestDTO {
-  id: number;
-  totalCount: number;
-}
-
-export interface CategoryListResponseDTO {
-  categories: CategoryResponseDTO[];
-  message: string;
-}
+export const BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
+export const LINK_URL = 'archive-links';
 
 export const deleteCategory = async () => {};
 
@@ -25,13 +18,15 @@ export const createCategory = async () => {};
 
 export const getCategory = async () => {};
 
-export const getCategoryList = async (): Promise<CategoryListResponseDTO> => {
-  const requestPath: string =
-    'http://223.130.161.221/api/v1/archive-link-categories';
+export async function getCategoryList(
+  linkId: number,
+  token: string
+): Promise<CategoryListResponseDTO> {
+  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
   const response: AxiosResponse<CategoryListResponseDTO> = await axios.get(
-    requestPath,
-    { headers: header() }
+    requestUrl,
+    { headers: header(token) }
   );
 
   return response.data;
-};
+}

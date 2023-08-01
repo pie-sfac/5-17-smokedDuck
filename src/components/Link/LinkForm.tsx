@@ -10,20 +10,19 @@ import {
 import styled from '@emotion/styled';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { getCategoryList } from '@/apis/Category';
+import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 import {
   CategoryListResponseDTO,
   CategoryResponseDTO,
-  getCategoryList,
-} from '@/apis/Category';
-import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-
-import { FormData } from '.';
+} from '@/types/category.interface';
+import { FormData } from '@/types/media.interface';
 
 interface LinkFormProps {
   onSubmit: (data: FormData) => void;
 }
 
-function LinkForm({ onSubmit }: LinkFormProps) {
+export default function LinkForm({ onSubmit }: LinkFormProps) {
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -43,6 +42,12 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     [handler]
   );
 
+  const fetchCategories = useCallback(() => {
+    getCategoryList().then((value: CategoryListResponseDTO) => {
+      setCategories(value.categories);
+    });
+  }, []);
+
   useEffect(() => {
     const updateFormCompletion = () => {
       const isTitleValid =
@@ -55,10 +60,8 @@ function LinkForm({ onSubmit }: LinkFormProps) {
 
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-    getCategoryList().then((value: CategoryListResponseDTO) => {
-      setCategories(value.categories);
-    });
-  }, [youtubeVideo, title]);
+    fetchCategories();
+  }, [youtubeVideo, title, fetchCategories]);
 
   const handleSubmit = () => {
     const formData = {
@@ -161,8 +164,6 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     </Container>
   );
 }
-
-export default LinkForm;
 
 const Container = styled.div`
   display: flex;
