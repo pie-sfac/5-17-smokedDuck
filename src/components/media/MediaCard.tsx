@@ -1,44 +1,31 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import EditBox from '@/components/Common/EditBox';
 import MediaContent from '@/components/Media/MediaContent';
-import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 
 type MediaCardProps = {
   id: number;
   title: string;
   description: string;
   linkUrl: string;
-  onClick: (id: number, thumbnailUrl: string) => void;
+  thumbnailUrl: string;
+  onClick: () => void;
 };
 
 export default function MediaCard({
   id,
   title,
   description,
-  linkUrl,
+  thumbnailUrl,
   onClick,
 }: MediaCardProps) {
   const [isEdit, setIsEdit] = useState(false);
-  const [thumbnailUrl, setThumbnailUrl] = useState('');
-
-  const { youtubeVideo, handler } = useYoutubeVideo();
-
-  useEffect(() => {
-    handler(linkUrl);
-  }, [linkUrl, handler]);
-
-  useEffect(() => {
-    if (youtubeVideo) {
-      setThumbnailUrl(youtubeVideo.thumbnailUrl);
-    }
-  }, [youtubeVideo]);
 
   return (
     <MediaContainer>
       <MediaContent
-        onClick={() => onClick(id, thumbnailUrl)}
+        onClick={onClick}
         title={title}
         description={description}
         thumbnailUrl={thumbnailUrl}

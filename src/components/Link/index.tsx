@@ -1,33 +1,67 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
+import { mutate } from 'swr';
 
+import { createLink, getLinkDetails, LINK_URL } from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
 import { MainContext } from '@/store';
-
-interface FormData {
-  category: string;
-  linkUrl: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-}
+import { FormData } from '@/types/media.interface';
+import {
+  CreateLinkProps,
+  CreateLinkResponse,
+  GetLinkDetailResponse,
+  GetLinkListResponse,
+} from '@/types/media.interface';
 
 export default function LinkComponent() {
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [createLinkResponseData, setCreateLinkResponseData] =
+    useState<CreateLinkResponse | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
-  const { addMediaItem } = useContext(MainContext);
+  const { loginToken } = useContext(MainContext);
+
+  const refreshLinkListCache = (
+    accessToken: string,
+    createdLinkDetail: GetLinkDetailResponse
+  ) => {
+    mutate(
+      [LINK_URL, accessToken],
+      (data: GetLinkListResponse | undefined) => ({
+        archiveLinks: [...(data?.archiveLinks || []), createdLinkDetail],
+        message: data?.message || '',
+      }),
+      false
+    );
+  };
+
+  const createLinkAPI = async (requestData: CreateLinkProps) => {
+    const accessToken = loginToken?.accessToken || '';
+    const createdLinkResponseData = await createLink(requestData, accessToken);
+    const createdLinkId = createdLinkResponseData.id;
+    setCreateLinkResponseData(createdLinkResponseData);
+
+    const createdLinkDetail: GetLinkDetailResponse = await getLinkDetails(
+      createdLinkId,
+      accessToken
+    );
+    refreshLinkListCache(accessToken, createdLinkDetail);
+  };
 
   const handleFormSubmit = (data: FormData) => {
     if (typeof data === 'object' && data !== null) {
-      setFormData(data);
+      const requestData: CreateLinkProps = {
+        categoryId: data.category || 0,
+        url: `${data.linkUrl};${data.thumbnailUrl}`,
+        title: data.title,
+        description: data.description,
+      };
+      createLinkAPI(requestData);
     }
   };
 
   useEffect(() => {
-    if (formData) {
-      addMediaItem(formData);
+    if (createLinkResponseData) {
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
@@ -35,28 +69,21 @@ export default function LinkComponent() {
 
       return () => clearTimeout(timer);
     }
-  }, [addMediaItem, formData]);
+  }, [createLinkResponseData]);
 
   return (
     <div>
-      {!formData ? (
-        <LinkForm onSubmit={handleFormSubmit} />
-      ) : (
+      {createLinkResponseData ? (
         <>
-          <LinkView
-            category={formData.category}
-            linkUrl={formData.linkUrl}
-            linkTitle={formData.title}
-            description={formData.description}
-            thumbnailUrl={formData.thumbnailUrl}
-            title={formData.title}
-          />
+          <LinkView linkId={createLinkResponseData.id} />
           {showCompletionMessage && (
             <MessageBox>
               <MessageText color="white">저장되었습니다.</MessageText>
             </MessageBox>
           )}
         </>
+      ) : (
+        <LinkForm onSubmit={handleFormSubmit} />
       )}
     </div>
   );

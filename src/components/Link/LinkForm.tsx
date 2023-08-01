@@ -8,28 +8,30 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
+import { getCategoryList } from '@/apis/Category';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
+import { MainContext } from '@/store/index';
+import {
+  CategoryListResponseDTO,
+  CategoryResponseDTO,
+} from '@/types/category.interface';
+import { FormData } from '@/types/media.interface';
 
 interface LinkFormProps {
-  onSubmit: (data: LinkFormData) => void;
+  onSubmit: (data: FormData) => void;
 }
 
-interface LinkFormData {
-  category: string;
-  linkUrl: string;
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-  linkTitle: string;
-}
-
-function LinkForm({ onSubmit }: LinkFormProps) {
+export default function LinkForm({ onSubmit }: LinkFormProps) {
+  const { loginToken } = useContext(MainContext);
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState<CategoryResponseDTO[] | null>(
+    null
+  );
+  const [category, setCategory] = useState(-1);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
@@ -44,21 +46,26 @@ function LinkForm({ onSubmit }: LinkFormProps) {
 
   useEffect(() => {
     const updateFormCompletion = () => {
-      const isCategoryValid = category.trim() !== '';
       const isTitleValid =
         title.trim() !== '' ||
         (youtubeVideo && youtubeVideo.title.trim() !== '');
 
-      setIsFormComplete(!!isCategoryValid && !!isTitleValid);
+      setIsFormComplete(!!isTitleValid);
     };
     updateFormCompletion();
+
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-  }, [youtubeVideo, category, title]);
+    getCategoryList(loginToken.accessToken).then(
+      (value: CategoryListResponseDTO) => {
+        setCategories(value.categories);
+      }
+    );
+  }, [youtubeVideo, title, loginToken]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     const formData = {
-      category,
+      category: categories![category - 1].id,
       linkUrl,
       title,
       description,
@@ -67,9 +74,17 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     onSubmit({
       ...formData,
       thumbnailUrl: (youtubeVideo && youtubeVideo.thumbnailUrl) || '',
-      linkTitle: title || (youtubeVideo && youtubeVideo.title) || '',
+      title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
-  };
+  }, [
+    categories,
+    category,
+    linkUrl,
+    title,
+    description,
+    onSubmit,
+    youtubeVideo,
+  ]);
 
   return (
     <Container>
@@ -88,11 +103,14 @@ function LinkForm({ onSubmit }: LinkFormProps) {
           placeholder="카테고리를 선택해 주세요."
           marginBottom="10px"
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(event.target.selectedOptions[0].text);
+            setCategory(event.target.selectedOptions[0].index);
           }}
         >
-          <option value="1">test 1</option>
-          <option value="2">test 2</option>
+          {categories?.map((category: CategoryResponseDTO, index) => (
+            <option key={index} value={category.title}>
+              {category.title}
+            </option>
+          ))}
         </Select>
 
         <FormLabel>링크</FormLabel>
@@ -154,8 +172,6 @@ function LinkForm({ onSubmit }: LinkFormProps) {
     </Container>
   );
 }
-
-export default LinkForm;
 
 const Container = styled.div`
   display: flex;
