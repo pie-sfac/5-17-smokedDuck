@@ -1,38 +1,22 @@
 import { Button, ButtonGroup, chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Dispatch, SetStateAction } from 'react';
 
 import Modal from '@/components/Common/Modal';
-import { MainContext } from '@/store';
 
 type DeleteModalPropsType = {
-  id: number;
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
   title: string;
   text: string;
+  handleDeleteClick: () => Promise<void>;
 };
 
 export default function DeleteModal({
-  id,
   setDeleteModalOpen,
   title,
   text,
+  handleDeleteClick,
 }: DeleteModalPropsType) {
-  const { deleteRecordItem, deleteMediaItem } = useContext(MainContext);
-
-  const { pathname } = useLocation();
-
-  const handleDeleteClick = () => {
-    if (pathname === '/record') {
-      deleteRecordItem(id);
-    }
-
-    if (pathname === '/media') {
-      deleteMediaItem(id);
-    }
-  };
-
   return (
     <Modal width={340} height={180} setIsOpen={setDeleteModalOpen}>
       {

@@ -1,26 +1,32 @@
 import styled from '@emotion/styled';
-import { Dispatch, SetStateAction } from 'react';
 
 type TypeSelectorProps = {
   templateType: string;
-  setTemplateType: Dispatch<SetStateAction<string>>;
   changeListType: (type: string) => void;
+  interviewNum: number;
+  treatNum: number;
 };
 
 export default function TypeSelector({
   templateType,
   changeListType,
+  interviewNum,
+  treatNum,
 }: TypeSelectorProps) {
   return (
     <TypeSelectorArea>
       <TypeContainer
-        onClick={() => changeListType('history')}
-        className={templateType === 'history' ? 'active' : ''}
-      >{`문진(00)`}</TypeContainer>
+        onClick={() => changeListType('INTERVIEW')}
+        className={templateType === 'INTERVIEW' ? 'active' : ''}
+      >{`문진(${
+        interviewNum < 10 ? '0' + String(interviewNum) : interviewNum
+      })`}</TypeContainer>
       <TypeContainer
-        onClick={() => changeListType('treatment')}
-        className={templateType === 'treatment' ? 'active' : ''}
-      >{`처치(00)`}</TypeContainer>
+        onClick={() => changeListType('TREATMENT')}
+        className={templateType === 'TREATMENT' ? 'active' : ''}
+      >{`처치(${
+        treatNum < 10 ? '0' + String(treatNum) : treatNum
+      })`}</TypeContainer>
     </TypeSelectorArea>
   );
 }
