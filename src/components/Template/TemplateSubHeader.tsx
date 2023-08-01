@@ -1,19 +1,10 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
-
-import { MainContext } from '@/store';
 
 export default function TemplateSubHeader() {
-  const { selectedRecordCard } = useContext(MainContext);
   return (
     <TemplateContentContainer>
       <label htmlFor="template-title">템플릿 제목*</label>
-      <StyledInput
-        type="text"
-        name="template-title"
-        id="template-title"
-        value={selectedRecordCard}
-      />
+      <StyledInput type="text" name="template-title" id="template-title" />
       <br />
       <label htmlFor="template-title">설명</label>
       <StyledInput type="text" name="template-title" id="template-title" />

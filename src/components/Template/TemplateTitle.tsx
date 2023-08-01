@@ -4,11 +4,10 @@ import { useContext } from 'react';
 import { MainContext } from '@/store';
 
 export default function TemplateTitle() {
-  const { selectedTemplateTitle, selectedRecordCard } = useContext(MainContext);
+  const { selectedTemplateTitle } = useContext(MainContext);
   return (
     <ModalTitle>
       {selectedTemplateTitle.length === 0 ? '템플릿' : selectedTemplateTitle}{' '}
-      {selectedRecordCard ? '' : '생성'}
     </ModalTitle>
   );
 }
