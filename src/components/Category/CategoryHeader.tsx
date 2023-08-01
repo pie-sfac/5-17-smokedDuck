@@ -5,6 +5,7 @@ type CategoryHeaderProps = {
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleAddCategory: () => void;
   handleNavigate: () => void;
+  selectedIds: number[];
 };
 
 export default function CategoryHeader({
@@ -18,11 +19,6 @@ export default function CategoryHeader({
       {isDeleteMode ? (
         <CategoryDeleteMode>
           <CategoryHeaderTitle>카테고리 삭제</CategoryHeaderTitle>
-          <CategoryDeleteModeButton
-            onClick={() => setIsDeleteMode(!isDeleteMode)}
-          >
-            취소
-          </CategoryDeleteModeButton>
         </CategoryDeleteMode>
       ) : (
         <CategoryNotDeleteMode>
@@ -61,20 +57,11 @@ const CategoryHeaderTitle = styled('div')`
 const CategoryDeleteMode = styled('div')`
   display: flex;
   justify-content: space-between;
-  width: 1360px;
+  width: 1400px;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e7e7e7;
   margin: 4rem auto 1rem auto;
   font-weight: bold;
-`;
-
-const CategoryDeleteModeButton = styled('button')`
-  width: 4rem;
-  height: 2rem;
-  text-align: center;
-  border: 1px solid #e7e7e7;
-  border-radius: 10px;
-  margin-left: 1rem;
 `;
 
 const CategoryNotDeleteMode = styled('div')`

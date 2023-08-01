@@ -6,6 +6,7 @@ import { categoryListType } from '@/utils/constants/categoryList';
 type CategoryListContentsProps = {
   addedCategory: categoryListType[];
   isDeleteMode: boolean;
+  setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleModifyCategory: (categoryId: number, updateText: string) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedIds: number[];
@@ -16,6 +17,7 @@ type CategoryListContentsProps = {
 
 export default function CategoryListContents({
   isDeleteMode,
+  setIsDeleteMode,
   handleModifyCategory,
   addedCategory,
   handleCheckboxChange,
@@ -38,6 +40,11 @@ export default function CategoryListContents({
     },
     [setSelectedIds]
   );
+
+  const handlercancelButton = useCallback(() => {
+    setIsDeleteMode(!isDeleteMode);
+    setSelectedIds([]);
+  }, [isDeleteMode, setIsDeleteMode, setSelectedIds]);
 
   return (
     <>
@@ -75,12 +82,17 @@ export default function CategoryListContents({
             ))}
       </CategoryListContentsContainer>
       {isDeleteMode && (
-        <CategoryListDeleteButton
-          onClick={handleDeleteButtonClick}
-          checkedInput={selectedIds.length === 0 ? false : true}
-        >
-          삭제하기
-        </CategoryListDeleteButton>
+        <CategoryButton>
+          <CategoryListCancelButton onClick={handlercancelButton}>
+            취소
+          </CategoryListCancelButton>
+          <CategoryListDeleteButton
+            onClick={handleDeleteButtonClick}
+            checkedInput={selectedIds.length === 0 ? false : true}
+          >
+            삭제하기
+          </CategoryListDeleteButton>
+        </CategoryButton>
       )}
     </>
   );
@@ -115,20 +127,42 @@ const CategoryListContent = styled('div')<{ isChecked: boolean }>`
   }
 `;
 
-const CategoryListDeleteButton = styled('div')<{ checkedInput: boolean }>`
+const CategoryButton = styled('div')`
+  display: flex;
+  width: 1400px;
+  margin: 50px auto;
+  justify-content: center;
+`;
+
+const CategoryListCancelButton = styled('div')`
   height: 40px;
+  width: 700px;
   border-radius: 10px;
   font-weight: bold;
   line-height: 40px;
   text-align: center;
+  color: #aeaeae;
+  cursor: pointer;
+  border: 1px solid #e7e7e7;
+  margin: 0 10px;
+  &:hover {
+    background-color: #2d62ea;
+    color: #fff;
+  }
+`;
+
+const CategoryListDeleteButton = styled('div')<{ checkedInput: boolean }>`
+  height: 40px;
+  width: 700px;
+  border-radius: 10px;
+  font-weight: bold;
+  line-height: 40px;
+  text-align: center;
+  margin: 0 10px;
   background-color: ${props => (props.checkedInput ? '#2d62ea' : '#f4f4f4')};
   color: ${props => (props.checkedInput ? '#fff' : '#aeaeae')};
   cursor: ${props => (props.checkedInput ? 'pointer' : 'none')};
   pointer-events: ${props => (props.checkedInput ? 'auto' : 'none')};
-
-  margin: 50px 10px 0 10px;
-  border: none;
-  outline: none;
   &:first-of-type:hover {
     color: white;
     background-color: #2d62ea;

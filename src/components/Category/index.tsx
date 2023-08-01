@@ -72,7 +72,8 @@ export default function Category() {
     );
     setAddedCategory(updatedCategoryList);
     setSelectedIds([]);
-  }, [addedCategory, setAddedCategory, selectedIds]);
+    setIsDeleteMode(!isDeleteMode);
+  }, [addedCategory, isDeleteMode, selectedIds]);
 
   const handleNavigate = () => {
     setStoredCategoryList(addedCategory);
@@ -93,12 +94,13 @@ export default function Category() {
         setIsDeleteMode={setIsDeleteMode}
         handleAddCategory={handleAddCategory}
         handleNavigate={handleNavigate}
+        selectedIds={selectedIds}
       />
       <CategoryListContents
         addedCategory={addedCategory}
         isDeleteMode={isDeleteMode}
+        setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        // handleCategoryClick={handleCategoryClick}
         handleModifyCategory={handleModifyCategory}
         setSelectedIds={setSelectedIds}
         selectedIds={selectedIds}
