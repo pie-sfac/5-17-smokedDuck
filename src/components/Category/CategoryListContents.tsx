@@ -77,7 +77,7 @@ export default function CategoryListContents({
       {isDeleteMode && (
         <CategoryListDeleteButton
           onClick={handleDeleteButtonClick}
-          checkedInput={selectedIds.length > 0}
+          checkedInput={selectedIds.length === 0 ? false : true}
         >
           삭제하기
         </CategoryListDeleteButton>
@@ -123,8 +123,10 @@ const CategoryListDeleteButton = styled('div')<{ checkedInput: boolean }>`
   text-align: center;
   background-color: ${props => (props.checkedInput ? '#2d62ea' : '#f4f4f4')};
   color: ${props => (props.checkedInput ? '#fff' : '#aeaeae')};
+  cursor: ${props => (props.checkedInput ? 'pointer' : 'none')};
+  pointer-events: ${props => (props.checkedInput ? 'auto' : 'none')};
+
   margin: 50px 10px 0 10px;
-  cursor: pointer;
   border: none;
   outline: none;
   &:first-of-type:hover {
