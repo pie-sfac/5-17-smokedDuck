@@ -8,10 +8,11 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { getCategoryList } from '@/apis/Category';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
+import { MainContext } from '@/store/index';
 import {
   CategoryListResponseDTO,
   CategoryResponseDTO,
@@ -23,6 +24,7 @@ interface LinkFormProps {
 }
 
 export default function LinkForm({ onSubmit }: LinkFormProps) {
+  const { loginToken } = useContext(MainContext);
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -54,10 +56,12 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
 
     setDescription((youtubeVideo && youtubeVideo.description) || '');
     setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
-    getCategoryList(token).then((value: CategoryListResponseDTO) => {
-      setCategories(value.categories);
-    });
-  }, [youtubeVideo, title]);
+    getCategoryList(loginToken.accessToken).then(
+      (value: CategoryListResponseDTO) => {
+        setCategories(value.categories);
+      }
+    );
+  }, [youtubeVideo, title, loginToken]);
 
   const handleSubmit = useCallback(() => {
     const formData = {
