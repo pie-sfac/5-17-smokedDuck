@@ -18,31 +18,28 @@ type ContextType = {
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
   selectedTemplateTitle: string;
-
   mediaList: mediaListType[];
   questionList: Question[];
   storedCategoryList: categoryListType[];
-
+  selectedRecordCardId: number;
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Question[]>>;
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
-  selectedRecordCard: string;
-  setSelectedRecordCard: Dispatch<SetStateAction<string>>;
+  setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
   loginToken: { accessToken: '', refreshToken: '', message: '' },
-
   mediaList: [],
   questionList: [],
   storedCategoryList: [],
   recordModalOpen: false,
   mediaModalOpen: false,
   selectedTemplateTitle: '',
-
+  selectedRecordCardId: 0,
   deleteMediaItem: () => {},
   setRecordModalState: () => {},
   setMediaModalState: () => {},
@@ -50,8 +47,7 @@ export const MainContext = React.createContext<ContextType>({
   setQuestionList: () => {},
   setStoredCategoryList: () => {},
   addMediaItem: () => {},
-  selectedRecordCard: '',
-  setSelectedRecordCard: () => {},
+  setSeletedRecordCardId: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -73,8 +69,8 @@ export default function MainContextProvider(props: {
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
+  const [selectedRecordCardId, setSeletedRecordCardId] = useState(0);
   const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
-  const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
 
   const [storedMediaList, setStoredMediaList] =
     useState<mediaListType[]>(mediaList);
@@ -114,8 +110,8 @@ export default function MainContextProvider(props: {
     addMediaItem: addMediaItem,
     setStoredCategoryList,
     storedCategoryList,
-    selectedRecordCard,
-    setSelectedRecordCard,
+    selectedRecordCardId,
+    setSeletedRecordCardId,
   };
 
   return (
