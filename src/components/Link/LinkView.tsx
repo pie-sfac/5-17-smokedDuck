@@ -20,9 +20,8 @@ function LinkView({ linkId }: LinkViewProps) {
     GetLinkDetailResponse,
     never,
     [string, string]
-  >(
-    [`${LINK_URL}${linkId}`, loginToken?.accessToken || ''],
-    ([_, accessToken]) => getLinkDetails(linkId, accessToken)
+  >([`${LINK_URL}${linkId}`, loginToken || ''], ([_, accessToken]) =>
+    getLinkDetails(linkId, accessToken)
   );
 
   const [mediaUrl] = (media?.url || '').split(';');

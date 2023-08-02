@@ -14,6 +14,7 @@ import {
   GetLinkDetailResponse,
   GetLinkListResponse,
 } from '@/types/media.interface';
+
 export interface LinkComponentProps {
   mode: 'CREATE' | 'UPDATE';
   linkId?: number;
@@ -67,7 +68,7 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
   const fetchLinkAPI = async (
     requestData: CreateLinkProps | UpdateLinkProps
   ) => {
-    const accessToken = loginToken?.accessToken || '';
+    const accessToken = loginToken || '';
 
     const fetchLinkResponseData =
       mode == 'CREATE'

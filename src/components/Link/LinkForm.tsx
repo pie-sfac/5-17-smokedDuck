@@ -30,8 +30,8 @@ interface LinkFormProps {
 export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const { loginToken } = useContext(MainContext);
   const { data: media } = useSWR(
-    linkId ? [`${LINK_URL}${linkId}`, loginToken?.accessToken || ''] : null,
-    linkId && loginToken?.accessToken
+    linkId ? [`${LINK_URL}${linkId}`, loginToken || ''] : null,
+    linkId && loginToken
       ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
       : null
   );
@@ -45,6 +45,8 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [category, setCategory] = useState(-1);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
+
+  const isRequiredFieldsEmpty = !category || !linkUrl || !title;
 
   const getCategoryIndex = (categories: CategoryResponseDTO[]) => {
     let categoryIndex = 0;
@@ -93,14 +95,15 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     setTitle(
       title || (youtubeVideo && youtubeVideo.title) || media?.title || ''
     );
-    getCategoryList(loginToken.accessToken).then(
-      (value: CategoryListResponseDTO) => {
-        setCategories(value.categories);
-      }
-    );
+    getCategoryList(loginToken).then((value: CategoryListResponseDTO) => {
+      setCategories(value.categories);
+    });
   }, [youtubeVideo, loginToken, media]);
 
   const handleSubmit = useCallback(() => {
+    if (isRequiredFieldsEmpty) {
+      return;
+    }
     const formData = {
       category: categories?.[category - 1].id || -1,
       linkUrl: linkUrl || getLinkUrlInfo(media?.url || '').linkUrl,
@@ -124,6 +127,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     description,
     onSubmit,
     youtubeVideo,
+    isRequiredFieldsEmpty,
   ]);
 
   return (
@@ -208,7 +212,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           borderRadius="70"
           width="40px"
           height="24px"
-          disabled={!isFormComplete}
+          disabled={!isFormComplete || isRequiredFieldsEmpty}
           onClick={handleSubmit}
         >
           완료
