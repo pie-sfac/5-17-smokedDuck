@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import useSWR from 'swr';
 
-import { categoryListFetcher } from '@/apis/Category';
+import { getCategoryList } from '@/apis/Category';
 import { MainContext } from '@/store';
 import { CategoryListResponseDTO } from '@/types/category.interface';
 
@@ -14,7 +14,7 @@ export default function useCategory() {
     error,
   } = useSWR<CategoryListResponseDTO, Error>(
     [loginToken.accessToken],
-    categoryListFetcher
+    getCategoryList
   );
 
   return {

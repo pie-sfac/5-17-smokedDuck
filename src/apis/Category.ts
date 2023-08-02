@@ -21,17 +21,3 @@ export async function getCategoryList(
 
   return response.data;
 }
-
-export async function categoryListFetcher([
-  tokenData,
-]: string[]): Promise<CategoryListResponseDTO> {
-  const headers = {
-    Authorization: `Bearer ${tokenData}`,
-    'Content-Type': 'application/json',
-  };
-  const response = await axios.get<CategoryListResponseDTO>(
-    `${BASE_URL}/${LINK_URL}`,
-    { headers }
-  );
-  return response.data;
-}

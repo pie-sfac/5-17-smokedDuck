@@ -28,7 +28,6 @@ export default function CategoryListContents({
   handleDeleteButtonClick,
 }: CategoryListContentsProps) {
   const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
-
   const { categoryListData, isLoading, error } = useCategory();
 
   const handleCategoryClick = useCallback(
@@ -52,14 +51,11 @@ export default function CategoryListContents({
   if (isLoading || error || !categoryListData) {
     return <div>Loading...</div>;
   }
-
-  const mergedCategoryList = [...categoryListData.categories, ...addedCategory];
-
   return (
     <>
       <CategoryListContentsContainer>
         {isDeleteMode
-          ? mergedCategoryList.map(item => (
+          ? categoryListData.categories.map(item => (
               <CategoryListContent
                 key={item.id}
                 isChecked={selectedIds.includes(item.id)}
@@ -75,7 +71,7 @@ export default function CategoryListContents({
                 <label htmlFor={String(item.id)}>{item.title}</label>
               </CategoryListContent>
             ))
-          : mergedCategoryList.map(item => (
+          : categoryListData.categories.map(item => (
               <CategoryListInput
                 key={item.id}
                 value={item.title}

@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useCategory from '@/hooks/useCategory';
-import { MainContext } from '@/store';
 
 export default function MediaCategorySelector() {
   const { categoryListData, isLoading, error } = useCategory();
-  const { storedCategoryList } = useContext(MainContext);
   const [selectedCategory, setSelectedCategory] = useState(
     categoryListData?.categories[0].id
   );
@@ -24,15 +22,10 @@ export default function MediaCategorySelector() {
     categoryMap[title] = (categoryMap[title] || 0) + category.totalCount;
   });
 
-  const mergedCategoryList = [
-    ...categoryListData.categories,
-    ...storedCategoryList,
-  ];
-
   return (
     <MediaCategorySelectorContainer>
       <CategoryTitle>
-        {mergedCategoryList.map(item => (
+        {categoryListData.categories.map(item => (
           <CategoryItem
             onClick={() => setSelectedCategory(item.id)}
             className={selectedCategory === item.id ? 'active' : ''}
