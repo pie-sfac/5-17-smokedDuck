@@ -1,25 +1,21 @@
 import styled from '@emotion/styled';
 
-import RecordDetailContent from '../Template/RecordDetailTemplateContent';
+import { recordQuestionType } from '@/types/recordDetail.interface';
+
+import RecordDetailContent from './RecordDetailContent';
 import RecordDetailFooter from './RecordDetailFooter';
 import RecordDetailHeader from './RecordDetailHeader';
 
 type RecordDetailPropsType = {
-  _id: number;
-  title: string;
-  type: string;
+  questionInfo: recordQuestionType;
 };
 
-export default function RecordDetail({
-  _id,
-  title,
-  type,
-}: RecordDetailPropsType) {
+export default function RecordDetail({ questionInfo }: RecordDetailPropsType) {
   const basicContent = ['TEXT', 'MEDIA', 'SELECT'];
   return (
     <QuestionContainer>
-      <RecordDetailHeader id={_id} title={title} />
-      {basicContent.includes(type) && <RecordDetailContent />}
+      <RecordDetailHeader id={questionInfo.id} title={questionInfo.title} />
+      {basicContent.includes(questionInfo.type) && <RecordDetailContent />}
       <RecordDetailFooter />
     </QuestionContainer>
   );
