@@ -10,10 +10,6 @@ export const deleteCategory = async () => {};
 
 export const updateCategory = async () => {};
 
-export const createCategory = async () => {};
-
-export const getCategory = async () => {};
-
 export async function getCategoryList(
   token: string
 ): Promise<CategoryListResponseDTO> {
@@ -23,5 +19,19 @@ export async function getCategoryList(
     { headers: header(token) }
   );
 
+  return response.data;
+}
+
+export async function categoryListFetcher([
+  tokenData,
+]: string[]): Promise<CategoryListResponseDTO> {
+  const headers = {
+    Authorization: `Bearer ${tokenData}`,
+    'Content-Type': 'application/json',
+  };
+  const response = await axios.get<CategoryListResponseDTO>(
+    `${BASE_URL}/${LINK_URL}`,
+    { headers }
+  );
   return response.data;
 }
