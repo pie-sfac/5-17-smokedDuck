@@ -1,27 +1,30 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
-import { MainContext } from '@/store';
 
 type RecordDetailItemHeaderPropsType = {
   id: number;
   title: string;
-  isbasic: boolean;
   type: string;
+  paragraph: boolean;
+  allowMultiple: boolean;
+  isbasic: boolean;
+  isRecordEdit: boolean;
 };
 
 export default function RecordDetailItemHeader({
   id,
   title,
-  isbasic,
   type,
+  paragraph,
+  allowMultiple,
+  isbasic,
+  isRecordEdit,
 }: RecordDetailItemHeaderPropsType) {
-  const { isRecordEdit } = useContext(MainContext);
   return (
     <HeaderContainer>
       <TitleContainer>
-        {id < 10 ? '0' + id : id}. {title}
+        {title}
         <TagNameContainer>
           <StyledTagName
             style={{
@@ -36,13 +39,25 @@ export default function RecordDetailItemHeader({
       </TitleContainer>
       {type === 'TEXT' && (
         <OptionContainer>
-          <input type="radio" name={`answerType${id}`} id="shortAnswer" />
+          <input
+            type="radio"
+            name={`answerType${id}`}
+            id="shortAnswer"
+            disabled={!isRecordEdit}
+            checked={paragraph}
+          />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
             단답형
           </label>
           &nbsp;
-          <input type="radio" name={`answerType${id}`} id="longAnswer" />
+          <input
+            type="radio"
+            name={`answerType${id}`}
+            id="longAnswer"
+            disabled={!isRecordEdit}
+            checked={!paragraph}
+          />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>
             장문형
@@ -56,6 +71,7 @@ export default function RecordDetailItemHeader({
             name={`allowDuplicates${id}`}
             id="allowDuplicates"
             disabled={isRecordEdit}
+            checked={allowMultiple}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>
