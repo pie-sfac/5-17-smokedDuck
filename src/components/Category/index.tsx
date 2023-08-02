@@ -14,9 +14,7 @@ export default function Category() {
   const [addedCategory, setAddedCategory] =
     useState<categoryListType[]>(storedCategoryList);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
-
   const navigate = useNavigate();
 
   const handleAddCategory = useCallback(() => {
