@@ -23,6 +23,7 @@ type ContextType = {
   setQuestions: Dispatch<SetStateAction<Questions | undefined>>;
   storedCategoryList: categoryListType[];
   selectedRecordCardId: number;
+  isRecordEdit: boolean;
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
@@ -35,6 +36,7 @@ type ContextType = {
   templateContent: Template | undefined;
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
   setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
+  setIsRecordEdit: Dispatch<SetStateAction<boolean>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -66,6 +68,7 @@ export const MainContext = React.createContext<ContextType>({
   setTemplateContent: () => {},
   setQuestions: () => {},
   selectedRecordCardId: 0,
+  isRecordEdit: false,
   deleteMediaItem: () => {},
   setRecordModalState: () => {},
   setMediaModalState: () => {},
@@ -77,6 +80,7 @@ export const MainContext = React.createContext<ContextType>({
   setSelectedRecordCard: () => {},
   setLoginToken: () => {},
   setSeletedRecordCardId: () => {},
+  setIsRecordEdit: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -92,6 +96,7 @@ export default function MainContextProvider(props: {
 
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
+  const [isRecordEdit, setIsRecordEdit] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
   const [questions, setQuestions] = useState<Questions>();
   const [templateContent, setTemplateContent] = useState<Template>();
@@ -146,6 +151,8 @@ export default function MainContextProvider(props: {
     setTemplateContent,
     selectedRecordCardId,
     setSeletedRecordCardId,
+    setIsRecordEdit,
+    isRecordEdit,
   };
 
   return (
