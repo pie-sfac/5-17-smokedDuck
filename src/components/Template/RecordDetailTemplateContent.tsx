@@ -6,12 +6,15 @@ import RecordDetailItem from '@/components/RecordDetailItem';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
 
+import Loading from '../Common/Loading';
+
 export default function RecordDetailTemplateContent() {
   const { selectedRecordCardId } = useContext(MainContext);
   const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
+  const { isRecordEdit } = useContext(MainContext);
 
   if (isLoading || !recordDetailData) {
-    return <>Loading</>;
+    return <Loading />;
   }
   return (
     <ContentContainer
@@ -20,6 +23,7 @@ export default function RecordDetailTemplateContent() {
           recordDetailData.questions.length !== 0
             ? 'rgba(235, 241, 255, 0.26)'
             : 'none',
+        height: isRecordEdit ? '13rem' : '28rem',
       }}
     >
       {recordDetailData.questions.length === 0 ? (
@@ -42,7 +46,6 @@ export default function RecordDetailTemplateContent() {
 
 const ContentContainer = styled('div')`
   width: 940;
-  height: 13rem;
   display: flex;
   align-items: center;
   flex-direction: column;

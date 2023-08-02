@@ -3,13 +3,19 @@ import styled from '@emotion/styled';
 import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
 
-export default function QuestionFooter() {
+type RecordDetailItemFooterPropsType = {
+  isRecordEdit: boolean;
+};
+
+export default function RecordDetailItemFooter({
+  isRecordEdit,
+}: RecordDetailItemFooterPropsType) {
   return (
     <QuestionFooterContainer>
       <EssentialContainer>
         <label htmlFor="essential">필수</label>
         &nbsp;
-        <Switch id={'essential'} size="sm" />
+        <Switch id={'essential'} size="sm" isDisabled={!isRecordEdit} />
       </EssentialContainer>
       <MoveContainer>
         이동 &nbsp;
