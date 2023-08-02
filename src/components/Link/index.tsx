@@ -67,7 +67,7 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
   const fetchLinkAPI = async (
     requestData: CreateLinkProps | UpdateLinkProps
   ) => {
-    const accessToken = loginToken?.accessToken || '';
+    const accessToken = loginToken || '';
 
     const fetchLinkResponseData =
       mode == 'CREATE'
