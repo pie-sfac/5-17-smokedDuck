@@ -26,7 +26,9 @@ export default function useRecord(category?: string) {
   ).length;
 
   return {
-    recordListData: recordList?.filter(item => item.category === category),
+    recordListData: category
+      ? recordList?.filter(item => item.category === category)
+      : recordList,
     isLoading: !recordList && !error,
     error: error,
     mutate: mutate,
