@@ -9,6 +9,7 @@ type QuestionBoxProps = {
   description: string;
   tagName: string;
   margin?: string;
+  type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
 };
 export default function QuestionBox({
   image,
@@ -16,6 +17,7 @@ export default function QuestionBox({
   description,
   tagName,
   margin,
+  type,
 }: QuestionBoxProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
@@ -25,15 +27,22 @@ export default function QuestionBox({
         marginRight: margin,
       }}
       onClick={() => {
-        setQuestionList(prevQeusions => [
-          ...prevQeusions,
+        setQuestionList([
+          ...questionList,
           {
-            _id:
+            type,
+            order:
               questionList.length === 0
                 ? 1
-                : questionList[questionList.length - 1]._id + 1,
-            questionTitle: title,
+                : questionList[questionList.length - 1].order + 1,
+            required: false,
+            title,
             tagName,
+            description: '',
+            paragraph: false,
+            options: [],
+            allowMultiple: false,
+            addOtherOption: false,
           },
         ]);
       }}

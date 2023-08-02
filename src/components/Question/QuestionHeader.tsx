@@ -1,21 +1,34 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
+interface AddedSelection {
+  _id: number;
+  selectionName: string;
+}
 
 type QuestionHeaderProps = {
-  id: number;
+  order: number;
   title: string;
   tagName: string;
+  onChange: (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => void;
 };
 export default function QuestionHeader({
-  id,
+  order,
   title,
   tagName,
+  onChange,
 }: QuestionHeaderProps) {
+  const [isAllowMultiple, setIsAllowMultiple] = useState(false);
+
   return (
     <HeaderContainer>
       <TitleContainer>
-        {id < 10 ? '0' + id : id}. {title}
+        {order < 10 ? '0' + order : order}. {title}
         <TagNameContainer>
           <StyledTagName
             style={{
@@ -30,13 +43,23 @@ export default function QuestionHeader({
       </TitleContainer>
       {title === '텍스트' && (
         <OptionContainer>
-          <input type="radio" name={`answerType${id}`} id="shortAnswer" />
+          <input
+            type="radio"
+            name={`answerType${order}`}
+            id="shortAnswer"
+            onChange={() => onChange(order, 'paragraph', false)}
+          />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
             단답형
           </label>
           &nbsp;
-          <input type="radio" name={`answerType${id}`} id="longAnswer" />
+          <input
+            type="radio"
+            name={`answerType${order}`}
+            id="longAnswer"
+            onChange={() => onChange(order, 'paragraph', true)}
+          />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>
             장문형
@@ -47,8 +70,12 @@ export default function QuestionHeader({
         <OptionContainer>
           <input
             type="checkbox"
-            name={`allowDuplicates${id}`}
+            name={`allowDuplicates${order}`}
             id="allowDuplicates"
+            onChange={() => {
+              setIsAllowMultiple(prevIsAllowMultiple => !prevIsAllowMultiple);
+              onChange(order, 'allowMultiple', isAllowMultiple ? false : true);
+            }}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>
