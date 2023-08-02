@@ -35,7 +35,7 @@ export default function SelectionBox({
       category: title === '문진 템플릿' ? 'INTERVIEW' : 'TREATMENT',
       title: '',
       description: '',
-      question: [],
+      questions: [],
     });
   };
 

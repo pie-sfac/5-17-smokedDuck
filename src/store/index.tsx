@@ -62,7 +62,7 @@ export const MainContext = React.createContext<ContextType>({
     category: '',
     title: '',
     description: '',
-    question: [],
+    questions: [],
   },
   setTemplateContent: () => {},
   setQuestions: () => {},
