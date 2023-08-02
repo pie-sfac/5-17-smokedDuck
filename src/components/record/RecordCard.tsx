@@ -1,13 +1,12 @@
 import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
-import Modal from '@/components/Common/Modal';
-import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
 import { MainContext } from '@/store';
 
 import EditBox from '../Common/EditBox';
+import Modal from '../Common/Modal';
+import RecordDetailTemplate from '../Template/RecordDetailTemplate';
 
 type RecordCardPropsType = {
   title: string;
@@ -16,9 +15,7 @@ type RecordCardPropsType = {
 
 export default function RecordCard({ title, id }: RecordCardPropsType) {
   const { setSeletedRecordCardId } = useContext(MainContext);
-
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
-
   const cardClickHandler = () => {
     setRecordTemplateOpen(true);
     setSeletedRecordCardId(id);
