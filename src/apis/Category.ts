@@ -10,10 +10,6 @@ export const deleteCategory = async () => {};
 
 export const updateCategory = async () => {};
 
-export const createCategory = async () => {};
-
-export const getCategory = async () => {};
-
 export async function getCategoryList(
   token: string
 ): Promise<CategoryListResponseDTO> {

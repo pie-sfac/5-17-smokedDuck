@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useCallback, useRef } from 'react';
 
+import useCategory from '@/hooks/useCategory';
 import { categoryListType } from '@/utils/constants/categoryList';
 
 type CategoryListContentsProps = {
@@ -27,6 +28,7 @@ export default function CategoryListContents({
   handleDeleteButtonClick,
 }: CategoryListContentsProps) {
   const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { categoryListData, isLoading, error } = useCategory();
 
   const handleCategoryClick = useCallback(
     (categoryId: number) => {
@@ -46,11 +48,14 @@ export default function CategoryListContents({
     setSelectedIds([]);
   }, [isDeleteMode, setIsDeleteMode, setSelectedIds]);
 
+  if (isLoading || error || !categoryListData) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <CategoryListContentsContainer>
         {isDeleteMode
-          ? addedCategory.map(item => (
+          ? categoryListData.categories.map(item => (
               <CategoryListContent
                 key={item.id}
                 isChecked={selectedIds.includes(item.id)}
@@ -66,7 +71,7 @@ export default function CategoryListContents({
                 <label htmlFor={String(item.id)}>{item.title}</label>
               </CategoryListContent>
             ))
-          : addedCategory.map(item => (
+          : categoryListData.categories.map(item => (
               <CategoryListInput
                 key={item.id}
                 value={item.title}
