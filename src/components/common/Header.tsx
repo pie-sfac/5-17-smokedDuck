@@ -1,14 +1,16 @@
 import { Avatar } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '@/assets/Logo.svg';
+import { MainContext } from '@/store';
 import { category, userName } from '@/utils/constants/header';
 import { categoryType } from '@/utils/constants/header';
 
 export default function Header() {
   const navigate = useNavigate();
+  const { loginToken } = useContext(MainContext);
   const { pathname } = useLocation();
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
@@ -26,6 +28,10 @@ export default function Header() {
 
   if (pathname === '/') {
     return null;
+  }
+
+  if (loginToken === '') {
+    navigate('/');
   }
 
   return (
