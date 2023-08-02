@@ -7,9 +7,17 @@ import { recordQuestionsType } from '@/types/recordDetail.interface';
 import RecordDetailItemContent from './RecordDetailItemContent';
 import RecordDetailItemFooter from './RecordDetailItemFooter';
 import RecordDetailItemHeader from './RecordDetailItemHeader';
-
+interface AddedSelection {
+  _id: number;
+  selectionName: string;
+}
 type RecordDetailItemPropsType = {
   questionInfo: recordQuestionsType;
+  onChange: (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => void;
 };
 
 export default function RecordDetailItem({
@@ -36,6 +44,7 @@ export default function RecordDetailItem({
           options={questionInfo.options}
           type={questionInfo.type}
           isRecordEdit={isRecordEdit}
+          onChange={onchange}
         />
       )}
       <RecordDetailItemFooter isRecordEdit={isRecordEdit} />

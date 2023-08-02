@@ -10,7 +10,17 @@ type QuestionContentProps = {
   options: string[];
   type: string;
   isRecordEdit: boolean;
+  onChange: (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => void;
 };
+
+interface AddedSelection {
+  _id: number;
+  selectionName: string;
+}
 
 export default function QuestionContent({
   title,
@@ -18,6 +28,7 @@ export default function QuestionContent({
   options,
   type,
   isRecordEdit,
+  onChange,
 }: QuestionContentProps) {
   const [addedFiles, setAddedFiles] = useState<AddedFile[]>([]);
 
@@ -78,6 +89,7 @@ export default function QuestionContent({
         }}
         value={title}
         title={title}
+        onChange={e => onChange(0, 'title', e.target.value)}
         disabled={!isRecordEdit}
       />
       <StyledLabel htmlFor="questionDescription">문항 설명</StyledLabel>
@@ -90,6 +102,7 @@ export default function QuestionContent({
           margin: '0.4rem 0 0.4rem 0',
         }}
         value={description}
+        onChange={e => onChange(0, 'description', e.target.value)}
         disabled={!isRecordEdit}
       />
       {type === 'MEDIA' && (

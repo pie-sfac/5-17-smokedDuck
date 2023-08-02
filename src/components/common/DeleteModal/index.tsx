@@ -16,8 +16,8 @@ import { recordListType } from '@/types/recordList.interface';
 type DeleteModalPropsType = {
   id: number;
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
-  title?: string;
-  text?: string;
+  title: string;
+  text: string;
 };
 const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
@@ -76,8 +76,8 @@ export default function DeleteModalContainer({
   return (
     <DeleteModal
       setDeleteModalOpen={setDeleteModalOpen}
-      title={title || '템플릿 삭제'}
-      text={text || '템플릿을 삭제하시겠습니까?'}
+      title={title}
+      text={text}
       handleDeleteClick={handleDeleteClick}
     />
   );

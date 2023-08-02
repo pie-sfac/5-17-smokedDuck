@@ -14,16 +14,24 @@ export default function RecordDetailTemplate() {
     <>
       {isRecordEdit ? (
         <>
-          <RecordDetailTitle />
-          <RecordDetailItemTemplateContent />
-        </>
-      ) : (
-        <>
           <TemplateTitle />
           <RecordDetailTitle />
           <RecordDetailItemQuestionSeletor />
           <RecordDetailItemTemplateContent />
-          <TemplateFooter />
+          <TemplateFooter
+            handleClickedSaveButton={async () => {
+              await new Promise(resolve => {
+                setTimeout(() => {
+                  resolve(1);
+                }, 1000);
+              });
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <RecordDetailTitle />
+          <RecordDetailItemTemplateContent />
         </>
       )}
     </>
