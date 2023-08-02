@@ -51,13 +51,9 @@ export default function Template() {
       },
     ];
 
-    await createTemplate(loginToken.accessToken, newTemplateContent);
+    await createTemplate(loginToken, newTemplateContent);
 
-    mutate(
-      ['record-templates', loginToken.accessToken],
-      newRecordListData,
-      false
-    );
+    mutate(['record-templates', loginToken], newRecordListData, false);
   };
 
   return (
