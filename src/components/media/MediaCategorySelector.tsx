@@ -25,15 +25,17 @@ export default function MediaCategorySelector() {
   return (
     <MediaCategorySelectorContainer>
       <CategoryTitle>
-        {categoryListData.categories.map(item => (
-          <CategoryItem
-            onClick={() => setSelectedCategory(item.id)}
-            className={selectedCategory === item.id ? 'active' : ''}
-            key={item.id}
-          >
-            {item.title}({categoryMap[item.title] || 0})
-          </CategoryItem>
-        ))}
+        {categoryListData.categories.map((item, index) => {
+          return (
+            <CategoryItem
+              onClick={() => setSelectedCategory(item.id)}
+              className={selectedCategory === item.id ? 'active' : ''}
+              key={`${item.id}-${index}`}
+            >
+              {item.title}({categoryMap[item.title] || 0})
+            </CategoryItem>
+          );
+        })}
       </CategoryTitle>
       <EditButton onClick={() => navigate('/category')}>편집</EditButton>
     </MediaCategorySelectorContainer>
