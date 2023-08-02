@@ -3,19 +3,39 @@ import styled from '@emotion/styled';
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
-
-interface QuestionProps {
+interface AddedSelection {
   _id: number;
+  selectionName: string;
+}
+interface QuestionProps {
+  order: number;
   title: string;
   tagName: string;
+  onChange: (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => void;
 }
 
-export default function Question({ _id, title, tagName }: QuestionProps) {
+export default function Question({
+  order,
+  title,
+  tagName,
+  onChange,
+}: QuestionProps) {
   return (
     <QuestionContainer>
-      <QuestionHeader id={_id} title={title} tagName={tagName} />
-      {tagName === '기본' && <QuestionContent title={title} />}
-      <QuestionFooter />
+      <QuestionHeader
+        order={order}
+        title={title}
+        tagName={tagName}
+        onChange={onChange}
+      />
+      {tagName === '기본' && (
+        <QuestionContent title={title} order={order} onChange={onChange} />
+      )}
+      <QuestionFooter order={order} onChange={onChange} />
     </QuestionContainer>
   );
 }
