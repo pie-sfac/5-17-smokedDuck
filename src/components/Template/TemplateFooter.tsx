@@ -3,17 +3,15 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
 
 type TemplateFooterProps = {
-  onChange: (id: string, value: string | Questions[]) => void;
+  handleClickedSaveButton: () => Promise<void>;
 };
-export default function TemplateFooter({ onChange }: TemplateFooterProps) {
-  const { questionList } = useContext(MainContext);
 
-  const handleClickedSaveButton = () => {
-    onChange('question', questionList);
-  };
+export default function TemplateFooter({
+  handleClickedSaveButton,
+}: TemplateFooterProps) {
+  const { questionList } = useContext(MainContext);
 
   return (
     <FooterContainer>
