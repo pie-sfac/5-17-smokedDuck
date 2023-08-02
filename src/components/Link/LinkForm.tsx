@@ -30,8 +30,8 @@ interface LinkFormProps {
 export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const { loginToken } = useContext(MainContext);
   const { data: media } = useSWR(
-    linkId ? [`${LINK_URL}${linkId}`, loginToken?.accessToken || ''] : null,
-    linkId && loginToken?.accessToken
+    linkId ? [`${LINK_URL}${linkId}`, loginToken || ''] : null,
+    linkId && loginToken
       ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
       : null
   );
@@ -95,11 +95,9 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     setTitle(
       title || (youtubeVideo && youtubeVideo.title) || media?.title || ''
     );
-    getCategoryList(loginToken.accessToken).then(
-      (value: CategoryListResponseDTO) => {
-        setCategories(value.categories);
-      }
-    );
+    getCategoryList(loginToken).then((value: CategoryListResponseDTO) => {
+      setCategories(value.categories);
+    });
   }, [youtubeVideo, loginToken, media]);
 
   const handleSubmit = useCallback(() => {

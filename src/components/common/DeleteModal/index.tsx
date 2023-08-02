@@ -53,9 +53,9 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/media') {
-      deleteLink(id, loginToken.accessToken);
+      deleteLink(id, loginToken);
       globalMutate(
-        [LINK_URL, loginToken.accessToken],
+        [LINK_URL, loginToken],
         (data: GetLinkListResponse | undefined) => {
           const updatedArchiveLinks = [...(data?.archiveLinks || [])];
 

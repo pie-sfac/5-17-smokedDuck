@@ -13,7 +13,7 @@ export default function MediaListContainer() {
   const { loginToken } = useContext(MainContext);
 
   const { data: mediaList } = useSWR(
-    [LINK_URL, loginToken?.accessToken || ''],
+    [LINK_URL, loginToken || ''],
     ([_, accessToken]) => getLinkList(accessToken)
   );
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
