@@ -3,49 +3,85 @@ import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
-import { createLink, getLinkDetails, LINK_URL } from '@/apis/Media';
+import { createLink, getLinkDetails, LINK_URL, updateLink } from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
 import { MainContext } from '@/store';
-import { FormData } from '@/types/media.interface';
+import { FormData, UpdateLinkProps } from '@/types/media.interface';
 import {
   CreateLinkProps,
   CreateLinkResponse,
   GetLinkDetailResponse,
   GetLinkListResponse,
 } from '@/types/media.interface';
+export interface LinkComponentProps {
+  mode: 'CREATE' | 'UPDATE';
+  linkId?: number;
+}
 
-export default function LinkComponent() {
-  const [createLinkResponseData, setCreateLinkResponseData] =
+export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
+  const [fetchLinkResponseData, setFetchLinkResponseData] =
     useState<CreateLinkResponse | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
   const { loginToken } = useContext(MainContext);
 
   const refreshLinkListCache = (
     accessToken: string,
-    createdLinkDetail: GetLinkDetailResponse
+    fetchLinkDetails: GetLinkDetailResponse
   ) => {
-    mutate(
-      [LINK_URL, accessToken],
-      (data: GetLinkListResponse | undefined) => ({
-        archiveLinks: [...(data?.archiveLinks || []), createdLinkDetail],
-        message: data?.message || '',
-      }),
-      false
-    );
+    if (mode == 'CREATE') {
+      mutate(
+        [LINK_URL, accessToken],
+        (data: GetLinkListResponse | undefined) => ({
+          archiveLinks: [...(data?.archiveLinks || []), fetchLinkDetails],
+          message: data?.message || '',
+        }),
+        false
+      );
+    }
+    if (mode == 'UPDATE') {
+      mutate(
+        [LINK_URL, accessToken],
+        (data: GetLinkListResponse | undefined) => {
+          const updatedArchiveLinks = [...(data?.archiveLinks || [])];
+
+          if (linkId) {
+            let updatedTargetLinkIndex = 0;
+            for (let i = 0; i < updatedArchiveLinks.length; i++) {
+              if (updatedArchiveLinks[i].id == fetchLinkDetails.id) {
+                updatedTargetLinkIndex = i;
+              }
+            }
+            updatedArchiveLinks[updatedTargetLinkIndex] = fetchLinkDetails;
+          }
+          return {
+            archiveLinks: updatedArchiveLinks,
+            message: data?.message || '',
+          };
+        },
+        false
+      );
+    }
   };
 
-  const createLinkAPI = async (requestData: CreateLinkProps) => {
+  const fetchLinkAPI = async (
+    requestData: CreateLinkProps | UpdateLinkProps
+  ) => {
     const accessToken = loginToken?.accessToken || '';
-    const createdLinkResponseData = await createLink(requestData, accessToken);
-    const createdLinkId = createdLinkResponseData.id;
-    setCreateLinkResponseData(createdLinkResponseData);
 
-    const createdLinkDetail: GetLinkDetailResponse = await getLinkDetails(
-      createdLinkId,
+    const fetchLinkResponseData =
+      mode == 'CREATE'
+        ? await createLink(requestData, accessToken)
+        : await updateLink(linkId || 0, requestData, accessToken);
+
+    setFetchLinkResponseData(fetchLinkResponseData);
+
+    const fetchLinkDetail: GetLinkDetailResponse = await getLinkDetails(
+      fetchLinkResponseData.id,
       accessToken
     );
-    refreshLinkListCache(accessToken, createdLinkDetail);
+
+    refreshLinkListCache(accessToken, fetchLinkDetail);
   };
 
   const handleFormSubmit = (data: FormData) => {
@@ -56,12 +92,12 @@ export default function LinkComponent() {
         title: data.title,
         description: data.description,
       };
-      createLinkAPI(requestData);
+      fetchLinkAPI(requestData);
     }
   };
 
   useEffect(() => {
-    if (createLinkResponseData) {
+    if (fetchLinkResponseData) {
       setShowCompletionMessage(true);
       const timer = setTimeout(() => {
         setShowCompletionMessage(false);
@@ -69,13 +105,13 @@ export default function LinkComponent() {
 
       return () => clearTimeout(timer);
     }
-  }, [createLinkResponseData]);
+  }, [fetchLinkResponseData]);
 
   return (
     <div>
-      {createLinkResponseData ? (
+      {fetchLinkResponseData ? (
         <>
-          <LinkView linkId={createLinkResponseData.id} />
+          <LinkView linkId={fetchLinkResponseData.id} />
           {showCompletionMessage && (
             <MessageBox>
               <MessageText color="white">저장되었습니다.</MessageText>
@@ -83,7 +119,7 @@ export default function LinkComponent() {
           )}
         </>
       ) : (
-        <LinkForm onSubmit={handleFormSubmit} />
+        <LinkForm onSubmit={handleFormSubmit} linkId={linkId} />
       )}
     </div>
   );

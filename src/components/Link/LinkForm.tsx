@@ -9,8 +9,10 @@ import {
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 import { getCategoryList } from '@/apis/Category';
+import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 import { MainContext } from '@/store/index';
 import {
@@ -18,13 +20,22 @@ import {
   CategoryResponseDTO,
 } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
+import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 interface LinkFormProps {
   onSubmit: (data: FormData) => void;
+  linkId?: number;
 }
 
-export default function LinkForm({ onSubmit }: LinkFormProps) {
+export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const { loginToken } = useContext(MainContext);
+  const { data: media } = useSWR(
+    linkId ? [`${LINK_URL}${linkId}`, loginToken?.accessToken || ''] : null,
+    linkId && loginToken?.accessToken
+      ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
+      : null
+  );
+
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -35,6 +46,16 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
+  const getCategoryIndex = (categories: CategoryResponseDTO[]) => {
+    let categoryIndex = 0;
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].id == media?.category.id) {
+        categoryIndex = i + 1;
+      }
+    }
+    return categoryIndex;
+  };
+
   const handleLinkChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const link = event.target.value;
@@ -43,6 +64,15 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
     },
     [handler]
   );
+  useEffect(() => {
+    if (media) {
+      setLinkUrl(linkUrl || getLinkUrlInfo(media?.url).linkUrl);
+      if (categories) {
+        if (category == -1) setCategory(getCategoryIndex(categories));
+      }
+    }
+    setIsFormComplete(true);
+  }, [media, categories]);
 
   useEffect(() => {
     const updateFormCompletion = () => {
@@ -54,26 +84,36 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
     };
     updateFormCompletion();
 
-    setDescription((youtubeVideo && youtubeVideo.description) || '');
-    setTitle(title || (youtubeVideo && youtubeVideo.title) || '');
+    setDescription(
+      description ||
+        (youtubeVideo && youtubeVideo.description) ||
+        media?.description ||
+        ''
+    );
+    setTitle(
+      title || (youtubeVideo && youtubeVideo.title) || media?.title || ''
+    );
     getCategoryList(loginToken.accessToken).then(
       (value: CategoryListResponseDTO) => {
         setCategories(value.categories);
       }
     );
-  }, [youtubeVideo, title, loginToken]);
+  }, [youtubeVideo, loginToken, media]);
 
   const handleSubmit = useCallback(() => {
     const formData = {
-      category: categories![category - 1].id,
-      linkUrl,
+      category: categories?.[category - 1].id || -1,
+      linkUrl: linkUrl || getLinkUrlInfo(media?.url || '').linkUrl,
       title,
       description,
     };
 
     onSubmit({
       ...formData,
-      thumbnailUrl: (youtubeVideo && youtubeVideo.thumbnailUrl) || '',
+      thumbnailUrl:
+        (youtubeVideo && youtubeVideo.thumbnailUrl) ||
+        getLinkUrlInfo(media?.url || '').thumbnailUrl ||
+        '',
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   }, [
@@ -106,9 +146,13 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
             setCategory(event.target.selectedOptions[0].index);
           }}
         >
-          {categories?.map((category: CategoryResponseDTO, index) => (
-            <option key={index} value={category.title}>
-              {category.title}
+          {categories?.map((categoryInfo: CategoryResponseDTO, index) => (
+            <option
+              key={index}
+              value={categoryInfo.title}
+              selected={category == index}
+            >
+              {categoryInfo.title}
             </option>
           ))}
         </Select>
@@ -122,6 +166,7 @@ export default function LinkForm({ onSubmit }: LinkFormProps) {
             placeholder="URL을 입력해주세요"
             width="800px"
             marginBottom="10px"
+            value={linkUrl}
           />
         </InputWrapper>
 

@@ -28,7 +28,7 @@ export default function MediaManagementPage() {
               height: '100%',
             }}
           >
-            <LinkComponent />
+            <LinkComponent mode="CREATE" />
           </div>
         </Modal>
       )}
