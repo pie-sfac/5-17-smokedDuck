@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
 
-import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
-export default function TemplateSubHeader() {
-  const { selectedRecordCard } = useContext(MainContext);
+type TemplateSubHeaderProps = {
+  onChange: (id: string, value: string | Questions[]) => void;
+};
+
+export default function TemplateSubHeader({
+  onChange,
+}: TemplateSubHeaderProps) {
   return (
     <TemplateContentContainer>
       <label htmlFor="template-title">템플릿 제목*</label>
@@ -12,11 +16,17 @@ export default function TemplateSubHeader() {
         type="text"
         name="template-title"
         id="template-title"
-        value={selectedRecordCard}
+        required
+        onChange={e => onChange('title', e.target.value)}
       />
       <br />
       <label htmlFor="template-title">설명</label>
-      <StyledInput type="text" name="template-title" id="template-title" />
+      <StyledInput
+        type="text"
+        name="template-title"
+        id="template-title"
+        onChange={e => onChange('description', e.target.value)}
+      />
     </TemplateContentContainer>
   );
 }

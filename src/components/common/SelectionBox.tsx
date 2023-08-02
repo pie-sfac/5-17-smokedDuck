@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
+
+import { MainContext } from '@/store';
 
 type SelectionBoxProps = {
   width?: number;
@@ -7,7 +9,6 @@ type SelectionBoxProps = {
   title: string;
   titleDescription: string;
   image: string;
-  onClick: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export default function SelectionBox({
@@ -16,8 +17,9 @@ export default function SelectionBox({
   title,
   titleDescription,
   image,
-  onClick,
 }: SelectionBoxProps) {
+  const { templateContent, setTemplateContent, setSelectedTemplateTitle } =
+    useContext(MainContext);
   const selectionBoxContainerStyle = useMemo(
     () => ({
       width,
@@ -26,10 +28,21 @@ export default function SelectionBox({
     [width, height]
   );
 
+  const handleSelectionBox = () => {
+    setSelectedTemplateTitle(title);
+    setTemplateContent({
+      ...templateContent,
+      category: title === '문진 템플릿' ? 'INTERVIEW' : 'TREATMENT',
+      title: '',
+      description: '',
+      question: [],
+    });
+  };
+
   return (
     <SelectionBoxContainer
       style={{ ...selectionBoxContainerStyle }}
-      onClick={() => onClick(title)}
+      onClick={handleSelectionBox}
     >
       <TitleContainer>
         <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{title}</div>
