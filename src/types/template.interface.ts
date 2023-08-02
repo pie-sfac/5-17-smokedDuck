@@ -4,5 +4,10 @@ export interface Template {
   category: '' | 'INTERVIEW' | 'TREATMENT';
   title: string;
   description?: string;
-  question: Questions[];
+  questions: Questions[];
+}
+
+export interface CreateTemplateResponse {
+  id: number;
+  message: string;
 }
