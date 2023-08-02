@@ -1,14 +1,18 @@
 import { useContext } from 'react';
 
 import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
-import TemplateFooter from './TemplateFooter';
 import TemplateQuestionSelections from './TemplateQuestionSelections';
 import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContainer';
 import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
-export default function TemplateContent() {
+type TemplateContentProps = {
+  onChange: (id: string, value: string | Questions[]) => void;
+};
+
+export default function TemplateContent({ onChange }: TemplateContentProps) {
   const { selectedTemplateTitle } = useContext(MainContext);
 
   return (
@@ -17,10 +21,9 @@ export default function TemplateContent() {
         <TemplateSelections />
       ) : (
         <>
-          <TemplateSubHeader />
+          <TemplateSubHeader onChange={onChange} />
           <TemplateQuestionSelections />
           <TemplateSelectedQuestionContainer />
-          <TemplateFooter />
         </>
       )}
     </div>
