@@ -10,4 +10,5 @@ export interface Template {
 export interface CreateTemplateResponse {
   id: number;
   message: string;
+  question: Questions[];
 }
