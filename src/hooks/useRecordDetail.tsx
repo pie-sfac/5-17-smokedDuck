@@ -3,6 +3,7 @@ import useSWR from 'swr';
 
 import { recordDetailFetcher } from '@/apis/record';
 import { MainContext } from '@/store';
+import { recordDetailType } from '@/types/recordDetail.interface';
 
 export default function useRecordDetail(id: number) {
   const { loginToken } = useContext(MainContext);
@@ -10,8 +11,8 @@ export default function useRecordDetail(id: number) {
   const {
     data: recordDetailData,
     mutate,
-    isLoading,
-  } = useSWR(
+    error,
+  } = useSWR<recordDetailType, Error>(
     [`record-templates/${id}`, loginToken.accessToken],
     recordDetailFetcher
   );
@@ -19,6 +20,6 @@ export default function useRecordDetail(id: number) {
   return {
     recordDetailData: recordDetailData,
     mutate: mutate,
-    isLoading: isLoading,
+    isLoading: !error && !recordDetailData,
   };
 }
