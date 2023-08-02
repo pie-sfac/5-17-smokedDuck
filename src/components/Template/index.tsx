@@ -8,6 +8,13 @@ import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';
 import TemplateTitle from './TemplateTitle';
 
+type NewTemplateContent = {
+  questions: Questions[];
+  category?: '' | 'INTERVIEW' | 'TREATMENT' | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+};
+
 export default function Template() {
   const { loginToken, questionList, templateContent, setTemplateContent } =
     useContext(MainContext);
@@ -21,8 +28,11 @@ export default function Template() {
   };
 
   const handleClickedSaveButton = async () => {
-    handleTemplateContent('question', questionList);
-    await createTemplate(loginToken.accessToken, templateContent);
+    const newTemplateContent: NewTemplateContent = {
+      ...templateContent,
+      questions: questionList,
+    };
+    await createTemplate(loginToken.accessToken, newTemplateContent);
   };
 
   return (
