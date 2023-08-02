@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { mutate as globalMutate } from 'swr';
 
@@ -31,6 +37,15 @@ export default function DeleteModalContainer({
 
   const { loginToken } = useContext(MainContext);
   const { recordListData, mutate } = useRecord();
+  const [state, setState] = useState('');
+
+  useEffect(() => {
+    if (pathname === '/record') {
+      setState('기록');
+    } else if (pathname === '/media') {
+      setState('미디어');
+    }
+  }, [pathname]);
 
   const handleDeleteClick = async () => {
     const headers = {
