@@ -6,8 +6,27 @@ import { MainContext } from '@/store';
 
 import Question from '../Question';
 
+interface AddedSelection {
+  _id: number;
+  selectionName: string;
+}
+
 export default function TemplateSelectedQuestionContainer() {
-  const { questionList } = useContext(MainContext);
+  const { questionList, setQuestionList } = useContext(MainContext);
+
+  const handleQuestionContent = (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => {
+    const updatedQuestion = questionList.map(question =>
+      question.order === order
+        ? { ...question, [id === 'title' ? question.title : id]: value }
+        : question
+    );
+
+    setQuestionList(updatedQuestion);
+  };
 
   return (
     <ContentContainer
@@ -28,10 +47,11 @@ export default function TemplateSelectedQuestionContainer() {
       ) : (
         questionList.map(question => (
           <Question
-            key={question._id}
-            _id={question._id}
-            title={question.questionTitle}
+            key={question.order}
+            order={question.order}
+            title={question.title}
             tagName={question.tagName}
+            onChange={handleQuestionContent}
           />
         ))
       )}
