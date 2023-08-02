@@ -25,7 +25,7 @@ export default function DeleteModalContainer({
 
   const handleDeleteClick = async () => {
     const headers = {
-      Authorization: `Bearer ${loginToken.accessToken}`,
+      Authorization: `Bearer ${loginToken}`,
       'Content-Type': 'application/json',
     };
 
@@ -44,7 +44,7 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/media') {
-      deleteLink(id, loginToken.accessToken);
+      deleteLink(id, loginToken);
     }
 
     setDeleteModalOpen(false);

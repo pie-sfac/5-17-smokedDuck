@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useSWR from 'swr';
 
 import Logo from '@/assets/Logo.svg';
 import VisibilityOn from '@/assets/VisibilityOn.svg';
+import { MainContext } from '@/store';
 import { tokenType } from '@/types/token.interface';
 interface StyledPasswordIconProps {
   password: string;
@@ -14,11 +14,10 @@ interface StyledPasswordIconProps {
 
 export default function LoginForm() {
   const baseUrl = import.meta.env.VITE_BASE_URL as string;
+  const { setLoginToken } = useContext(MainContext);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const { mutate } = useSWR<tokenType>('getToken');
 
   const navigate = useNavigate();
 
@@ -40,8 +39,7 @@ export default function LoginForm() {
           '',
           { headers }
         );
-
-        mutate(response.data);
+        setLoginToken(response.data.accessToken);
         window.localStorage.setItem('token', response.data.accessToken);
         window.localStorage.setItem('refreshToken', response.data.refreshToken);
 
@@ -51,7 +49,7 @@ export default function LoginForm() {
         console.error('error');
       }
     },
-    [username, password, navigate, mutate, baseUrl]
+    [username, password, navigate, baseUrl, setLoginToken]
   );
 
   return (
