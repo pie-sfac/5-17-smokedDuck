@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
+import { MainContext } from '@/store';
 import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import RecordDetailItemContent from './RecordDetailItemContent';
@@ -15,17 +17,28 @@ export default function RecordDetailItem({
 }: RecordDetailItemPropsType) {
   const basicContent = ['TEXT', 'MEDIA', 'SELECT'];
   const isbasic = basicContent.includes(questionInfo.type);
-
+  const { isRecordEdit } = useContext(MainContext);
   return (
     <QuestionContainer>
       <RecordDetailItemHeader
         id={questionInfo.id}
         title={questionInfo.title}
         type={questionInfo.type}
+        paragraph={questionInfo.paragraph}
+        allowMultiple={questionInfo.allowMultiple}
         isbasic={isbasic}
+        isRecordEdit={isRecordEdit}
       />
-      {isbasic && <RecordDetailItemContent />}
-      <RecordDetailItemFooter />
+      {isbasic && (
+        <RecordDetailItemContent
+          title={questionInfo.title}
+          description={questionInfo.description}
+          options={questionInfo.options}
+          type={questionInfo.type}
+          isRecordEdit={isRecordEdit}
+        />
+      )}
+      <RecordDetailItemFooter isRecordEdit={isRecordEdit} />
     </QuestionContainer>
   );
 }
