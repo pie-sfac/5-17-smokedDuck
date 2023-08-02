@@ -3,9 +3,17 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
-export default function TemplateFooter() {
+type TemplateFooterProps = {
+  onChange: (id: string, value: string | Questions[]) => void;
+};
+export default function TemplateFooter({ onChange }: TemplateFooterProps) {
   const { questionList } = useContext(MainContext);
+
+  const handleClickedSaveButton = () => {
+    onChange('question', questionList);
+  };
 
   return (
     <FooterContainer>
@@ -17,6 +25,7 @@ export default function TemplateFooter() {
         }}
         borderRadius={'20px 20px 20px 20px'}
         isDisabled={questionList.length < 1 ? true : false}
+        onClick={handleClickedSaveButton}
       >
         저장
       </Button>
