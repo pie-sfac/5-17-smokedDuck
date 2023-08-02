@@ -1,4 +1,4 @@
-export interface recordQuestionType {
+export interface recordQuestionsType {
   id: number;
   type: string;
   order: number;
@@ -16,7 +16,7 @@ export interface recordDetailType {
   category: string;
   title: string;
   description: 'string';
-  questions: recordQuestionType[];
+  questions: recordQuestionsType[];
   createdAt: string;
   updatedAt: string;
   message: string;
