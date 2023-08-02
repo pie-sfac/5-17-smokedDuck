@@ -2,11 +2,11 @@ import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
+import DeleteModalContainer from '@/components/Common/DeleteModal';
+import EditBox from '@/components/Common/EditBox';
+import Modal from '@/components/Common/Modal';
+import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
 import { MainContext } from '@/store';
-
-import EditBox from '../Common/EditBox';
-import Modal from '../Common/Modal';
-import RecordDetailTemplate from '../Template/RecordDetailTemplate';
 
 type RecordCardPropsType = {
   title: string;
@@ -14,11 +14,14 @@ type RecordCardPropsType = {
 };
 
 export default function RecordCard({ title, id }: RecordCardPropsType) {
-  const { setSeletedRecordCardId } = useContext(MainContext);
+  const { setSeletedRecordCardId, setIsRecordEdit } = useContext(MainContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const cardClickHandler = () => {
     setRecordTemplateOpen(true);
     setSeletedRecordCardId(id);
+    setIsRecordEdit(false);
   };
 
   return (
@@ -28,12 +31,36 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
         <LineArea>
           <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
         </LineArea>
-        <EditBox top={0} right={13} id={id} />
+        <EditBox
+          top={0}
+          right={13}
+          id={id}
+          onEditClick={() => {
+            setIsRecordEdit(true);
+            setEditModalOpen(true);
+          }}
+          onDeleteClick={() => {
+            setDeleteModalOpen(true);
+          }}
+        />
       </CardContainer>
       {recordTemplateOpen && (
         <Modal setIsOpen={setRecordTemplateOpen}>
           <RecordDetailTemplate />
         </Modal>
+      )}
+      {editModalOpen && (
+        <Modal setIsOpen={setEditModalOpen}>
+          <RecordDetailTemplate />
+        </Modal>
+      )}
+      {deleteModalOpen && (
+        <DeleteModalContainer
+          title={'템플릿 삭제'}
+          text={'템플릿을 삭제하시겠습니까?'}
+          id={id}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       )}
     </>
   );

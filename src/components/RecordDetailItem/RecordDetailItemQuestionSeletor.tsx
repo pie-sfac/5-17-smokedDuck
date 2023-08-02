@@ -61,6 +61,7 @@ export default function RecordDetailItemQuestionSeletor() {
             description={'텍스트 형식의 답변을 입력하는 문항입니다.'}
             tagName={'기본'}
             margin={'0.4rem'}
+            type="TEXT"
           />
           <QuestionBox
             image={Media}
@@ -68,12 +69,14 @@ export default function RecordDetailItemQuestionSeletor() {
             description={'이미지 혹은 영상을 답변으로 첨부하는 문항입니다. '}
             tagName={'기본'}
             margin={'0.4rem'}
+            type="MEDIA"
           />
           <QuestionBox
             image={Selections}
             title={'선택형'}
             description={'보기 중 선택해서 답변하는 문항입니다.'}
             tagName={'기본'}
+            type="SELECT"
           />
         </QuestionBoxContainer>
       )}
@@ -85,6 +88,7 @@ export default function RecordDetailItemQuestionSeletor() {
             description={'회원의 통증 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
+            type="PAIN_HSTRY"
           />
           <QuestionBox
             image={Condition}
@@ -92,6 +96,7 @@ export default function RecordDetailItemQuestionSeletor() {
             description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
+            type="CONDITION"
           />
           <QuestionBox
             image={PainQuestion}
@@ -100,6 +105,7 @@ export default function RecordDetailItemQuestionSeletor() {
               '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
             }
             tagName={'전문'}
+            type="PAIN_INTV"
           />
         </QuestionBoxContainer>
       )}
