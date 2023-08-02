@@ -46,7 +46,6 @@ export const MainContext = React.createContext<ContextType>({
   recordModalOpen: false,
   mediaModalOpen: false,
   selectedTemplateTitle: '',
-
   questions: {
     type: '',
     order: 0,
