@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
+import Modal from '@/components/Common/Modal';
+import LinkComponent from '@/components/Link/index';
 import MediaContent from '@/components/Media/MediaContent';
 
 type MediaCardProps = {
@@ -20,8 +23,8 @@ export default function MediaCard({
   thumbnailUrl,
   onClick,
 }: MediaCardProps) {
-  const [isEdit, setIsEdit] = useState(false);
-
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   return (
     <MediaContainer>
       <MediaContent
@@ -30,7 +33,43 @@ export default function MediaCard({
         description={description}
         thumbnailUrl={thumbnailUrl}
       />
-      <EditBox top={0} right={13} id={id} onClick={() => setIsEdit(!isEdit)} />
+      <EditBox
+        top={0}
+        right={13}
+        id={id}
+        onEditClick={() => {
+          setEditModalOpen(true);
+        }}
+        onDeleteClick={() => {
+          setDeleteModalOpen(true);
+        }}
+      />
+      {editModalOpen && (
+        <Modal
+          title={'센터 링크 수정'}
+          setIsOpen={setEditModalOpen}
+          width={940}
+          height={640}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              height: '100%',
+            }}
+          >
+            <LinkComponent mode="UPDATE" linkId={id} />
+          </div>
+        </Modal>
+      )}
+      {deleteModalOpen && (
+        <DeleteModalContainer
+          title={'삭제 확인'}
+          text={'해당 링크를 삭제하시겠습니까?'}
+          id={id}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
+      )}
     </MediaContainer>
   );
 }

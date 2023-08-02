@@ -1,21 +1,30 @@
 import axios from 'axios';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { mutate as globalMutate } from 'swr';
 
-import { deleteLink } from '@/apis/Media';
+import { deleteLink, LINK_URL } from '@/apis/Media';
 import DeleteModal from '@/components/Common/DeleteModal/DeleteModal';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
+import {
+  GetLinkDetailResponse,
+  GetLinkListResponse,
+} from '@/types/media.interface';
 import { recordListType } from '@/types/recordList.interface';
 
 type DeleteModalPropsType = {
   id: number;
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
+  title?: string;
+  text?: string;
 };
 const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
 export default function DeleteModalContainer({
   id,
+  title,
+  text,
   setDeleteModalOpen,
 }: DeleteModalPropsType) {
   const { pathname } = useLocation();
@@ -44,7 +53,21 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/media') {
-      deleteLink(id, loginToken);
+      deleteLink(id, loginToken.accessToken);
+      globalMutate(
+        [LINK_URL, loginToken.accessToken],
+        (data: GetLinkListResponse | undefined) => {
+          const updatedArchiveLinks = [...(data?.archiveLinks || [])];
+
+          return {
+            archiveLinks: updatedArchiveLinks.filter(
+              (archiveLink: GetLinkDetailResponse) => archiveLink.id !== id
+            ),
+            message: data?.message || '',
+          };
+        },
+        false
+      );
     }
 
     setDeleteModalOpen(false);
@@ -53,8 +76,8 @@ export default function DeleteModalContainer({
   return (
     <DeleteModal
       setDeleteModalOpen={setDeleteModalOpen}
-      title={'템플릿 삭제'}
-      text={'템플릿을 삭제하시겠습니까?'}
+      title={title || '템플릿 삭제'}
+      text={text || '템플릿을 삭제하시겠습니까?'}
       handleDeleteClick={handleDeleteClick}
     />
   );

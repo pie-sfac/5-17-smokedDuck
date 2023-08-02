@@ -46,6 +46,8 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
+  const isRequiredFieldsEmpty = !category || !linkUrl || !title;
+
   const getCategoryIndex = (categories: CategoryResponseDTO[]) => {
     let categoryIndex = 0;
     for (let i = 0; i < categories.length; i++) {
@@ -101,6 +103,9 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   }, [youtubeVideo, loginToken, media]);
 
   const handleSubmit = useCallback(() => {
+    if (isRequiredFieldsEmpty) {
+      return;
+    }
     const formData = {
       category: categories?.[category - 1].id || -1,
       linkUrl: linkUrl || getLinkUrlInfo(media?.url || '').linkUrl,
@@ -124,6 +129,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     description,
     onSubmit,
     youtubeVideo,
+    isRequiredFieldsEmpty,
   ]);
 
   return (
@@ -208,7 +214,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           borderRadius="70"
           width="40px"
           height="24px"
-          disabled={!isFormComplete}
+          disabled={!isFormComplete || isRequiredFieldsEmpty}
           onClick={handleSubmit}
         >
           완료
