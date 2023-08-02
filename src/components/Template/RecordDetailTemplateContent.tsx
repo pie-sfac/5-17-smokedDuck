@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
-import RecordDetail from '@/components/RecordDetail';
+import RecordDetailItem from '@/components/RecordDetailItem';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
 
@@ -33,7 +33,7 @@ export default function RecordDetailTemplateContent() {
         </EmptyQuestionContainer>
       ) : (
         recordDetailData.questions.map(question => (
-          <RecordDetail questionInfo={question} key={question.id} />
+          <RecordDetailItem questionInfo={question} key={question.id} />
         ))
       )}
     </ContentContainer>
