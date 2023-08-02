@@ -2,23 +2,24 @@ import styled from '@emotion/styled';
 import { useCallback, useMemo, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
-import Modal from '@/components/Common/Modal';
-
-import LinkComponent from '../Link';
-import DeleteModalContainer from './DeleteModal';
 
 type EditBoxProps = {
   top?: number;
   right?: number;
   bottom?: number;
   id: number;
-  onClick?: () => void;
+  onDeleteClick?: () => void;
+  onEditClick?: () => void;
 };
 
-export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
+export default function EditBox({
+  top,
+  right,
+  bottom,
+  onDeleteClick,
+  onEditClick,
+}: EditBoxProps) {
   const [editOpen, setEditOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const EditBoxStyle = useMemo(
     () => ({
       top,
@@ -39,32 +40,11 @@ export default function EditBox({ top, right, bottom, id }: EditBoxProps) {
         <ImgContainer src={HambergerDot} alt="편집/삭제버튼" />
         {editOpen && (
           <EditItemArea style={{ ...EditBoxStyle }}>
-            <EditItem onClick={() => setEditModalOpen(true)}>편집</EditItem>
-            <EditItem onClick={() => setDeleteModalOpen(true)}>삭제</EditItem>
+            <EditItem onClick={onEditClick}>편집</EditItem>
+            <EditItem onClick={onDeleteClick}>삭제</EditItem>
           </EditItemArea>
         )}
       </EditContainer>
-      {editModalOpen && (
-        <Modal
-          title={'센터 링크 수정'}
-          setIsOpen={setEditModalOpen}
-          width={940}
-          height={640}
-        >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              height: '100%',
-            }}
-          >
-            <LinkComponent mode="UPDATE" linkId={id} />
-          </div>
-        </Modal>
-      )}
-      {deleteModalOpen && (
-        <DeleteModalContainer id={id} setDeleteModalOpen={setDeleteModalOpen} />
-      )}
     </>
   );
 }
