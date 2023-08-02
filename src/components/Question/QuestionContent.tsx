@@ -4,7 +4,13 @@ import { ChangeEvent, useCallback, useRef, useState } from 'react';
 import { AddedFile } from '@/types/question.interface';
 
 type QuestionContentProps = {
+  order: number;
   title: string;
+  onChange: (
+    order: number,
+    id: string,
+    value: string | AddedSelection[] | boolean
+  ) => void;
 };
 
 interface AddedSelection {
@@ -12,7 +18,11 @@ interface AddedSelection {
   selectionName: string;
 }
 
-export default function QuestionContent({ title }: QuestionContentProps) {
+export default function QuestionContent({
+  order,
+  title,
+  onChange,
+}: QuestionContentProps) {
   const [addedFiles, setAddedFiles] = useState<AddedFile[]>([]);
   const [currentSelection, setCurrentSelection] = useState('');
   const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
@@ -43,34 +53,33 @@ export default function QuestionContent({ title }: QuestionContentProps) {
         );
 
         await promise.then(value => {
-          setAddedFiles(prevAddedFiles => [
-            ...prevAddedFiles,
-            {
-              _id:
-                prevAddedFiles.length === 0
-                  ? 1
-                  : prevAddedFiles[prevAddedFiles.length - 1]._id + 1,
-              path: value,
-              filename: currFileName,
-            },
-          ]);
+          const createdFile = {
+            _id:
+              addedFiles.length === 0
+                ? 1
+                : addedFiles[addedFiles.length - 1]._id + 1,
+            path: value,
+            filename: currFileName,
+          };
+          setAddedFiles(prevAddedFiles => [...prevAddedFiles, createdFile]);
         });
       }
     },
-    []
+    [addedFiles]
   );
 
   const handleAddedSelections = useCallback(() => {
+    const createdSelection = {
+      _id: addedSelections.length === 0 ? 1 : addedSelections.length + 1,
+      selectionName: currentSelection,
+    };
     setAddedSelections(prevAddedSelections => [
       ...prevAddedSelections,
-      {
-        _id:
-          prevAddedSelections.length === 0 ? 1 : prevAddedSelections.length + 1,
-        selectionName: currentSelection,
-      },
+      createdSelection,
     ]);
+    onChange(order, 'options', [...addedSelections, createdSelection]);
     setCurrentSelection('');
-  }, [currentSelection]);
+  }, [addedSelections, currentSelection, onChange, order]);
 
   const handleDeleteSelection = useCallback((targetId: number) => {
     setAddedSelections(prevAddedSelections =>
@@ -90,6 +99,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
           height: '2.5rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
+        onChange={e => onChange(order, 'title', e.target.value)}
       />
       <StyledLabel htmlFor="questionDescription">문항 설명</StyledLabel>
       <StyledTextArea
@@ -100,6 +110,7 @@ export default function QuestionContent({ title }: QuestionContentProps) {
           height: '4.2rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
+        onChange={e => onChange(order, 'description', e.target.value)}
       />
       {title === '미디어' && (
         <AddMediaContainer>
@@ -162,7 +173,11 @@ export default function QuestionContent({ title }: QuestionContentProps) {
               placeholder="옵션명을 적어주세요."
               onChange={e => setCurrentSelection(e.target.value)}
             />
-            <AddSelectionButton onClick={handleAddedSelections}>
+            <AddSelectionButton
+              onClick={() => {
+                handleAddedSelections();
+              }}
+            >
               +
             </AddSelectionButton>
           </SelectionField>

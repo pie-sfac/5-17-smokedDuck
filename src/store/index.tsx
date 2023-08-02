@@ -6,7 +6,8 @@ import React, {
   useState,
 } from 'react';
 
-import { Question } from '@/types/question.interface';
+import { Questions } from '@/types/question.interface';
+import { Template } from '@/types/template.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 
@@ -18,18 +19,22 @@ type ContextType = {
   selectedTemplateTitle: string;
 
   mediaList: mediaListType[];
-  questionList: Question[];
+  questionList: Questions[];
+  questions: Questions | undefined;
+  setQuestions: Dispatch<SetStateAction<Questions | undefined>>;
   storedCategoryList: categoryListType[];
 
   deleteMediaItem: (id: number) => void;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
-  setQuestionList: Dispatch<SetStateAction<Question[]>>;
+  setQuestionList: Dispatch<SetStateAction<Questions[]>>;
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
   selectedRecordCard: string;
   setSelectedRecordCard: Dispatch<SetStateAction<string>>;
   setLoginToken: Dispatch<SetStateAction<string>>;
+  templateContent: Template | undefined;
+  setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -41,7 +46,26 @@ export const MainContext = React.createContext<ContextType>({
   recordModalOpen: false,
   mediaModalOpen: false,
   selectedTemplateTitle: '',
-
+  questions: {
+    type: '',
+    order: 0,
+    title: '',
+    tagName: '',
+    description: '',
+    required: false,
+    paragraph: false,
+    options: [],
+    allowMultiple: false,
+    addOtherOption: false,
+  },
+  templateContent: {
+    category: '',
+    title: '',
+    description: '',
+    questions: [],
+  },
+  setTemplateContent: () => {},
+  setQuestions: () => {},
   deleteMediaItem: () => {},
   setRecordModalState: () => {},
   setMediaModalState: () => {},
@@ -68,7 +92,9 @@ export default function MainContextProvider(props: {
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [selectedTemplateTitle, setSelectedTemplateTitle] = useState('');
-  const [storedQuestionList, setStoredQuestionList] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Questions>();
+  const [templateContent, setTemplateContent] = useState<Template>();
+  const [storedQuestionList, setStoredQuestionList] = useState<Questions[]>([]);
   const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
 
   const [storedMediaList, setStoredMediaList] =
@@ -112,6 +138,10 @@ export default function MainContextProvider(props: {
     selectedRecordCard,
     setSelectedRecordCard,
     setLoginToken,
+    questions,
+    setQuestions,
+    templateContent,
+    setTemplateContent,
   };
 
   return (

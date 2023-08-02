@@ -4,7 +4,13 @@ import { useContext } from 'react';
 
 import { MainContext } from '@/store';
 
-export default function TemplateFooter() {
+type TemplateFooterProps = {
+  handleClickedSaveButton: () => Promise<void>;
+};
+
+export default function TemplateFooter({
+  handleClickedSaveButton,
+}: TemplateFooterProps) {
   const { questionList } = useContext(MainContext);
 
   return (
@@ -17,6 +23,7 @@ export default function TemplateFooter() {
         }}
         borderRadius={'20px 20px 20px 20px'}
         isDisabled={questionList.length < 1 ? true : false}
+        onClick={handleClickedSaveButton}
       >
         저장
       </Button>
