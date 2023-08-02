@@ -13,7 +13,7 @@ export default function useRecord(category?: string) {
     mutate,
     error,
   } = useSWR<recordListType, Error>(
-    ['record-templates', loginToken.accessToken],
+    ['record-templates', loginToken],
     recordListFetcher
   );
 

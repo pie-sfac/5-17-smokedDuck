@@ -5,15 +5,13 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import useSWR from 'swr';
 
 import { Question } from '@/types/question.interface';
-import { tokenType } from '@/types/token.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
 
 type ContextType = {
-  loginToken: tokenType;
+  loginToken: string;
   recordModalOpen: boolean;
   mediaModalOpen: boolean;
   addMediaItem: (mediaItemWithoutId: Omit<mediaListType, 'id'>) => void;
@@ -31,10 +29,11 @@ type ContextType = {
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
   selectedRecordCard: string;
   setSelectedRecordCard: Dispatch<SetStateAction<string>>;
+  setLoginToken: Dispatch<SetStateAction<string>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
-  loginToken: { accessToken: '', refreshToken: '', message: '' },
+  loginToken: '',
 
   mediaList: [],
   questionList: [],
@@ -52,23 +51,19 @@ export const MainContext = React.createContext<ContextType>({
   addMediaItem: () => {},
   selectedRecordCard: '',
   setSelectedRecordCard: () => {},
+  setLoginToken: () => {},
 });
 
 export default function MainContextProvider(props: {
   children: React.ReactNode;
 }) {
-  const { data: tokenData } = useSWR<tokenType>('getToken');
-  const [loginToken, setLoginToken] = useState<tokenType>({
-    accessToken: '',
-    refreshToken: '',
-    message: '',
-  });
+  const [loginToken, setLoginToken] = useState('');
 
   useEffect(() => {
-    if (tokenData) {
-      setLoginToken(tokenData);
+    if (localStorage.getItem('token')) {
+      setLoginToken(localStorage.getItem('token')!);
     }
-  }, [tokenData]);
+  }, [setLoginToken]);
 
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
@@ -100,7 +95,7 @@ export default function MainContextProvider(props: {
   );
 
   const contextValue: ContextType = {
-    loginToken: loginToken,
+    loginToken,
     mediaList: storedMediaList,
     questionList: storedQuestionList,
     deleteMediaItem: deleteMediaItemHandler,
@@ -116,6 +111,7 @@ export default function MainContextProvider(props: {
     storedCategoryList,
     selectedRecordCard,
     setSelectedRecordCard,
+    setLoginToken,
   };
 
   return (

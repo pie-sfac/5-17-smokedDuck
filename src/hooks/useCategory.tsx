@@ -12,10 +12,7 @@ export default function useCategory() {
     data: categoryList,
     mutate,
     error,
-  } = useSWR<CategoryListResponseDTO, Error>(
-    [loginToken.accessToken],
-    getCategoryList
-  );
+  } = useSWR<CategoryListResponseDTO, Error>([loginToken], getCategoryList);
 
   return {
     categoryListData: categoryList,
