@@ -1,49 +1,18 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
 import RecordDetailItem from '@/components/RecordDetailItem';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
-
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
 
 import Loading from '../Common/Loading';
 
 export default function RecordDetailTemplateContent() {
-  const { selectedRecordCardId, questionList, setQuestionList } =
-    useContext(MainContext);
+  const { selectedRecordCardId } = useContext(MainContext);
   const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
   const { isRecordEdit } = useContext(MainContext);
-
-  useEffect(() => {
-    if (recordDetailData) {
-      setQuestionList(
-        (recordDetailData.questions as unknown as Questions[]).concat(
-          questionList
-        )
-      );
-    }
-  }, [questionList, recordDetailData, setQuestionList]);
-
-  const handleQuestionContent = (
-    order: number,
-    id: string,
-    value: string | AddedSelection[] | boolean
-  ) => {
-    const updatedQuestion = questionList.map(question =>
-      question.order === order
-        ? { ...question, [id === 'title' ? question.title : id]: value }
-        : question
-    );
-
-    setQuestionList(updatedQuestion);
-  };
 
   if (isLoading || !recordDetailData) {
     return <Loading />;
@@ -70,9 +39,8 @@ export default function RecordDetailTemplateContent() {
       ) : (
         recordDetailData.questions.map(question => (
           <RecordDetailItem
-            questionInfo={question}
-            key={question.id}
-            onChange={handleQuestionContent}
+            questionInfo={{ ...question, id: Math.random() * 100 }}
+            key={Math.random() * 100}
           />
         ))
       )}

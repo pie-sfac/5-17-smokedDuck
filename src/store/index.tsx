@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { Questions } from '@/types/question.interface';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
 import { Template } from '@/types/template.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 import { mediaList, mediaListType } from '@/utils/constants/mediaList';
@@ -37,6 +38,8 @@ type ContextType = {
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
   setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
   setIsRecordEdit: Dispatch<SetStateAction<boolean>>;
+  newQuestionList: recordQuestionsType[];
+  setNewQuestionList: Dispatch<SetStateAction<recordQuestionsType[]>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -81,6 +84,9 @@ export const MainContext = React.createContext<ContextType>({
   setLoginToken: () => {},
   setSeletedRecordCardId: () => {},
   setIsRecordEdit: () => {},
+
+  newQuestionList: [],
+  setNewQuestionList: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -94,6 +100,9 @@ export default function MainContextProvider(props: {
     }
   }, [setLoginToken]);
 
+  const [newQuestionList, setNewQuestionList] = useState<recordQuestionsType[]>(
+    []
+  );
   const [recordModalState, setRecordModalState] = useState(false);
   const [mediaModalState, setMediaModalState] = useState(false);
   const [isRecordEdit, setIsRecordEdit] = useState(false);
@@ -153,6 +162,9 @@ export default function MainContextProvider(props: {
     setSeletedRecordCardId,
     setIsRecordEdit,
     isRecordEdit,
+
+    newQuestionList,
+    setNewQuestionList,
   };
 
   return (
