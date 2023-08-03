@@ -9,7 +9,6 @@ import {
 import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
 import {
-  CategoryListResponseDTO,
   CategoryRequestDTO,
   CategoryResponseDTO,
 } from '@/types/category.interface';
@@ -60,33 +59,34 @@ export default function Category() {
     }
   }, [categoryListData, loginToken, mutate]);
 
-  const handleModifyCategory = useCallback(
+  const handleUpdateyCategory = useCallback(
     async (categoryId: number, updateText: string) => {
       try {
+        mutate(data => {
+          if (data) {
+            return {
+              ...data,
+              categories: data.categories.map(category =>
+                category.id === categoryId
+                  ? { ...category, title: updateText }
+                  : category
+              ),
+            };
+          }
+          return data;
+        }, false);
         const updatedCategoryData: CategoryRequestDTO = {
           title: updateText,
           description: '',
         };
-        const updatedCategory: CategoryListResponseDTO | undefined =
-          await updateCategory(categoryId, updatedCategoryData, loginToken);
-
-        if (categoryListData && updatedCategory) {
-          const updatedCategoryListData = {
-            ...categoryListData,
-            categories: categoryListData.categories.map(addedCategory => {
-              if (addedCategory.id === categoryId) {
-                return { ...addedCategory, title: updateText };
-              }
-              return addedCategory;
-            }),
-          };
-          mutate(updatedCategoryListData, false);
-        }
+        await updateCategory(categoryId, updatedCategoryData, loginToken);
+        mutate();
       } catch (error) {
-        console.error('카테고리 수정 중 오류 발생:', error);
+        console.error('카테고리 업데이트 문제 발생', error);
+        mutate();
       }
     },
-    [categoryListData, loginToken, mutate]
+    [loginToken, mutate]
   );
 
   const handleCheckboxChange = useCallback(
@@ -153,7 +153,7 @@ export default function Category() {
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        handleModifyCategory={handleModifyCategory}
+        handleUpdateCategory={handleUpdateyCategory}
         setSelectedIds={setSelectedIds}
         selectedIds={selectedIds}
         newCategoryInputRef={newCategoryInputRef}

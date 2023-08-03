@@ -8,7 +8,7 @@ type CategoryListContentsProps = {
   addedCategory: categoryListType[];
   isDeleteMode: boolean;
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
-  handleModifyCategory: (categoryId: number, updateText: string) => void;
+  handleUpdateCategory: (categoryId: number, updateText: string) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectedIds: number[];
   setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
@@ -19,7 +19,7 @@ type CategoryListContentsProps = {
 export default function CategoryListContents({
   isDeleteMode,
   setIsDeleteMode,
-  handleModifyCategory,
+  handleUpdateCategory,
   addedCategory,
   handleCheckboxChange,
   selectedIds,
@@ -76,9 +76,8 @@ export default function CategoryListContents({
           : categoryListData.categories.map((item, index) => (
               <CategoryListInput
                 key={`${item.id}-${index}`}
-                // key={item.id}
                 value={item.title}
-                onChange={e => handleModifyCategory(item.id, e.target.value)}
+                onChange={e => handleUpdateCategory(item.id, e.target.value)}
                 maxLength={15}
                 ref={
                   item.id === addedCategory[addedCategory.length - 1].id
