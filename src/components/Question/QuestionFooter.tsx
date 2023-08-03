@@ -1,8 +1,10 @@
 import { Switch } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
+
+import { MainContext } from '@/store';
 interface AddedSelection {
   _id: number;
   selectionName: string;
@@ -21,7 +23,19 @@ export default function QuestionFooter({
   order,
   onChange,
 }: QuestionFooterProps) {
+  const { questionList, setQuestionList } = useContext(MainContext);
   const [isRequired, setIsRequired] = useState(false);
+
+  const handleClickedDeleteButton = useCallback(
+    (order: number) => {
+      const deletedQuestions = questionList.filter(
+        question => question.order !== order
+      );
+      setQuestionList(deletedQuestions);
+    },
+    [questionList, setQuestionList]
+  );
+
   return (
     <QuestionFooterContainer>
       <EssentialContainer>
@@ -42,7 +56,7 @@ export default function QuestionFooter({
         &nbsp;
         <VscTriangleUp />
       </MoveContainer>
-      <RemoveContainer>
+      <RemoveContainer onClick={() => handleClickedDeleteButton(order)}>
         삭제 &nbsp;
         <RxTrash />
       </RemoveContainer>
