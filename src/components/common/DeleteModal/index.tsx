@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { Dispatch, SetStateAction, useContext } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import { mutate as globalMutate } from 'swr';
 
@@ -16,8 +22,8 @@ import { recordListType } from '@/types/recordList.interface';
 type DeleteModalPropsType = {
   id: number;
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
-  title?: string;
-  text?: string;
+  title: string;
+  text: string;
 };
 const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
@@ -31,6 +37,15 @@ export default function DeleteModalContainer({
 
   const { loginToken } = useContext(MainContext);
   const { recordListData, mutate } = useRecord();
+  const [state, setState] = useState('');
+
+  useEffect(() => {
+    if (pathname === '/record') {
+      setState('기록');
+    } else if (pathname === '/media') {
+      setState('미디어');
+    }
+  }, [pathname]);
 
   const handleDeleteClick = async () => {
     const headers = {
@@ -76,8 +91,8 @@ export default function DeleteModalContainer({
   return (
     <DeleteModal
       setDeleteModalOpen={setDeleteModalOpen}
-      title={title || '템플릿 삭제'}
-      text={text || '템플릿을 삭제하시겠습니까?'}
+      title={title}
+      text={text}
       handleDeleteClick={handleDeleteClick}
     />
   );

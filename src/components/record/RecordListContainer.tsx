@@ -11,6 +11,7 @@ export default function RecordListContainer({
   category,
 }: RecordListContainerPropsType) {
   const { recordListData, isLoading, error } = useRecord(category);
+
   if (isLoading || error || !recordListData) {
     return <div>Loading...</div>;
   }
@@ -31,7 +32,8 @@ const ListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.5rem;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
   height: calc(38rem + 1.5rem + 5px);
   padding: 5px;
   box-sizing: content-box;
