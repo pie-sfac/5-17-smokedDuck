@@ -7,8 +7,6 @@ import RecordDetailItem from '@/components/RecordDetailItem';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
 
-import Loading from '../Common/Loading';
-
 export default function RecordDetailTemplateContent() {
   const { selectedRecordCardId } = useContext(MainContext);
   const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
