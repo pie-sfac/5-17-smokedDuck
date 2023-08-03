@@ -3,8 +3,7 @@ import { useContext } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import LinkComponent from '@/components/Link';
-import MediaCategorySelector from '@/components/Media/MediaCategorySelector';
-import MediaListContainer from '@/components/Media/MediaListContainer';
+import Media from '@/components/Media';
 import { MainContext } from '@/store';
 
 export default function MediaManagementPage() {
@@ -12,8 +11,7 @@ export default function MediaManagementPage() {
 
   return (
     <MediaContainer>
-      <MediaCategorySelector />
-      <MediaListContainer />
+      <Media />
       {mediaModalOpen && (
         <Modal
           width={940}
