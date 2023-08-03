@@ -52,9 +52,22 @@ export default function Category() {
     }
   }, [categoryListData, mutate]);
 
-  const handleModifyCategory = useCallback(
+  const handleUpdateyCategory = useCallback(
     async (categoryId: number, updateText: string) => {
       try {
+        mutate(data => {
+          if (data) {
+            return {
+              ...data,
+              categories: data.categories.map(category =>
+                category.id === categoryId
+                  ? { ...category, title: updateText }
+                  : category
+              ),
+            };
+          }
+          return data;
+        }, false);
         const updatedCategoryData: CategoryRequestDTO = {
           title: updateText,
           description: '',
@@ -75,7 +88,8 @@ export default function Category() {
           mutate(updatedCategoryListData, false);
         }
       } catch (error) {
-        console.error('카테고리 수정 중 오류 발생:', error);
+        console.error('카테고리 업데이트 문제 발생', error);
+        mutate();
       }
     },
     [categoryListData, mutate]
@@ -119,7 +133,7 @@ export default function Category() {
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        handleModifyCategory={handleModifyCategory}
+        handleUpdateCategory={handleUpdateyCategory}
         newCategoryInputRef={newCategoryInputRef}
       />
     </>
