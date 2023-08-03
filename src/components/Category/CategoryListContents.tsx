@@ -55,25 +55,28 @@ export default function CategoryListContents({
     <>
       <CategoryListContentsContainer>
         {isDeleteMode
-          ? categoryListData.categories.map(item => (
-              <CategoryListContent
-                key={item.id}
-                isChecked={selectedIds.includes(item.id)}
-                onClick={() => handleCategoryClick(item.id)}
-              >
-                <input
-                  type="checkbox"
-                  id={String(item.id)}
-                  checked={selectedIds.includes(item.id)}
-                  onChange={handleCheckboxChange}
-                  ref={el => (checkboxRefs.current[item.id - 1] = el)}
-                />
-                <label htmlFor={String(item.id)}>{item.title}</label>
-              </CategoryListContent>
-            ))
-          : categoryListData.categories.map(item => (
+          ? categoryListData.categories.map((item, index) => {
+              return (
+                <CategoryListContent
+                  key={`${item.id}-${index}`}
+                  isChecked={selectedIds.includes(item.id)}
+                  onClick={() => handleCategoryClick(item.id)}
+                >
+                  <input
+                    type="checkbox"
+                    id={String(item.id)}
+                    checked={selectedIds.includes(item.id)}
+                    onChange={handleCheckboxChange}
+                    ref={el => (checkboxRefs.current[item.id - 1] = el)}
+                  />
+                  <label htmlFor={String(item.id)}>{item.title}</label>
+                </CategoryListContent>
+              );
+            })
+          : categoryListData.categories.map((item, index) => (
               <CategoryListInput
-                key={item.id}
+                key={`${item.id}-${index}`}
+                // key={item.id}
                 value={item.title}
                 onChange={e => handleModifyCategory(item.id, e.target.value)}
                 maxLength={15}

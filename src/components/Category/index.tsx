@@ -1,53 +1,92 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import {
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} from '@/apis/Category';
+import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
-import { categoryListType } from '@/utils/constants/categoryList';
+import {
+  CategoryListResponseDTO,
+  CategoryRequestDTO,
+  CategoryResponseDTO,
+} from '@/types/category.interface';
 
 import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
 
 export default function Category() {
-  const { storedCategoryList, setStoredCategoryList } = useContext(MainContext);
+  const { storedCategoryList } = useContext(MainContext);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
-  const [addedCategory, setAddedCategory] =
-    useState<categoryListType[]>(storedCategoryList);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const handleAddCategory = useCallback(() => {
-    if (addedCategory.length === 10) {
-      alert('카테고리는 10개까지 추가할 수있습니다.');
-      return;
-    }
-    setAddedCategory(prevCategory => [
-      ...prevCategory,
-      {
-        id:
-          addedCategory.length === 0
-            ? 1
-            : addedCategory[addedCategory.length - 1].id + 1,
-        title: '',
-      },
-    ]);
+  const { loginToken } = useContext(MainContext);
+  const { categoryListData, mutate } = useCategory();
 
-    setIsAddingCategory(true);
-  }, [addedCategory]);
+  const handleAddCategory = useCallback(async () => {
+    try {
+      const newCategoryList: CategoryRequestDTO = {
+        title: '',
+        description: '',
+      };
+
+      const newCategory: CategoryResponseDTO | undefined = await createCategory(
+        loginToken,
+        newCategoryList
+      );
+
+      if (newCategory) {
+        if (categoryListData) {
+          const updatedCategoryListData = {
+            ...categoryListData,
+            categories: [...categoryListData.categories, newCategory],
+          };
+          mutate(updatedCategoryListData, true);
+        } else {
+          const updatedCategoryListData = {
+            categories: [newCategory],
+            message: '',
+          };
+          mutate(updatedCategoryListData, true);
+        }
+      }
+    } catch (error) {
+      console.error('카테고리 추가 중 오류 발생:', error);
+    }
+  }, [categoryListData, loginToken, mutate]);
 
   const handleModifyCategory = useCallback(
-    (categoryId: number, updateText: string) => {
-      setAddedCategory(prevCategory => {
-        return prevCategory.map(addedCategory => {
-          if (addedCategory.id === categoryId) {
-            return { ...addedCategory, title: updateText };
-          }
-          return addedCategory;
-        });
-      });
+    async (categoryId: number, updateText: string) => {
+      try {
+        const updatedCategoryData: CategoryRequestDTO = {
+          title: updateText,
+          description: '',
+        };
+        const updatedCategory: CategoryListResponseDTO | undefined =
+          await updateCategory(categoryId, updatedCategoryData, loginToken);
+
+        if (categoryListData && updatedCategory) {
+          const updatedCategoryListData = {
+            ...categoryListData,
+            categories: categoryListData.categories.map(addedCategory => {
+              if (addedCategory.id === categoryId) {
+                return { ...addedCategory, title: updateText };
+              }
+              return addedCategory;
+            }),
+          };
+          mutate(updatedCategoryListData, false);
+        }
+      } catch (error) {
+        console.error('카테고리 수정 중 오류 발생:', error);
+      }
     },
-    [setAddedCategory]
+    [categoryListData, loginToken, mutate]
   );
 
   const handleCheckboxChange = useCallback(
@@ -64,17 +103,32 @@ export default function Category() {
     []
   );
 
-  const handleDeleteButtonClick = useCallback(() => {
-    const updatedCategoryList = addedCategory.filter(
-      item => !selectedIds.includes(item.id)
-    );
-    setAddedCategory(updatedCategoryList);
-    setSelectedIds([]);
-    setIsDeleteMode(!isDeleteMode);
-  }, [addedCategory, isDeleteMode, selectedIds]);
+  const handleDeleteButtonClick = useCallback(async () => {
+    try {
+      await Promise.all(selectedIds.map(id => deleteCategory(id, loginToken)));
+
+      const updatedCategoryList = categoryListData?.categories.slice() || [];
+
+      selectedIds.forEach(id => {
+        const index = updatedCategoryList.findIndex(item => item.id === id);
+        if (index !== -1) {
+          updatedCategoryList.splice(index, 1);
+        }
+      });
+
+      const updatedCategoryListData = {
+        ...categoryListData!,
+        categories: updatedCategoryList,
+      };
+      mutate(updatedCategoryListData, false);
+      setSelectedIds([]);
+      setIsDeleteMode(false);
+    } catch (error) {
+      console.error('카테고리 삭제 중 오류 발생:', error);
+    }
+  }, [categoryListData, loginToken, mutate, selectedIds]);
 
   const handleNavigate = () => {
-    setStoredCategoryList(addedCategory);
     navigate('/media');
   };
 
@@ -95,7 +149,7 @@ export default function Category() {
         selectedIds={selectedIds}
       />
       <CategoryListContents
-        addedCategory={addedCategory}
+        addedCategory={storedCategoryList}
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
