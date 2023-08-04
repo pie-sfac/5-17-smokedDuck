@@ -14,7 +14,7 @@ import useSWR from 'swr';
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import useCategory from '@/hooks/useCategory';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-import { CategoryResponseDTO } from '@/types/category.interface';
+import { CategoryListResponseDTO } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
@@ -48,6 +48,24 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   );
   const { categoryListData: categories, isLoading: isLoadingCategories } =
     useCategory();
+
+  const updateCategoryCount = useCallback(
+    (categories: CategoryListResponseDTO) => {
+      const oldCountCategory = categories.categories.find(
+        item => item.id === category
+      );
+      const index = categories.categories.indexOf(oldCountCategory!);
+
+      const newCountCategory = {
+        ...categories.categories[index],
+        totalCount: categories.categories[index].totalCount + 1,
+      };
+      categories.categories[index] = newCountCategory;
+
+      return categories;
+    },
+    [category]
+  );
 
   useEffect(() => {
     if (media) {
@@ -96,6 +114,10 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         '',
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
+
+    if (categories) {
+      updateCategoryCount(categories);
+    }
   }, [
     isRequiredFieldsEmpty,
     category,
@@ -105,6 +127,8 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     description,
     onSubmit,
     youtubeVideo,
+    categories,
+    updateCategoryCount,
   ]);
 
   return (
