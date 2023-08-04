@@ -17,16 +17,9 @@ export default function MediaCategorySelector({
   const { totalLinksCount } = useMediaCards();
   const navigate = useNavigate();
 
-  const categoryMap: { [key: string]: number } = {};
-
   if (isLoading || error || !categoryListData) {
     return <div>Loading...</div>;
   }
-
-  categoryListData.categories.forEach(category => {
-    const title = category.title;
-    categoryMap[title] = (categoryMap[title] || 0) + category.totalCount;
-  });
 
   return (
     <MediaCategorySelectorContainer>
@@ -44,7 +37,7 @@ export default function MediaCategorySelector({
               className={selectedCategory === item.title ? 'active' : ''}
               key={`${item.id}-${index}`}
             >
-              {item.title}({categoryMap[item.title] || 0})
+              {item.title}({item.totalCount})
             </CategoryItem>
           );
         })}
