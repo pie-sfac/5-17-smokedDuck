@@ -29,7 +29,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const { data: media } = useSWR(
     linkId ? [`${LINK_URL}${linkId}`, loginToken || ''] : null,
     linkId && loginToken
-      ? ([accessToken]) => getLinkDetails(linkId, accessToken)
+      ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
       : null
   );
 
