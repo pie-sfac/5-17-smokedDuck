@@ -43,17 +43,10 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
       mutate(
         [LINK_URL, accessToken],
         (data: GetLinkListResponse | undefined) => {
-          const updatedArchiveLinks = [...(data?.archiveLinks || [])];
+          const updatedArchiveLinks = (data?.archiveLinks || []).map(link =>
+            link.id === fetchLinkDetails.id ? fetchLinkDetails : link
+          );
 
-          if (linkId) {
-            let updatedTargetLinkIndex = 0;
-            for (let i = 0; i < updatedArchiveLinks.length; i++) {
-              if (updatedArchiveLinks[i].id == fetchLinkDetails.id) {
-                updatedTargetLinkIndex = i;
-              }
-            }
-            updatedArchiveLinks[updatedTargetLinkIndex] = fetchLinkDetails;
-          }
           return {
             archiveLinks: updatedArchiveLinks,
             message: data?.message || '',
