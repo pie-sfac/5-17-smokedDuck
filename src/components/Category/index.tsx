@@ -79,10 +79,8 @@ export default function Category() {
           description: '',
         };
         await updateCategory(categoryId, updatedCategoryData, loginToken);
-        mutate();
       } catch (error) {
         console.error('카테고리 업데이트 문제 발생', error);
-        mutate();
       }
     },
     [loginToken, mutate]
