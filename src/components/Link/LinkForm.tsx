@@ -37,12 +37,8 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<number | undefined>(undefined);
-
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
-
-  const [isTitleChanged, setIsTitleChanged] = useState(false);
-  const [isDescriptionChanged, setIsDescriptionChanged] = useState(false);
 
   const isRequiredFieldsEmpty = !category || !linkUrl || !title;
 
@@ -54,47 +50,36 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     },
     [handler]
   );
-  const { categoryListData: categories } = useCategory();
+  const { categoryListData: categories, isLoading: isLoadingCategories } =
+    useCategory();
 
   useEffect(() => {
     if (media) {
-      setLinkUrl(linkUrl || getLinkUrlInfo(media?.url).linkUrl);
-      if (categories) {
-        setCategory(media?.category?.id);
-      }
+      setTitle((media && media.title) || '');
+      setDescription((media && media.description) || '');
+      setLinkUrl(getLinkUrlInfo((media && media.url) || '').linkUrl);
+      if (categories) setCategory(media && media.category?.id);
     }
-
-    setIsFormComplete(true);
-  }, [media, categories, linkUrl]);
+  }, [media]);
 
   useEffect(() => {
     const updateFormCompletion = () => {
-      const isTitleValid =
-        title.trim() !== '' ||
-        (youtubeVideo && youtubeVideo.title.trim() !== '');
-
-      setIsFormComplete(!!isTitleValid);
+      const isFormComplete = new Boolean(category && title && linkUrl && true);
+      setIsFormComplete(isFormComplete.valueOf());
     };
-
     updateFormCompletion();
+  }, [category, title, linkUrl]);
 
-    setDescription(
-      isDescriptionChanged
-        ? description
-        : youtubeVideo?.description || media?.description || ''
-    );
-
+  useEffect(() => {
     setTitle(
-      isTitleChanged ? title : youtubeVideo?.title || media?.title || ''
+      (youtubeVideo && youtubeVideo.title) || (media && media.title) || ''
     );
-  }, [
-    youtubeVideo,
-    media,
-    isDescriptionChanged,
-    isTitleChanged,
-    title,
-    description,
-  ]);
+    setDescription(
+      (youtubeVideo && youtubeVideo.description) ||
+        (media && media.description) ||
+        ''
+    );
+  }, [youtubeVideo]);
 
   const handleSubmit = useCallback(() => {
     if (isRequiredFieldsEmpty) {
@@ -113,20 +98,16 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         (youtubeVideo && youtubeVideo.thumbnailUrl) ||
         getLinkUrlInfo(media?.url || '').thumbnailUrl ||
         '',
-      title: isTitleChanged
-        ? title
-        : (youtubeVideo && youtubeVideo.title) || '',
+      title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   }, [
-    isRequiredFieldsEmpty,
     category,
     linkUrl,
-    media?.url,
     title,
     description,
     onSubmit,
     youtubeVideo,
-    isTitleChanged,
+    isRequiredFieldsEmpty,
   ]);
 
   return (
@@ -141,20 +122,24 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
       <FormControl isRequired>
         <FormLabel>카테고리</FormLabel>
-        <Select
-          placeholder="카테고리를 선택해 주세요."
-          marginBottom="10px"
-          value={category}
-          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(Number(event.target.value));
-          }}
-        >
-          {categories?.categories.map((categoryInfo: CategoryResponseDTO) => (
-            <option key={categoryInfo.id} value={categoryInfo.id}>
-              {categoryInfo.title}
-            </option>
-          ))}
-        </Select>
+        {isLoadingCategories ? (
+          <p>Loading categories...</p>
+        ) : (
+          <Select
+            placeholder="카테고리를 선택해 주세요."
+            marginBottom="10px"
+            value={category}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+              setCategory(Number(event.target.value));
+            }}
+          >
+            {categories?.categories.map((categoryInfo: CategoryResponseDTO) => (
+              <option key={categoryInfo.id} value={categoryInfo.id}>
+                {categoryInfo.title}
+              </option>
+            ))}
+          </Select>
+        )}
 
         <FormLabel>링크</FormLabel>
 
@@ -173,10 +158,9 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
         <Input
           type="text"
-          value={isTitleChanged ? title : youtubeVideo?.title || ''}
+          value={title}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setTitle(event.target.value);
-            setIsTitleChanged(true);
           }}
           placeholder="링크 제목을 입력해 주세요."
           width="800px"
@@ -187,13 +171,10 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
       <DescriptionBox>
         <Textarea
-          value={
-            isDescriptionChanged ? description : youtubeVideo?.description || ''
-          }
+          value={description}
           onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
             const { value } = event.target;
             setDescription(value.slice(0, 500));
-            setIsDescriptionChanged(true);
           }}
           placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
           resize="none"
