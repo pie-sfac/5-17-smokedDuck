@@ -51,6 +51,9 @@ export default function QuestionFooter({
       const deletedQuestions = questionList.filter(
         question => question.order !== order
       );
+      deletedQuestions.map((question, index) => {
+        question.order = index + 1;
+      });
       setQuestionList(deletedQuestions);
     },
     [questionList, setQuestionList]
