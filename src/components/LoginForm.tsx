@@ -1,21 +1,20 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { requestLogin } from '@/apis/Login';
 import Logo from '@/assets/Logo.svg';
 import VisibilityOn from '@/assets/VisibilityOn.svg';
-import { MainContext } from '@/store';
-import { tokenType } from '@/types/token.interface';
+
 interface StyledPasswordIconProps {
   password: string;
 }
 
 export default function LoginForm() {
   axios.defaults.baseURL = 'http://223.130.161.221/api/v1';
-  axios.defaults.withCredentials = true;
-  const { setLoginToken } = useContext(MainContext);
+
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -26,31 +25,14 @@ export default function LoginForm() {
     username.length === 0 || password.length === 0;
 
   const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      try {
-        const basicToken = btoa(`${username}:${password}`);
-        const headers = {
-          Authorization: `Basic ${basicToken}`,
-        };
-        const response = await axios.post<tokenType>(`/admins/login`, '', {
-          headers,
-        });
-        // axios.defaults.headers.common[
-        //   'Authorization'
-        // ] = `Bearer ${response.data.accessToken}`;
-        setLoginToken(response.data.accessToken);
-        window.localStorage.setItem('token', response.data.accessToken);
-        window.localStorage.setItem('refreshToken', response.data.refreshToken);
-
-        navigate('record');
-      } catch (error) {
-        alert('아이디 또는 비밀번호가 틀렸습니다.');
-        console.error('error');
-      }
+      requestLogin(username, password).then(() => {
+        navigate('/record');
+      });
     },
-    [username, password, navigate, setLoginToken]
+    [username, password, navigate]
   );
 
   return (
