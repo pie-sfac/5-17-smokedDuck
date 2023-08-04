@@ -40,6 +40,9 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
+  const [isTitleChanged, setIsTitleChanged] = useState(false);
+  const [isDescriptionChanged, setIsDescriptionChanged] = useState(false);
+
   const isRequiredFieldsEmpty = !category || !linkUrl || !title;
 
   const handleLinkChange = useCallback(
@@ -61,7 +64,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     }
 
     setIsFormComplete(true);
-  }, [media, categories]);
+  }, [media, categories, linkUrl]);
 
   useEffect(() => {
     const updateFormCompletion = () => {
@@ -75,16 +78,22 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     updateFormCompletion();
 
     setDescription(
-      description ||
-        (youtubeVideo && youtubeVideo.description) ||
-        media?.description ||
-        ''
+      isDescriptionChanged
+        ? description
+        : youtubeVideo?.description || media?.description || ''
     );
 
     setTitle(
-      title || (youtubeVideo && youtubeVideo.title) || media?.title || ''
+      isTitleChanged ? title : youtubeVideo?.title || media?.title || ''
     );
-  }, [youtubeVideo, media]);
+  }, [
+    youtubeVideo,
+    media,
+    isDescriptionChanged,
+    isTitleChanged,
+    title,
+    description,
+  ]);
 
   const handleSubmit = useCallback(() => {
     if (isRequiredFieldsEmpty) {
@@ -103,16 +112,20 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         (youtubeVideo && youtubeVideo.thumbnailUrl) ||
         getLinkUrlInfo(media?.url || '').thumbnailUrl ||
         '',
-      title: title || (youtubeVideo && youtubeVideo.title) || '',
+      title: isTitleChanged
+        ? title
+        : (youtubeVideo && youtubeVideo.title) || '',
     });
   }, [
+    isRequiredFieldsEmpty,
     category,
     linkUrl,
+    media?.url,
     title,
     description,
     onSubmit,
     youtubeVideo,
-    isRequiredFieldsEmpty,
+    isTitleChanged,
   ]);
 
   return (
@@ -159,9 +172,10 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
         <Input
           type="text"
-          value={title || youtubeVideo?.title}
+          value={isTitleChanged ? title : youtubeVideo?.title || ''}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setTitle(event.target.value);
+            setIsTitleChanged(true);
           }}
           placeholder="링크 제목을 입력해 주세요."
           width="800px"
@@ -172,10 +186,13 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
       <DescriptionBox>
         <Textarea
-          value={description || youtubeVideo?.description}
+          value={
+            isDescriptionChanged ? description : youtubeVideo?.description || ''
+          }
           onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
             const { value } = event.target;
             setDescription(value.slice(0, 500));
+            setIsDescriptionChanged(true);
           }}
           placeholder="링크를 식별하기 위한 간단한 메모를 작성해 주세요. (500자 이내)"
           resize="none"
