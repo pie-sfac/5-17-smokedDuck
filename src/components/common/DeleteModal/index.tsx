@@ -33,7 +33,7 @@ export default function DeleteModalContainer({
 
   const { loginToken, selectedIds, setSelectedIds } = useContext(MainContext);
   const { recordListData, mutate } = useRecord();
-  const { categoryListData, mutate: mustateCategory } = useCategory();
+  const { categoryListData, mutate: mutateCategory } = useCategory();
 
   const handleDeleteClick = async () => {
     const headers = {
@@ -87,7 +87,7 @@ export default function DeleteModalContainer({
         ...categoryListData!,
         categories: updatedCategoryList,
       };
-      mustateCategory(updatedCategoryListData, false);
+      mutateCategory(updatedCategoryListData, false);
       setSelectedIds([]);
     }
 
