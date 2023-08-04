@@ -15,13 +15,15 @@ export default function useMediaCards(category?: string) {
   >([LINK_URL, loginToken], ([, accessToken]) => getLinkList(accessToken));
 
   return {
-    mediaList: category
-      ? mediaList?.archiveLinks.filter(link => {
-          link.category.title === category;
-        })
-      : mediaList?.archiveLinks,
+    mediaList:
+      category !== '전체'
+        ? mediaList?.archiveLinks.filter(
+            link => link.category.title === category
+          )
+        : mediaList?.archiveLinks,
 
     isLoading: !error && !mediaList,
     error: error,
+    totalLinksCount: mediaList?.archiveLinks.length,
   };
 }
