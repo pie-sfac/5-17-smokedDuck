@@ -26,20 +26,25 @@ export default function QuestionFooter({
   const { questionList, setQuestionList } = useContext(MainContext);
   const [isRequired, setIsRequired] = useState(false);
 
-  const handleClickedMoveButton = (moveDirection: string) => {
-    if (moveDirection === 'up') {
-      if (order === 1) alert('첫번째 문항입니다.');
-      const tmp = questionList[order - 2];
-      questionList[order - 2] = questionList[order - 1];
-      questionList[order - 1] = tmp;
-    } else if (moveDirection === 'down') {
-      if (order === questionList.length) alert('마지막 문항입니다.');
-      const tmp = questionList[order];
-      questionList[order] = questionList[order - 1];
-      questionList[order - 1] = tmp;
-    }
-    questionList.map((question, idx) => (question.order = idx + 1));
-  };
+  const handleClickedMoveButton = useCallback(
+    (moveDirection: string) => {
+      const changeOrder = (currentOrder: number) => {
+        const tmp = questionList[currentOrder];
+        questionList[currentOrder] = questionList[order - 1];
+        questionList[order - 1] = tmp;
+      };
+
+      if (moveDirection === 'up') {
+        if (order === 1) alert('첫번째 문항입니다.');
+        changeOrder(order - 2);
+      } else if (moveDirection === 'down') {
+        if (order === questionList.length) alert('마지막 문항입니다.');
+        changeOrder(order);
+      }
+      questionList.map((question, idx) => (question.order = idx + 1));
+    },
+    [order, questionList]
+  );
 
   const handleClickedDeleteButton = useCallback(
     (order: number) => {
