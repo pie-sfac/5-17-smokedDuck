@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useCallback, useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { onSlientRefresh } from '@/apis/Login';
 import Logo from '@/assets/Logo.svg';
 import { MainContext } from '@/store';
 import { category, userName } from '@/utils/constants/header';
@@ -13,6 +14,8 @@ export default function Header() {
   const { loginToken } = useContext(MainContext);
   const { pathname } = useLocation();
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
+
+  onSlientRefresh();
 
   const handlePageMove = (item: categoryType) => {
     if (item.id === 2 || item.id === 3) {
