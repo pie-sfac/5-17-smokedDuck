@@ -1,29 +1,28 @@
 import styled from '@emotion/styled';
-import { useContext, useState } from 'react';
-import useSWR from 'swr';
+import { useState } from 'react';
 
-import { getLinkList, LINK_URL } from '@/apis/Media';
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
-import { MainContext } from '@/store';
+import useMediaCards from '@/hooks/useMediaCards';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
-export default function MediaListContainer() {
-  const { loginToken } = useContext(MainContext);
+import Loading from '../Common/Loading';
 
-  const { data: mediaList } = useSWR(
-    [LINK_URL, loginToken || ''],
-    ([_, accessToken]) => getLinkList(accessToken)
-  );
+export default function MediaListContainer() {
+  const { mediaList, isLoading, error } = useMediaCards();
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  if (isLoading || error || !mediaList) {
+    return <Loading />;
+  }
+
   return (
     <>
       <ListBackGround>
-        {mediaList?.archiveLinks.map((item, index) => {
+        {mediaList.map((item, index) => {
           return (
             <MediaCard
               key={item.id}
@@ -53,7 +52,7 @@ export default function MediaListContainer() {
               height: '100%',
             }}
           >
-            <LinkView linkId={mediaList.archiveLinks[activeMediaCardInfo].id} />
+            <LinkView linkId={mediaList[activeMediaCardInfo].id} />
           </div>
         </Modal>
       )}
