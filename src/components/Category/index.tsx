@@ -36,7 +36,7 @@ export default function Category() {
     }
   }, [categoryListData, loginToken, mutate]);
 
-  const handleUpdateyCategory = useCallback(
+  const handleUpdateCategory = useCallback(
     async (categoryId: number, updateText: string) => {
       try {
         mutate(data => {
@@ -102,7 +102,7 @@ export default function Category() {
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        handleUpdateyCategory={handleUpdateyCategory}
+        handleUpdateCategory={handleUpdateCategory}
         newCategoryInputRef={newCategoryInputRef}
       />
     </>
