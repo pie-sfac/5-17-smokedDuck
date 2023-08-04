@@ -5,25 +5,11 @@ import { recordListResponseType } from '@/types/recordList.interface';
 
 const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
-export async function recordListFetcher([url, tokenData]: string[]) {
-  const headers = {
-    Authorization: `Bearer ${tokenData}`,
-    'Content-Type': 'application/json',
-  };
-  const res = await axios.get<recordListResponseType>(`${baseUrl}/${url}`, {
-    headers,
-  });
+export async function recordListFetcher(url: string) {
+  const res = await axios.get<recordListResponseType>(`${baseUrl}/${url}`);
   return res.data.templates;
 }
 
-export function recordDetailFetcher([url, tokenData]: string[]) {
-  const headers = {
-    Authorization: `Bearer ${tokenData}`,
-    'Content-Type': 'application/json',
-  };
-  return axios
-    .get<recordDetailType>(`${baseUrl}/${url}`, {
-      headers,
-    })
-    .then(res => res.data);
+export function recordDetailFetcher(url: string) {
+  return axios.get<recordDetailType>(`${url}`).then(res => res.data);
 }
