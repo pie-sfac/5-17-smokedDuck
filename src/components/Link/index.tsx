@@ -14,7 +14,6 @@ import {
   GetLinkDetailResponse,
   GetLinkListResponse,
 } from '@/types/media.interface';
-
 export interface LinkComponentProps {
   mode: 'CREATE' | 'UPDATE';
   linkId?: number;
