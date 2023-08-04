@@ -28,6 +28,10 @@ export default function Category() {
   const { categoryListData, mutate } = useCategory();
 
   const handleAddCategory = useCallback(async () => {
+    if (categoryListData?.categories.length === 10) {
+      alert('카테고리는 10개까지 추가할 수있습니다.');
+      return;
+    }
     try {
       const newCategoryList: CategoryRequestDTO = {
         title: '',
