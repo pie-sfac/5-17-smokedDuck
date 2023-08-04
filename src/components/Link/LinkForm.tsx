@@ -37,6 +37,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<number | undefined>(undefined);
+
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
