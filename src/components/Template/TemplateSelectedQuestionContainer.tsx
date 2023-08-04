@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
@@ -27,6 +27,11 @@ export default function TemplateSelectedQuestionContainer() {
 
     setQuestionList(updatedQuestion);
   };
+
+  useEffect(
+    () => setQuestionList([...questionList.sort((a, b) => a.order - b.order)]),
+    [questionList, setQuestionList]
+  );
 
   return (
     <ContentContainer

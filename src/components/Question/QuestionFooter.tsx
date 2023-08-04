@@ -26,6 +26,21 @@ export default function QuestionFooter({
   const { questionList, setQuestionList } = useContext(MainContext);
   const [isRequired, setIsRequired] = useState(false);
 
+  const handleClickedMoveButton = (moveDirection: string) => {
+    if (moveDirection === 'up') {
+      if (order === 1) alert('첫번째 문항입니다.');
+      const tmp = questionList[order - 2];
+      questionList[order - 2] = questionList[order - 1];
+      questionList[order - 1] = tmp;
+    } else if (moveDirection === 'down') {
+      if (order === questionList.length) alert('마지막 문항입니다.');
+      const tmp = questionList[order];
+      questionList[order] = questionList[order - 1];
+      questionList[order - 1] = tmp;
+    }
+    questionList.map((question, idx) => (question.order = idx + 1));
+  };
+
   const handleClickedDeleteButton = useCallback(
     (order: number) => {
       const deletedQuestions = questionList.filter(
@@ -52,9 +67,9 @@ export default function QuestionFooter({
       </EssentialContainer>
       <MoveContainer>
         이동 &nbsp;
-        <VscTriangleDown />
+        <VscTriangleDown onClick={() => handleClickedMoveButton('down')} />
         &nbsp;
-        <VscTriangleUp />
+        <VscTriangleUp onClick={() => handleClickedMoveButton('up')} />
       </MoveContainer>
       <RemoveContainer onClick={() => handleClickedDeleteButton(order)}>
         삭제 &nbsp;
