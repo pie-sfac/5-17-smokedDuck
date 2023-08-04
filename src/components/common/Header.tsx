@@ -24,6 +24,7 @@ export default function Header() {
   const handleLogout = useCallback(() => {
     localStorage.clear();
     navigate('/');
+    setClickedIdNum(2);
   }, [navigate]);
 
   if (pathname === '/') {
