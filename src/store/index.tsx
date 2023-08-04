@@ -30,6 +30,8 @@ type ContextType = {
   setIsRecordEdit: Dispatch<SetStateAction<boolean>>;
   newQuestionList: recordQuestionsType[];
   setNewQuestionList: Dispatch<SetStateAction<recordQuestionsType[]>>;
+  selectedIds: number[];
+  setSelectedIds: Dispatch<SetStateAction<number[]>>;
 };
 
 export const MainContext = React.createContext<ContextType>({
@@ -63,6 +65,8 @@ export const MainContext = React.createContext<ContextType>({
 
   newQuestionList: [],
   setNewQuestionList: () => {},
+  selectedIds: [],
+  setSelectedIds: () => {},
 });
 
 export default function MainContextProvider(props: {
@@ -91,7 +95,7 @@ export default function MainContextProvider(props: {
 
   const [storedCategoryList, setStoredCategoryList] =
     useState<categoryListType[]>(categoryList);
-
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const contextValue: ContextType = {
     loginToken,
     questionList: storedQuestionList,
@@ -119,6 +123,8 @@ export default function MainContextProvider(props: {
 
     newQuestionList,
     setNewQuestionList,
+    selectedIds,
+    setSelectedIds,
   };
 
   return (

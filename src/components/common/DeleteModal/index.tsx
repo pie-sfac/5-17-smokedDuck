@@ -1,16 +1,12 @@
 import axios from 'axios';
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { mutate as globalMutate } from 'swr';
 
+import { deleteCategory } from '@/apis/Category';
 import { deleteLink, LINK_URL } from '@/apis/Media';
 import DeleteModal from '@/components/Common/DeleteModal/DeleteModal';
+import useCategory from '@/hooks/useCategory';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import {
@@ -20,7 +16,7 @@ import {
 import { recordListType } from '@/types/recordList.interface';
 
 type DeleteModalPropsType = {
-  id: number;
+  id: number | number[];
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
   title: string;
   text: string;
@@ -35,17 +31,9 @@ export default function DeleteModalContainer({
 }: DeleteModalPropsType) {
   const { pathname } = useLocation();
 
-  const { loginToken } = useContext(MainContext);
+  const { loginToken, selectedIds, setSelectedIds } = useContext(MainContext);
   const { recordListData, mutate } = useRecord();
-  const [state, setState] = useState('');
-
-  useEffect(() => {
-    if (pathname === '/record') {
-      setState('기록');
-    } else if (pathname === '/media') {
-      setState('미디어');
-    }
-  }, [pathname]);
+  const { categoryListData, mutate: mutateCategory } = useCategory();
 
   const handleDeleteClick = async () => {
     const headers = {
@@ -59,7 +47,7 @@ export default function DeleteModalContainer({
       );
 
       await mutate(
-        axios.delete(`${baseUrl}/record-templates/${id}`, { headers }),
+        axios.delete(`${baseUrl}/record-templates/${Number(id)}`, { headers }),
         {
           optimisticData: newRecordList,
           populateCache: false,
@@ -68,7 +56,7 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/media') {
-      deleteLink(id, loginToken);
+      deleteLink(Number(id), loginToken);
       globalMutate(
         [LINK_URL, loginToken],
         (data: GetLinkListResponse | undefined) => {
@@ -83,6 +71,24 @@ export default function DeleteModalContainer({
         },
         false
       );
+    }
+
+    if (pathname === '/category') {
+      selectedIds.map((id: number) => deleteCategory(id, loginToken));
+      const updatedCategoryList = categoryListData?.categories.slice() || [];
+      selectedIds.forEach(id => {
+        const index = updatedCategoryList.findIndex(item => item.id === id);
+        if (index !== -1) {
+          updatedCategoryList.splice(index, 1);
+        }
+      });
+
+      const updatedCategoryListData = {
+        ...categoryListData!,
+        categories: updatedCategoryList,
+      };
+      mutateCategory(updatedCategoryListData, false);
+      setSelectedIds([]);
     }
 
     setDeleteModalOpen(false);

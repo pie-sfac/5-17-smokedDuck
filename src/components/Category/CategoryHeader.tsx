@@ -5,7 +5,6 @@ type CategoryHeaderProps = {
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleAddCategory: () => void;
   handleNavigate: () => void;
-  selectedIds: number[];
 };
 
 export default function CategoryHeader({
