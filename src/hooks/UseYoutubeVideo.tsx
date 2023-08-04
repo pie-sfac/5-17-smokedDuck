@@ -15,9 +15,13 @@ export function useYoutubeVideo() {
   const [youtubeVideo, setYoutubeVideo] = useState<YoutubeVideo | null>(null);
   const handler = useCallback((youtubeVideoUrl: string | undefined) => {
     if (youtubeVideoUrl) {
-      fetchYoutubeVideo(extractVideoIdFromUrl(youtubeVideoUrl)).then(data => {
-        setYoutubeVideo(getYoutubeVideoFromMetadata(data.items[0]));
-      });
+      fetchYoutubeVideo(extractVideoIdFromUrl(youtubeVideoUrl))
+        .then(data => {
+          setYoutubeVideo(getYoutubeVideoFromMetadata(data.items[0]));
+        })
+        .catch(() => {
+          setYoutubeVideo(null);
+        });
     }
   }, []);
   return { youtubeVideo, handler };
