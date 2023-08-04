@@ -1,11 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  createCategory,
-  deleteCategory,
-  updateCategory,
-} from '@/apis/Category';
+import { createCategory, updateCategory } from '@/apis/Category';
 import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
 import {
@@ -18,10 +14,9 @@ import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
 
 export default function Category() {
-  const { storedCategoryList } = useContext(MainContext);
+  const { storedCategoryList, setSelectedIds } = useContext(MainContext);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -100,33 +95,8 @@ export default function Category() {
         }
       });
     },
-    []
+    [setSelectedIds]
   );
-
-  const handleDeleteButtonClick = useCallback(async () => {
-    try {
-      await Promise.all(selectedIds.map(id => deleteCategory(id, loginToken)));
-
-      const updatedCategoryList = categoryListData?.categories.slice() || [];
-
-      selectedIds.forEach(id => {
-        const index = updatedCategoryList.findIndex(item => item.id === id);
-        if (index !== -1) {
-          updatedCategoryList.splice(index, 1);
-        }
-      });
-
-      const updatedCategoryListData = {
-        ...categoryListData!,
-        categories: updatedCategoryList,
-      };
-      mutate(updatedCategoryListData, false);
-      setSelectedIds([]);
-      setIsDeleteMode(false);
-    } catch (error) {
-      console.error('카테고리 삭제 중 오류 발생:', error);
-    }
-  }, [categoryListData, loginToken, mutate, selectedIds]);
 
   const handleNavigate = () => {
     navigate('/media');
@@ -146,7 +116,6 @@ export default function Category() {
         setIsDeleteMode={setIsDeleteMode}
         handleAddCategory={handleAddCategory}
         handleNavigate={handleNavigate}
-        selectedIds={selectedIds}
       />
       <CategoryListContents
         addedCategory={storedCategoryList}
@@ -154,10 +123,7 @@ export default function Category() {
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
         handleModifyCategory={handleModifyCategory}
-        setSelectedIds={setSelectedIds}
-        selectedIds={selectedIds}
         newCategoryInputRef={newCategoryInputRef}
-        handleDeleteButtonClick={handleDeleteButtonClick}
       />
     </>
   );

@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
-import { useCallback, useRef } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 
 import useCategory from '@/hooks/useCategory';
+import { MainContext } from '@/store';
 import { categoryListType } from '@/utils/constants/categoryList';
+
+import DeleteModalContainer from '../Common/DeleteModal';
 
 type CategoryListContentsProps = {
   addedCategory: categoryListType[];
@@ -10,10 +13,7 @@ type CategoryListContentsProps = {
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleModifyCategory: (categoryId: number, updateText: string) => void;
   handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  selectedIds: number[];
-  setSelectedIds: React.Dispatch<React.SetStateAction<number[]>>;
   newCategoryInputRef: React.RefObject<HTMLInputElement>;
-  handleDeleteButtonClick: () => void;
 };
 
 export default function CategoryListContents({
@@ -22,13 +22,12 @@ export default function CategoryListContents({
   handleModifyCategory,
   addedCategory,
   handleCheckboxChange,
-  selectedIds,
-  setSelectedIds,
   newCategoryInputRef,
-  handleDeleteButtonClick,
 }: CategoryListContentsProps) {
-  const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { categoryListData, isLoading, error } = useCategory();
+  const { selectedIds, setSelectedIds } = useContext(MainContext);
+  const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const handleCategoryClick = useCallback(
     (categoryId: number) => {
@@ -76,7 +75,6 @@ export default function CategoryListContents({
           : categoryListData.categories.map((item, index) => (
               <CategoryListInput
                 key={`${item.id}-${index}`}
-                // key={item.id}
                 value={item.title}
                 onChange={e => handleModifyCategory(item.id, e.target.value)}
                 maxLength={15}
@@ -95,12 +93,20 @@ export default function CategoryListContents({
             취소
           </CategoryListCancelButton>
           <CategoryListDeleteButton
-            onClick={handleDeleteButtonClick}
+            onClick={() => setDeleteModalOpen(!deleteModalOpen)}
             checkedInput={selectedIds.length === 0 ? false : true}
           >
             삭제하기
           </CategoryListDeleteButton>
         </CategoryButton>
+      )}
+      {deleteModalOpen && (
+        <DeleteModalContainer
+          title={'삭제 확인'}
+          text={'해당 링크를 삭제하시겠습니까?'}
+          id={selectedIds}
+          setDeleteModalOpen={setDeleteModalOpen}
+        />
       )}
     </>
   );
