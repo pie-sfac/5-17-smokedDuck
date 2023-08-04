@@ -13,7 +13,8 @@ interface StyledPasswordIconProps {
 }
 
 export default function LoginForm() {
-  const baseUrl = import.meta.env.VITE_BASE_URL as string;
+  axios.defaults.baseURL = 'http://223.130.161.221/api/v1';
+  axios.defaults.withCredentials = true;
   const { setLoginToken } = useContext(MainContext);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -32,13 +33,13 @@ export default function LoginForm() {
         const basicToken = btoa(`${username}:${password}`);
         const headers = {
           Authorization: `Basic ${basicToken}`,
-          'Content-Type': 'application/json',
         };
-        const response = await axios.post<tokenType>(
-          `${baseUrl}/admins/login`,
-          '',
-          { headers }
-        );
+        const response = await axios.post<tokenType>(`/admins/login`, '', {
+          headers,
+        });
+        // axios.defaults.headers.common[
+        //   'Authorization'
+        // ] = `Bearer ${response.data.accessToken}`;
         setLoginToken(response.data.accessToken);
         window.localStorage.setItem('token', response.data.accessToken);
         window.localStorage.setItem('refreshToken', response.data.refreshToken);
@@ -49,7 +50,7 @@ export default function LoginForm() {
         console.error('error');
       }
     },
-    [username, password, navigate, baseUrl, setLoginToken]
+    [username, password, navigate, setLoginToken]
   );
 
   return (
