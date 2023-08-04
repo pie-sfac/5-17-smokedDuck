@@ -29,7 +29,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const { data: media } = useSWR(
     linkId ? [`${LINK_URL}${linkId}`, loginToken || ''] : null,
     linkId && loginToken
-      ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
+      ? ([accessToken]) => getLinkDetails(linkId, accessToken)
       : null
   );
 
@@ -60,7 +60,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
       setLinkUrl(getLinkUrlInfo((media && media.url) || '').linkUrl);
       if (categories) setCategory(media && media.category?.id);
     }
-  }, [media]);
+  }, [categories, media]);
 
   useEffect(() => {
     const updateFormCompletion = () => {
@@ -79,7 +79,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         (media && media.description) ||
         ''
     );
-  }, [youtubeVideo]);
+  }, [media, youtubeVideo]);
 
   const handleSubmit = useCallback(() => {
     if (isRequiredFieldsEmpty) {
@@ -101,13 +101,14 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   }, [
+    isRequiredFieldsEmpty,
     category,
     linkUrl,
+    media?.url,
     title,
     description,
     onSubmit,
     youtubeVideo,
-    isRequiredFieldsEmpty,
   ]);
 
   return (
