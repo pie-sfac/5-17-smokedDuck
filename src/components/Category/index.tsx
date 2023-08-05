@@ -19,8 +19,6 @@ export default function Category() {
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
-  const { loginToken } = useContext(MainContext);
   const { categoryListData, mutate } = useCategory();
 
   const handleAddCategory = useCallback(async () => {
@@ -31,7 +29,6 @@ export default function Category() {
       };
 
       const newCategory: CategoryResponseDTO | undefined = await createCategory(
-        loginToken,
         newCategoryList
       );
 
@@ -53,7 +50,7 @@ export default function Category() {
     } catch (error) {
       console.error('카테고리 추가 중 오류 발생:', error);
     }
-  }, [categoryListData, loginToken, mutate]);
+  }, [categoryListData, mutate]);
 
   const handleModifyCategory = useCallback(
     async (categoryId: number, updateText: string) => {
@@ -63,7 +60,7 @@ export default function Category() {
           description: '',
         };
         const updatedCategory: CategoryListResponseDTO | undefined =
-          await updateCategory(categoryId, updatedCategoryData, loginToken);
+          await updateCategory(categoryId, updatedCategoryData);
 
         if (categoryListData && updatedCategory) {
           const updatedCategoryListData = {
@@ -81,7 +78,7 @@ export default function Category() {
         console.error('카테고리 수정 중 오류 발생:', error);
       }
     },
-    [categoryListData, loginToken, mutate]
+    [categoryListData, mutate]
   );
 
   const handleCheckboxChange = useCallback(

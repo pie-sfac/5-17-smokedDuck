@@ -21,7 +21,6 @@ type DeleteModalPropsType = {
   title: string;
   text: string;
 };
-const baseUrl = import.meta.env.VITE_BASE_URL as string;
 
 export default function DeleteModalContainer({
   id,
@@ -31,34 +30,26 @@ export default function DeleteModalContainer({
 }: DeleteModalPropsType) {
   const { pathname } = useLocation();
 
-  const { loginToken, selectedIds, setSelectedIds } = useContext(MainContext);
+  const { selectedIds, setSelectedIds } = useContext(MainContext);
   const { recordListData, mutate } = useRecord();
   const { categoryListData, mutate: mutateCategory } = useCategory();
 
   const handleDeleteClick = async () => {
-    const headers = {
-      Authorization: `Bearer ${loginToken}`,
-      'Content-Type': 'application/json',
-    };
-
     if (pathname === '/record' && recordListData) {
       const newRecordList: recordListType = recordListData.filter(
         (item: { id: number }) => item.id !== id
       );
 
-      await mutate(
-        axios.delete(`${baseUrl}/record-templates/${Number(id)}`, { headers }),
-        {
-          optimisticData: newRecordList,
-          populateCache: false,
-        }
-      );
+      await mutate(axios.delete(`record-templates/${Number(id)}`), {
+        optimisticData: newRecordList,
+        populateCache: false,
+      });
     }
 
     if (pathname === '/media') {
-      deleteLink(Number(id), loginToken);
+      deleteLink(Number(id));
       globalMutate(
-        [LINK_URL, loginToken],
+        LINK_URL,
         (data: GetLinkListResponse | undefined) => {
           const updatedArchiveLinks = [...(data?.archiveLinks || [])];
 
@@ -74,7 +65,7 @@ export default function DeleteModalContainer({
     }
 
     if (pathname === '/category') {
-      selectedIds.map((id: number) => deleteCategory(id, loginToken));
+      selectedIds.map((id: number) => deleteCategory(id));
       const updatedCategoryList = categoryListData?.categories.slice() || [];
       selectedIds.forEach(id => {
         const index = updatedCategoryList.findIndex(item => item.id === id);

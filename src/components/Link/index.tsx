@@ -1,12 +1,11 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createLink, getLinkDetails, LINK_URL, updateLink } from '@/apis/Media';
 import LinkForm from '@/components/Link/LinkForm';
 import LinkView from '@/components/Link/LinkView';
-import { MainContext } from '@/store';
 import { FormData, UpdateLinkProps } from '@/types/media.interface';
 import {
   CreateLinkProps,
@@ -23,15 +22,10 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
   const [fetchLinkResponseData, setFetchLinkResponseData] =
     useState<CreateLinkResponse | null>(null);
   const [showCompletionMessage, setShowCompletionMessage] = useState(false);
-  const { loginToken } = useContext(MainContext);
-
-  const refreshLinkListCache = (
-    accessToken: string,
-    fetchLinkDetails: GetLinkDetailResponse
-  ) => {
+  const refreshLinkListCache = (fetchLinkDetails: GetLinkDetailResponse) => {
     if (mode == 'CREATE') {
       mutate(
-        [LINK_URL, accessToken],
+        LINK_URL,
         (data: GetLinkListResponse | undefined) => ({
           archiveLinks: [...(data?.archiveLinks || []), fetchLinkDetails],
           message: data?.message || '',
@@ -41,7 +35,7 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
     }
     if (mode == 'UPDATE') {
       mutate(
-        [LINK_URL, accessToken],
+        LINK_URL,
         (data: GetLinkListResponse | undefined) => {
           const updatedArchiveLinks = (data?.archiveLinks || []).map(link =>
             link.id === fetchLinkDetails.id ? fetchLinkDetails : link
@@ -60,21 +54,18 @@ export default function LinkComponent({ mode, linkId }: LinkComponentProps) {
   const fetchLinkAPI = async (
     requestData: CreateLinkProps | UpdateLinkProps
   ) => {
-    const accessToken = loginToken || '';
-
     const fetchLinkResponseData =
       mode == 'CREATE'
-        ? await createLink(requestData, accessToken)
-        : await updateLink(linkId || 0, requestData, accessToken);
+        ? await createLink(requestData)
+        : await updateLink(linkId || 0, requestData);
 
     setFetchLinkResponseData(fetchLinkResponseData);
 
     const fetchLinkDetail: GetLinkDetailResponse = await getLinkDetails(
-      fetchLinkResponseData.id,
-      accessToken
+      fetchLinkResponseData.id
     );
 
-    refreshLinkListCache(accessToken, fetchLinkDetail);
+    refreshLinkListCache(fetchLinkDetail);
   };
 
   const handleFormSubmit = (data: FormData) => {

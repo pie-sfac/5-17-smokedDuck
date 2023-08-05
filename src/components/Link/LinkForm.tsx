@@ -8,13 +8,12 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import useCategory from '@/hooks/useCategory';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-import { MainContext } from '@/store/index';
 import { CategoryResponseDTO } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
@@ -25,12 +24,9 @@ interface LinkFormProps {
 }
 
 export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
-  const { loginToken } = useContext(MainContext);
   const { data: media } = useSWR(
-    linkId ? [`${LINK_URL}${linkId}`, loginToken || ''] : null,
-    linkId && loginToken
-      ? ([_, accessToken]) => getLinkDetails(linkId, accessToken)
-      : null
+    linkId ? `${LINK_URL}${linkId}` : null,
+    linkId ? () => getLinkDetails(linkId) : null
   );
 
   const [linkUrl, setLinkUrl] = useState('');
