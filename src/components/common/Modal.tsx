@@ -6,7 +6,10 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import { useContext } from 'react';
 import { createPortal } from 'react-dom';
+
+import { MainContext } from '@/store';
 
 type ModalProps = {
   width?: number;
@@ -23,6 +26,8 @@ export default function Modal({
   setIsOpen,
   children,
 }: ModalProps) {
+  const { setSelectedRecordCard, setSelectedTemplateTitle } =
+    useContext(MainContext);
   const modalContainerStyle = useMemo(
     () => ({
       width,
@@ -40,9 +45,10 @@ export default function Modal({
       e.stopPropagation();
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
+      setSelectedTemplateTitle('');
+      setSelectedRecordCard(undefined);
     },
-
-    [setIsOpen]
+    [setIsOpen, setSelectedRecordCard, setSelectedTemplateTitle]
   );
 
   return createPortal(
