@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { createCategory, updateCategory } from '@/apis/Category';
 import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
-import {
-  CategoryRequestDTO,
-  CategoryResponseDTO,
-} from '@/types/category.interface';
+import { CategoryRequestDTO } from '@/types/category.interface';
 
 import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
@@ -30,26 +27,8 @@ export default function Category() {
         title: '',
         description: '',
       };
-
-      const newCategory: CategoryResponseDTO | undefined = await createCategory(
-        newCategoryList
-      );
-
-      if (newCategory) {
-        if (categoryListData) {
-          const updatedCategoryListData = {
-            ...categoryListData,
-            categories: [...categoryListData.categories, newCategory],
-          };
-          mutate(updatedCategoryListData, true);
-        } else {
-          const updatedCategoryListData = {
-            categories: [newCategory],
-            message: '',
-          };
-          mutate(updatedCategoryListData, true);
-        }
-      }
+      await createCategory(newCategoryList);
+      mutate();
     } catch (error) {
       console.error('카테고리 추가 중 오류 발생:', error);
     }
