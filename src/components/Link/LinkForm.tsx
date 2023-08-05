@@ -11,14 +11,11 @@ import styled from '@emotion/styled';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
-import { getCategoryList } from '@/apis/Category';
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
+import useCategory from '@/hooks/useCategory';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
 import { MainContext } from '@/store/index';
-import {
-  CategoryListResponseDTO,
-  CategoryResponseDTO,
-} from '@/types/category.interface';
+import { CategoryResponseDTO } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
@@ -39,24 +36,11 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   const [linkUrl, setLinkUrl] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [categories, setCategories] = useState<CategoryResponseDTO[] | null>(
-    null
-  );
-  const [category, setCategory] = useState(-1);
+  const [category, setCategory] = useState<number | undefined>(undefined);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const { youtubeVideo, handler } = useYoutubeVideo();
 
   const isRequiredFieldsEmpty = !category || !linkUrl || !title;
-
-  const getCategoryIndex = (categories: CategoryResponseDTO[]) => {
-    let categoryIndex = 0;
-    for (let i = 0; i < categories.length; i++) {
-      if (categories[i].id == media?.category.id) {
-        categoryIndex = i + 1;
-      }
-    }
-    return categoryIndex;
-  };
 
   const handleLinkChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,46 +50,43 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     },
     [handler]
   );
+  const { categoryListData: categories, isLoading: isLoadingCategories } =
+    useCategory();
+
   useEffect(() => {
     if (media) {
-      setLinkUrl(linkUrl || getLinkUrlInfo(media?.url).linkUrl);
-      if (categories) {
-        if (category == -1) setCategory(getCategoryIndex(categories));
-      }
+      setTitle((media && media.title) || '');
+      setDescription((media && media.description) || '');
+      setLinkUrl(getLinkUrlInfo((media && media.url) || '').linkUrl);
+      if (categories) setCategory(media && media.category?.id);
     }
-    setIsFormComplete(true);
-  }, [media, categories]);
+  }, [categories, media]);
 
   useEffect(() => {
     const updateFormCompletion = () => {
-      const isTitleValid =
-        title.trim() !== '' ||
-        (youtubeVideo && youtubeVideo.title.trim() !== '');
-
-      setIsFormComplete(!!isTitleValid);
+      const isFormComplete = new Boolean(category && title && linkUrl && true);
+      setIsFormComplete(isFormComplete.valueOf());
     };
     updateFormCompletion();
+  }, [category, title, linkUrl]);
 
+  useEffect(() => {
+    setTitle(
+      (youtubeVideo && youtubeVideo.title) || (media && media.title) || ''
+    );
     setDescription(
-      description ||
-        (youtubeVideo && youtubeVideo.description) ||
-        media?.description ||
+      (youtubeVideo && youtubeVideo.description) ||
+        (media && media.description) ||
         ''
     );
-    setTitle(
-      title || (youtubeVideo && youtubeVideo.title) || media?.title || ''
-    );
-    getCategoryList(loginToken).then((value: CategoryListResponseDTO) => {
-      setCategories(value.categories);
-    });
-  }, [youtubeVideo, loginToken, media]);
+  }, [media, youtubeVideo]);
 
   const handleSubmit = useCallback(() => {
     if (isRequiredFieldsEmpty) {
       return;
     }
     const formData = {
-      category: categories?.[category - 1].id || -1,
+      category: category || -1,
       linkUrl: linkUrl || getLinkUrlInfo(media?.url || '').linkUrl,
       title,
       description,
@@ -120,14 +101,14 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
   }, [
-    categories,
+    isRequiredFieldsEmpty,
     category,
     linkUrl,
+    media?.url,
     title,
     description,
     onSubmit,
     youtubeVideo,
-    isRequiredFieldsEmpty,
   ]);
 
   return (
@@ -142,24 +123,24 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
       <FormControl isRequired>
         <FormLabel>카테고리</FormLabel>
-
-        <Select
-          placeholder="카테고리를 선택해 주세요."
-          marginBottom="10px"
-          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-            setCategory(event.target.selectedOptions[0].index);
-          }}
-        >
-          {categories?.map((categoryInfo: CategoryResponseDTO, index) => (
-            <option
-              key={index}
-              value={categoryInfo.title}
-              selected={category == index}
-            >
-              {categoryInfo.title}
-            </option>
-          ))}
-        </Select>
+        {isLoadingCategories ? (
+          <p>Loading categories...</p>
+        ) : (
+          <Select
+            placeholder="카테고리를 선택해 주세요."
+            marginBottom="10px"
+            value={category}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+              setCategory(Number(event.target.value));
+            }}
+          >
+            {categories?.categories.map((categoryInfo: CategoryResponseDTO) => (
+              <option key={categoryInfo.id} value={categoryInfo.id}>
+                {categoryInfo.title}
+              </option>
+            ))}
+          </Select>
+        )}
 
         <FormLabel>링크</FormLabel>
 
@@ -178,7 +159,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
         <Input
           type="text"
-          value={title || youtubeVideo?.title}
+          value={title}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             setTitle(event.target.value);
           }}
@@ -191,7 +172,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
 
       <DescriptionBox>
         <Textarea
-          value={description || youtubeVideo?.description}
+          value={description}
           onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
             const { value } = event.target;
             setDescription(value.slice(0, 500));
