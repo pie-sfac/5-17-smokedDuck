@@ -51,3 +51,25 @@ export async function updateTemplate(
     console.error(error);
   }
 }
+
+export async function updateTemplate(
+  loginToken: string,
+  id: number,
+  editedTemplateContent: UpdateTemplate
+) {
+  try {
+    const response: AxiosResponse<UpdateTemplateResponse> = await axios.put(
+      `${requestUrl}/${id}`,
+      editedTemplateContent,
+      {
+        headers: {
+          Authorization: `Bearer ${loginToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
