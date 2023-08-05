@@ -37,29 +37,31 @@ export default function Category() {
   }, [categoryListData, loginToken, mutate]);
 
   const handleUpdateCategory = useCallback(
-    async (categoryId: number, updateText: string) => {
-      try {
-        mutate(data => {
-          if (data) {
-            return {
-              ...data,
-              categories: data.categories.map(category =>
-                category.id === categoryId
-                  ? { ...category, title: updateText }
-                  : category
-              ),
-            };
-          }
-          return data;
-        }, false);
-        const updatedCategoryData: CategoryRequestDTO = {
-          title: updateText,
-          description: '',
-        };
-        await updateCategory(categoryId, updatedCategoryData, loginToken);
-      } catch (error) {
-        console.error('카테고리 업데이트 문제 발생', error);
-      }
+    (categoryId: number, updateText: string) => {
+      mutate(data => {
+        if (data) {
+          return {
+            ...data,
+            categories: data.categories.map(category =>
+              category.id === categoryId
+                ? { ...category, title: updateText }
+                : category
+            ),
+          };
+        }
+        return data;
+      }, false);
+
+      const updatedCategoryData: CategoryRequestDTO = {
+        title: updateText,
+        description: '',
+      };
+
+      updateCategory(categoryId, updatedCategoryData, loginToken).catch(
+        error => {
+          console.error('카테고리 업데이트 문제 발생', error);
+        }
+      );
     },
     [loginToken, mutate]
   );
