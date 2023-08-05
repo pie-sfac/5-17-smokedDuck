@@ -6,7 +6,11 @@ import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
+import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
+import { recordDetailType } from '@/types/recordDetail.interface';
+
+import Template from '../Template';
 
 // import useRecordDetail from '@/hooks/useRecordDetail';
 // import { recordDetailType } from '@/types/recordDetail.interface';
@@ -80,7 +84,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
       )}
       {editModalOpen && (
         <Modal setIsOpen={setEditModalOpen}>
-          <RecordDetailTemplate />
+          <Template />
         </Modal>
       )}
       {deleteModalOpen && (
