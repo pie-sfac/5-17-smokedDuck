@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { createCategory, updateCategory } from '@/apis/Category';
 import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
-import {
-  CategoryListResponseDTO,
-  CategoryRequestDTO,
-  CategoryResponseDTO,
-} from '@/types/category.interface';
+import { CategoryRequestDTO } from '@/types/category.interface';
 
 import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
@@ -22,63 +18,48 @@ export default function Category() {
   const { categoryListData, mutate } = useCategory();
 
   const handleAddCategory = useCallback(async () => {
+    if (categoryListData?.categories.length === 10) {
+      alert('카테고리는 10개까지 추가할 수있습니다.');
+      return;
+    }
     try {
       const newCategoryList: CategoryRequestDTO = {
         title: '',
         description: '',
       };
-
-      const newCategory: CategoryResponseDTO | undefined = await createCategory(
-        newCategoryList
-      );
-
-      if (newCategory) {
-        if (categoryListData) {
-          const updatedCategoryListData = {
-            ...categoryListData,
-            categories: [...categoryListData.categories, newCategory],
-          };
-          mutate(updatedCategoryListData, true);
-        } else {
-          const updatedCategoryListData = {
-            categories: [newCategory],
-            message: '',
-          };
-          mutate(updatedCategoryListData, true);
-        }
-      }
+      await createCategory(newCategoryList);
+      mutate();
     } catch (error) {
       console.error('카테고리 추가 중 오류 발생:', error);
     }
   }, [categoryListData, mutate]);
 
-  const handleModifyCategory = useCallback(
-    async (categoryId: number, updateText: string) => {
-      try {
-        const updatedCategoryData: CategoryRequestDTO = {
-          title: updateText,
-          description: '',
-        };
-        const updatedCategory: CategoryListResponseDTO | undefined =
-          await updateCategory(categoryId, updatedCategoryData);
-
-        if (categoryListData && updatedCategory) {
-          const updatedCategoryListData = {
-            ...categoryListData,
-            categories: categoryListData.categories.map(addedCategory => {
-              if (addedCategory.id === categoryId) {
-                return { ...addedCategory, title: updateText };
-              }
-              return addedCategory;
-            }),
+  const handleUpdateCategory = useCallback(
+    (categoryId: number, updateText: string) => {
+      mutate(data => {
+        if (data) {
+          return {
+            ...data,
+            categories: data.categories.map(category =>
+              category.id === categoryId
+                ? { ...category, title: updateText }
+                : category
+            ),
           };
-          mutate(updatedCategoryListData, false);
         }
-      } catch (error) {
-        console.error('카테고리 수정 중 오류 발생:', error);
-      }
+        return data;
+      }, false);
+
+      const updatedCategoryData: CategoryRequestDTO = {
+        title: updateText,
+        description: '',
+      };
+
+      updateCategory(categoryId, updatedCategoryData).catch(error => {
+        console.error('카테고리 업데이트 문제 발생', error);
+      });
     },
-    [categoryListData, mutate]
+    [mutate]
   );
 
   const handleCheckboxChange = useCallback(
@@ -119,7 +100,7 @@ export default function Category() {
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        handleModifyCategory={handleModifyCategory}
+        handleUpdateCategory={handleUpdateCategory}
         newCategoryInputRef={newCategoryInputRef}
       />
     </>
