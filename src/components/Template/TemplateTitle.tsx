@@ -7,7 +7,9 @@ export default function TemplateTitle() {
   const { selectedTemplateTitle } = useContext(MainContext);
   return (
     <ModalTitle>
-      {selectedTemplateTitle.length === 0 ? '템플릿' : selectedTemplateTitle}{' '}
+      {selectedTemplateTitle.length === 0
+        ? '템플릿 생성'
+        : selectedTemplateTitle}{' '}
     </ModalTitle>
   );
 }
