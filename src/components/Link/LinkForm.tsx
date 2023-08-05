@@ -14,7 +14,7 @@ import useSWR from 'swr';
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import useCategory from '@/hooks/useCategory';
 import { useYoutubeVideo } from '@/hooks/UseYoutubeVideo';
-import { CategoryListResponseDTO } from '@/types/category.interface';
+import { CategoryResponseDTO } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
@@ -46,25 +46,35 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     },
     [handler]
   );
-  const { categoryListData: categories, isLoading: isLoadingCategories } =
-    useCategory();
+  const {
+    categoryListData: categories,
+    isLoading: isLoadingCategories,
+    mutate,
+  } = useCategory();
 
-  const updateCategoryCount = useCallback(
-    (categories: CategoryListResponseDTO) => {
-      const oldCountCategory = categories.categories.find(
-        item => item.id === category
-      );
-      const index = categories.categories.indexOf(oldCountCategory!);
+  const handleCategoryCount = useCallback(
+    (categoryId: number) => {
+      if (categories) {
+        const pickedCategory = categories.categories.find(
+          item => item.id === categoryId
+        );
 
-      const newCountCategory = {
-        ...categories.categories[index],
-        totalCount: categories.categories[index].totalCount + 1,
-      };
-      categories.categories[index] = newCountCategory;
+        const pickedCategoryIndex = categories.categories.findIndex(
+          item => item.id === categoryId
+        );
+        if (pickedCategory && pickedCategoryIndex) {
+          const newCategory = {
+            ...pickedCategory,
+            totalCount: pickedCategory.totalCount + 1,
+          };
 
-      return categories;
+          categories.categories.splice(pickedCategoryIndex, 1, newCategory);
+
+          mutate(categories, false);
+        }
+      }
     },
-    [category]
+    [categories, mutate]
   );
 
   useEffect(() => {
@@ -116,7 +126,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     });
 
     if (categories) {
-      updateCategoryCount(categories);
+      handleCategoryCount(category);
     }
   }, [
     isRequiredFieldsEmpty,
@@ -128,7 +138,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     onSubmit,
     youtubeVideo,
     categories,
-    updateCategoryCount,
+    handleCategoryCount,
   ]);
 
   return (
