@@ -16,14 +16,13 @@ export async function recordListFetcher([url, tokenData]: string[]) {
   return res.data.templates;
 }
 
-export function recordDetailFetcher([url, tokenData]: string[]) {
+export async function recordDetailFetcher([url, tokenData]: string[]) {
   const headers = {
     Authorization: `Bearer ${tokenData}`,
     'Content-Type': 'application/json',
   };
-  return axios
-    .get<recordDetailType>(`${baseUrl}/${url}`, {
-      headers,
-    })
-    .then(res => res.data);
+  const res = await axios.get<recordDetailType>(`${baseUrl}/${url}`, {
+    headers,
+  });
+  return res.data;
 }
