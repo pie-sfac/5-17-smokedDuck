@@ -46,8 +46,36 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     },
     [handler]
   );
-  const { categoryListData: categories, isLoading: isLoadingCategories } =
-    useCategory();
+  const {
+    categoryListData: categories,
+    isLoading: isLoadingCategories,
+    mutate,
+  } = useCategory();
+
+  const handleCategoryCount = useCallback(
+    (categoryId: number) => {
+      if (categories) {
+        const pickedCategory = categories.categories.find(
+          item => item.id === categoryId
+        );
+
+        const pickedCategoryIndex = categories.categories.findIndex(
+          item => item.id === categoryId
+        );
+        if (pickedCategory && pickedCategoryIndex) {
+          const newCategory = {
+            ...pickedCategory,
+            totalCount: pickedCategory.totalCount + 1,
+          };
+
+          categories.categories.splice(pickedCategoryIndex, 1, newCategory);
+
+          mutate(categories, false);
+        }
+      }
+    },
+    [categories, mutate]
+  );
 
   useEffect(() => {
     if (media) {
@@ -96,6 +124,8 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         '',
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
+
+    handleCategoryCount(category);
   }, [
     isRequiredFieldsEmpty,
     category,
@@ -105,6 +135,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     description,
     onSubmit,
     youtubeVideo,
+    handleCategoryCount,
   ]);
 
   return (
