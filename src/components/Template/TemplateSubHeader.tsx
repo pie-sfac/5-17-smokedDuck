@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Questions } from '@/types/question.interface';
 
@@ -8,11 +8,15 @@ type TemplateSubHeaderProps = {
     title: string;
     description?: string;
   };
+  setCurrTemplateSubHeader: Dispatch<
+    SetStateAction<{ title: string; description: string | undefined }>
+  >;
   onChange: (id: string, value: string | Questions[]) => void;
 };
 
 export default function TemplateSubHeader({
   currTemplateSubHeader,
+  setCurrTemplateSubHeader,
   onChange,
 }: TemplateSubHeaderProps) {
   const [currentTemplateTitle, setCurrentTemplateTitle] = useState(
@@ -33,6 +37,10 @@ export default function TemplateSubHeader({
         onChange={e => {
           setCurrentTemplateTitle(e.target.value);
           onChange('title', e.target.value);
+          setCurrTemplateSubHeader({
+            title: e.target.value,
+            description: currTemplateSubHeader.description,
+          });
         }}
       />
       <br />
@@ -45,6 +53,10 @@ export default function TemplateSubHeader({
         onChange={e => {
           setCurrentTemplateDescription(e.target.value);
           onChange('description', e.target.value);
+          setCurrTemplateSubHeader({
+            title: currTemplateSubHeader.title,
+            description: e.target.value,
+          });
         }}
       />
     </TemplateContentContainer>
