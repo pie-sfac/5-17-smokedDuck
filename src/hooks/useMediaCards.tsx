@@ -1,18 +1,13 @@
-import { useContext } from 'react';
 import useSWR from 'swr';
 
 import { getLinkList, LINK_URL } from '@/apis/Media';
-import { MainContext } from '@/store';
 import { GetLinkListResponse } from '@/types/media.interface';
 
 export default function useMediaCards(category?: string) {
-  const { loginToken } = useContext(MainContext);
-
-  const { data: mediaList, error } = useSWR<
-    GetLinkListResponse,
-    Error,
-    [string, string]
-  >([LINK_URL, loginToken], ([, accessToken]) => getLinkList(accessToken));
+  const { data: mediaList, error } = useSWR<GetLinkListResponse, Error>(
+    LINK_URL,
+    getLinkList
+  );
 
   return {
     mediaList:

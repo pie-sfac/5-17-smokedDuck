@@ -1,11 +1,9 @@
 import { Box, Heading, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useContext } from 'react';
 import useSWR from 'swr';
 
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
 import Logo from '@/assets/Logo.svg';
-import { MainContext } from '@/store';
 import { GetLinkDetailResponse } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
@@ -14,14 +12,9 @@ interface LinkViewProps {
 }
 
 function LinkView({ linkId }: LinkViewProps) {
-  const { loginToken } = useContext(MainContext);
-
-  const { data: media } = useSWR<
-    GetLinkDetailResponse,
-    never,
-    [string, string]
-  >([`${LINK_URL}${linkId}`, loginToken || ''], ([_, accessToken]) =>
-    getLinkDetails(linkId, accessToken)
+  const { data: media } = useSWR<GetLinkDetailResponse, never>(
+    `${LINK_URL}${linkId}`,
+    () => getLinkDetails(linkId)
   );
 
   const [mediaUrl] = (media?.url || '').split(';');

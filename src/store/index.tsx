@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { Questions } from '@/types/question.interface';
 import { recordQuestionsType } from '@/types/recordDetail.interface';
@@ -6,7 +6,6 @@ import { Template } from '@/types/template.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 
 type ContextType = {
-  loginToken: string;
   recordModalOpen: boolean;
   mediaModalOpen: boolean;
   selectedTemplateTitle: string;
@@ -23,7 +22,6 @@ type ContextType = {
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
   selectedRecordCard: string;
   setSelectedRecordCard: Dispatch<SetStateAction<string>>;
-  setLoginToken: Dispatch<SetStateAction<string>>;
   templateContent: Template | undefined;
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
   setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
@@ -35,7 +33,6 @@ type ContextType = {
 };
 
 export const MainContext = React.createContext<ContextType>({
-  loginToken: '',
   questionList: [],
   storedCategoryList: [],
   recordModalOpen: false,
@@ -59,7 +56,6 @@ export const MainContext = React.createContext<ContextType>({
   setStoredCategoryList: () => {},
   selectedRecordCard: '',
   setSelectedRecordCard: () => {},
-  setLoginToken: () => {},
   setSeletedRecordCardId: () => {},
   setIsRecordEdit: () => {},
 
@@ -72,14 +68,6 @@ export const MainContext = React.createContext<ContextType>({
 export default function MainContextProvider(props: {
   children: React.ReactNode;
 }) {
-  const [loginToken, setLoginToken] = useState('');
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setLoginToken(localStorage.getItem('token')!);
-    }
-  }, [setLoginToken]);
-
   const [newQuestionList, setNewQuestionList] = useState<recordQuestionsType[]>(
     []
   );
@@ -97,9 +85,7 @@ export default function MainContextProvider(props: {
     useState<categoryListType[]>(categoryList);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const contextValue: ContextType = {
-    loginToken,
     questionList: storedQuestionList,
-
     recordModalOpen: recordModalState,
     setRecordModalState,
     mediaModalOpen: mediaModalState,
@@ -111,7 +97,6 @@ export default function MainContextProvider(props: {
     storedCategoryList,
     selectedRecordCard,
     setSelectedRecordCard,
-    setLoginToken,
     questions,
     setQuestions,
     templateContent,

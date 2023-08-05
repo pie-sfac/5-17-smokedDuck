@@ -8,67 +8,56 @@ import {
   UpdateLinkProps,
   UpdateLinkResponse,
 } from '@/types/media.interface';
-import { header } from '@/utils/validations/linkUtils';
 
-export const BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
 export const LINK_URL = 'archive-links';
 
 export async function updateLink(
   linkId: number,
-  requestData: UpdateLinkProps,
-  token: string
+  requestData: UpdateLinkProps
 ): Promise<UpdateLinkResponse> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
+  const requestUrl = `${LINK_URL}/${linkId}`;
   const response: AxiosResponse<UpdateLinkResponse> = await axios.put(
     requestUrl,
-    requestData,
-    { headers: header(token) }
+    requestData
   );
   return response.data;
 }
 
 export async function createLink(
-  requestData: CreateLinkProps,
-  token: string
+  requestData: CreateLinkProps
 ): Promise<CreateLinkResponse> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}`;
+  const requestUrl = `/${LINK_URL}`;
   const response: AxiosResponse<CreateLinkResponse> = await axios.post(
     requestUrl,
-    requestData,
-    { headers: header(token) }
+    requestData
   );
   return response.data;
 }
 
-export async function getLinkList(token: string): Promise<GetLinkListResponse> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}`;
+export async function getLinkList(): Promise<GetLinkListResponse> {
+  const requestUrl = `/${LINK_URL}`;
   const response: AxiosResponse<GetLinkListResponse> = await axios.get(
-    requestUrl,
-    { headers: header(token) }
+    requestUrl
   );
   return response.data;
 }
 
 export async function getLinkDetails(
-  linkId: number,
-  token: string
+  linkId: number
 ): Promise<GetLinkDetailResponse> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
+  const requestUrl = `/${LINK_URL}/${linkId}`;
   const response: AxiosResponse<GetLinkDetailResponse> = await axios.get(
-    requestUrl,
-    { headers: header(token) }
+    requestUrl
   );
   return response.data;
 }
 
 export async function deleteLink(
-  linkId: number,
-  token: string
+  linkId: number
 ): Promise<GetLinkDetailResponse> {
-  const requestUrl = `${BASE_URL}/${LINK_URL}/${linkId}`;
+  const requestUrl = `/${LINK_URL}/${linkId}`;
   const response: AxiosResponse<GetLinkDetailResponse> = await axios.delete(
-    requestUrl,
-    { headers: header(token) }
+    requestUrl
   );
   return response.data;
 }
