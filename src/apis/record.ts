@@ -8,6 +8,13 @@ export async function recordListFetcher(url: string) {
   return res.data.templates;
 }
 
-export function recordDetailFetcher(url: string) {
-  return axios.get<recordDetailType>(`${url}`).then(res => res.data);
+export async function recordDetailFetcher([url, tokenData]: string[]) {
+  const headers = {
+    Authorization: `Bearer ${tokenData}`,
+    'Content-Type': 'application/json',
+  };
+  const res = await axios.get<recordDetailType>(`${baseUrl}/${url}`, {
+    headers,
+  });
+  return res.data;
 }

@@ -1,12 +1,9 @@
 import styled from '@emotion/styled';
+import { useCallback, useState } from 'react';
 
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
 interface QuestionProps {
   order: number;
   title: string;
@@ -14,8 +11,28 @@ interface QuestionProps {
   onChange: (
     order: number,
     id: string,
-    value: string | AddedSelection[] | boolean
+    value: string | string[] | boolean
   ) => void;
+  type?: string;
+  required?: boolean;
+  description?: string;
+  paragraph?: boolean;
+  options?: string[];
+  allowMultiple?: boolean;
+  addOtherOption?: boolean;
+}
+
+interface CurrentQuestion {
+  order: number;
+  title: string;
+  tagName: string;
+  type?: string;
+  required?: boolean;
+  description?: string;
+  paragraph?: boolean;
+  options?: string[];
+  allowMultiple?: boolean;
+  addOtherOption?: boolean;
 }
 
 export default function Question({
@@ -23,19 +40,63 @@ export default function Question({
   title,
   tagName,
   onChange,
+  required,
+  type,
+  description,
+  paragraph,
+  options,
+  allowMultiple,
+  addOtherOption,
 }: QuestionProps) {
+  const [currentQuestion] = useState<CurrentQuestion>({
+    order,
+    title,
+    tagName,
+    required,
+    description,
+    paragraph,
+    options,
+    allowMultiple,
+    addOtherOption,
+  });
+
+  const setSpecialtyTitle = useCallback(
+    (currentType: string | undefined, title: string) => {
+      switch (currentType) {
+        case 'PAIN_HSTRY':
+          return '통증 정도';
+          break;
+        case 'CONDITION':
+          return '오늘의 컨디션';
+          break;
+        case 'PAIN_INTV':
+          return '통증 문진';
+          break;
+
+        default:
+          return title;
+          break;
+      }
+    },
+    []
+  );
+
   return (
     <QuestionContainer>
       <QuestionHeader
         order={order}
-        title={title}
+        title={setSpecialtyTitle(type, title)}
         tagName={tagName}
+        paragraph={paragraph ? paragraph : false}
         onChange={onChange}
       />
       {tagName === '기본' && (
-        <QuestionContent title={title} order={order} onChange={onChange} />
+        <QuestionContent
+          onChange={onChange}
+          currentQuestion={currentQuestion}
+        />
       )}
-      <QuestionFooter order={order} onChange={onChange} />
+      <QuestionFooter order={order} onChange={onChange} required={required} />
     </QuestionContainer>
   );
 }
