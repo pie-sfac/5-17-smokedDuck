@@ -5,7 +5,6 @@ import { createCategory, updateCategory } from '@/apis/Category';
 import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
 import {
-  CategoryListResponseDTO,
   CategoryRequestDTO,
   CategoryResponseDTO,
 } from '@/types/category.interface';
@@ -56,46 +55,32 @@ export default function Category() {
     }
   }, [categoryListData, mutate]);
 
-  const handleUpdateyCategory = useCallback(
-    async (categoryId: number, updateText: string) => {
-      try {
-        mutate(data => {
-          if (data) {
-            return {
-              ...data,
-              categories: data.categories.map(category =>
-                category.id === categoryId
-                  ? { ...category, title: updateText }
-                  : category
-              ),
-            };
-          }
-          return data;
-        }, false);
-        const updatedCategoryData: CategoryRequestDTO = {
-          title: updateText,
-          description: '',
-        };
-        const updatedCategory: CategoryListResponseDTO | undefined =
-          await updateCategory(categoryId, updatedCategoryData);
-
-        if (categoryListData && updatedCategory) {
-          const updatedCategoryListData = {
-            ...categoryListData,
-            categories: categoryListData.categories.map(addedCategory => {
-              if (addedCategory.id === categoryId) {
-                return { ...addedCategory, title: updateText };
-              }
-              return addedCategory;
-            }),
+  const handleUpdateCategory = useCallback(
+    (categoryId: number, updateText: string) => {
+      mutate(data => {
+        if (data) {
+          return {
+            ...data,
+            categories: data.categories.map(category =>
+              category.id === categoryId
+                ? { ...category, title: updateText }
+                : category
+            ),
           };
-          mutate(updatedCategoryListData, false);
         }
-      } catch (error) {
+        return data;
+      }, false);
+
+      const updatedCategoryData: CategoryRequestDTO = {
+        title: updateText,
+        description: '',
+      };
+
+      updateCategory(categoryId, updatedCategoryData).catch(error => {
         console.error('카테고리 업데이트 문제 발생', error);
-      }
+      });
     },
-    [categoryListData, mutate]
+    [mutate]
   );
 
   const handleCheckboxChange = useCallback(
@@ -136,7 +121,7 @@ export default function Category() {
         isDeleteMode={isDeleteMode}
         setIsDeleteMode={setIsDeleteMode}
         handleCheckboxChange={handleCheckboxChange}
-        handleUpdateCategory={handleUpdateyCategory}
+        handleUpdateCategory={handleUpdateCategory}
         newCategoryInputRef={newCategoryInputRef}
       />
     </>
