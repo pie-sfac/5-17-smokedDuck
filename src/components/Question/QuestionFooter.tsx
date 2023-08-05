@@ -3,25 +3,23 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
 
 type QuestionFooterProps = {
   order: number;
   onChange: (
     order: number,
     id: string,
-    value: string | AddedSelection[] | boolean
+    value: string | string[] | boolean
   ) => void;
+  required?: boolean;
 };
 
 export default function QuestionFooter({
   order,
   onChange,
+  required,
 }: QuestionFooterProps) {
-  const [isRequired, setIsRequired] = useState(false);
+  const [isRequired, setIsRequired] = useState(required ? required : false);
   return (
     <QuestionFooterContainer>
       <EssentialContainer>
@@ -32,8 +30,9 @@ export default function QuestionFooter({
           size="sm"
           onChange={() => {
             setIsRequired(prevIsRequired => !prevIsRequired);
-            onChange(order, 'required', isRequired ? false : true);
+            onChange(order, 'required', isRequired);
           }}
+          defaultChecked={isRequired ? true : false}
         />
       </EssentialContainer>
       <MoveContainer>

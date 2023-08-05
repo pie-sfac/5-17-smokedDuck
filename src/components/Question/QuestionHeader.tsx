@@ -2,28 +2,28 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
 
 type QuestionHeaderProps = {
   order: number;
   title: string;
   tagName: string;
+  paragraph: boolean;
   onChange: (
     order: number,
     id: string,
-    value: string | AddedSelection[] | boolean
+    value: string | string[] | boolean
   ) => void;
 };
+
 export default function QuestionHeader({
   order,
   title,
   tagName,
+  paragraph,
   onChange,
 }: QuestionHeaderProps) {
   const [isAllowMultiple, setIsAllowMultiple] = useState(false);
+  const [isParagraph, setIsParagraph] = useState(paragraph);
 
   return (
     <HeaderContainer>
@@ -47,7 +47,11 @@ export default function QuestionHeader({
             type="radio"
             name={`answerType${order}`}
             id="shortAnswer"
-            onChange={() => onChange(order, 'paragraph', false)}
+            onChange={() => {
+              setIsParagraph(prevIsParagraph => !prevIsParagraph);
+              onChange(order, 'paragraph', false);
+            }}
+            checked={isParagraph ? false : true}
           />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
@@ -58,7 +62,11 @@ export default function QuestionHeader({
             type="radio"
             name={`answerType${order}`}
             id="longAnswer"
-            onChange={() => onChange(order, 'paragraph', true)}
+            onChange={() => {
+              setIsParagraph(prevIsParagraph => !prevIsParagraph);
+              onChange(order, 'paragraph', true);
+            }}
+            checked={isParagraph ? true : false}
           />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>

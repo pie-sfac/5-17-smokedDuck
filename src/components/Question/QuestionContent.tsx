@@ -4,28 +4,39 @@ import { ChangeEvent, useCallback, useRef, useState } from 'react';
 import { AddedFile } from '@/types/question.interface';
 
 type QuestionContentProps = {
-  order: number;
-  title: string;
   onChange: (
     order: number,
     id: string,
-    value: string | AddedSelection[] | boolean
+    value: string | string[] | boolean
   ) => void;
+  currentQuestion: {
+    order: number;
+    title: string;
+    tagName: string;
+    required?: boolean;
+    description?: string;
+    paragraph?: boolean;
+    options?: string[];
+    allowMultiple?: boolean;
+    addOtherOption?: boolean;
+  };
 };
 
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
-
 export default function QuestionContent({
-  order,
-  title,
   onChange,
+  currentQuestion,
 }: QuestionContentProps) {
   const [addedFiles, setAddedFiles] = useState<AddedFile[]>([]);
   const [currentSelection, setCurrentSelection] = useState('');
-  const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
+  const [addedSelections, setAddedSelections] = useState<string[]>([]);
+
+  const [currentTitle, setCurrentTitle] = useState(currentQuestion.title);
+  const [currentDescription, setCurrentDescription] = useState(
+    currentQuestion.description
+  );
+  const [currentOptions, setCurrentOptions] = useState<string[] | undefined>(
+    currentQuestion ? currentQuestion.options : []
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,22 +79,35 @@ export default function QuestionContent({
     [addedFiles]
   );
 
-  const handleAddedSelections = useCallback(() => {
-    const createdSelection = {
-      _id: addedSelections.length === 0 ? 1 : addedSelections.length + 1,
-      selectionName: currentSelection,
-    };
-    setAddedSelections(prevAddedSelections => [
-      ...prevAddedSelections,
-      createdSelection,
-    ]);
-    onChange(order, 'options', [...addedSelections, createdSelection]);
-    setCurrentSelection('');
-  }, [addedSelections, currentSelection, onChange, order]);
+  const handleAddedSelections = useCallback(
+    (currentSelection: string) => {
+      //템플릿 생성 시 화면에 출력될 내용
+      setAddedSelections(prevAddedSelections => [
+        ...prevAddedSelections,
+        currentSelection,
+      ]);
+      // 템플릿 편집 시 이미 존재하는 보기 내용
+      setCurrentOptions(
+        prevCurrentOptions =>
+          prevCurrentOptions && [...prevCurrentOptions, currentSelection]
+      );
+
+      //템플릿 생성 시 추가되는 보기 저장
+      addedSelections?.length !== 0 &&
+        onChange(currentQuestion.order, 'options', [
+          ...addedSelections,
+          currentSelection,
+        ]);
+      setCurrentSelection('');
+    },
+    [addedSelections, currentQuestion.order, onChange]
+  );
 
   const handleDeleteSelection = useCallback((targetId: number) => {
     setAddedSelections(prevAddedSelections =>
-      prevAddedSelections.filter(selection => selection._id !== targetId)
+      prevAddedSelections.filter((_, idx) =>
+        prevAddedSelections ? prevAddedSelections.length + idx : 1 !== targetId
+      )
     );
   }, []);
 
@@ -99,7 +123,11 @@ export default function QuestionContent({
           height: '2.5rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        onChange={e => onChange(order, 'title', e.target.value)}
+        onChange={e => {
+          setCurrentTitle(e.target.value);
+          onChange(currentQuestion.order, 'title', e.target.value);
+        }}
+        value={currentTitle}
       />
       <StyledLabel htmlFor="questionDescription">문항 설명</StyledLabel>
       <StyledTextArea
@@ -110,9 +138,13 @@ export default function QuestionContent({
           height: '4.2rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        onChange={e => onChange(order, 'description', e.target.value)}
+        onChange={e => {
+          setCurrentDescription(e.target.value);
+          onChange(currentQuestion.order, 'description', e.target.value);
+        }}
+        value={currentDescription}
       />
-      {title === '미디어' && (
+      {currentQuestion.title === '미디어' && (
         <AddMediaContainer>
           <AddMediaButton
             htmlFor="mediaFile"
@@ -160,7 +192,7 @@ export default function QuestionContent({
           )}
         </AddMediaContainer>
       )}
-      {title === '선택형' && (
+      {currentQuestion.title === '선택형' && (
         <AddSelectionContainer>
           <StyledLabel htmlFor="questionDescription">보기</StyledLabel>
           <SelectionField>
@@ -175,20 +207,26 @@ export default function QuestionContent({
             />
             <AddSelectionButton
               onClick={() => {
-                handleAddedSelections();
+                handleAddedSelections(currentSelection);
               }}
             >
               +
             </AddSelectionButton>
           </SelectionField>
-          {addedSelections.length !== 0 && (
+          {addedSelections?.length !== 0 && (
             <AddedSelectionContainer>
-              {addedSelections.map(addedSelection => (
-                <StyledSelection key={addedSelection._id}>
-                  {addedSelection.selectionName}
+              {addedSelections.map((addedSelection, idx) => (
+                <StyledSelection
+                  key={addedSelections ? addedSelections.length + idx : 1}
+                >
+                  {addedSelection}
                   <ChangeMediaButton
                     style={{ marginLeft: '1rem' }}
-                    onClick={() => handleDeleteSelection(addedSelection._id)}
+                    onClick={() =>
+                      handleDeleteSelection(
+                        addedSelections ? addedSelections.length + idx : 1
+                      )
+                    }
                   >
                     삭제
                   </ChangeMediaButton>
@@ -196,6 +234,26 @@ export default function QuestionContent({
               ))}
             </AddedSelectionContainer>
           )}
+          {/* 편집모드인 경우 */}
+          <AddedSelectionContainer>
+            {currentOptions?.map((currentOption, idx) => (
+              <StyledSelection
+                key={currentOptions ? currentOptions.length + idx : 1}
+              >
+                {currentOption}
+                <ChangeMediaButton
+                  style={{ marginLeft: '1rem' }}
+                  onClick={() =>
+                    handleDeleteSelection(
+                      currentOptions ? currentOptions.length + idx : 1
+                    )
+                  }
+                >
+                  삭제
+                </ChangeMediaButton>
+              </StyledSelection>
+            ))}
+          </AddedSelectionContainer>
         </AddSelectionContainer>
       )}
     </QuestionContentContainer>

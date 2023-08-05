@@ -1,32 +1,28 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
 
 import Question from '../Question';
 
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
-
+const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
 export default function TemplateSelectedQuestionContainer() {
-  const { questionList, setQuestionList } = useContext(MainContext);
+  const { questionList, setQuestionList, selectedRecordCard } =
+    useContext(MainContext);
 
-  const handleQuestionContent = (
-    order: number,
-    id: string,
-    value: string | AddedSelection[] | boolean
-  ) => {
-    const updatedQuestion = questionList.map(question =>
-      question.order === order
-        ? { ...question, [id === 'title' ? question.title : id]: value }
-        : question
-    );
+  const handleQuestionContent = useCallback(
+    (order: number, id: string, value: string | string[] | boolean) => {
+      const currentUpdatedQuestion = questionList.map(question =>
+        question.order === order
+          ? { ...question, [id === 'title' ? question.title : id]: value }
+          : question
+      );
 
-    setQuestionList(updatedQuestion);
-  };
+      setQuestionList(currentUpdatedQuestion);
+    },
+    [questionList, setQuestionList]
+  );
 
   return (
     <ContentContainer
@@ -35,7 +31,8 @@ export default function TemplateSelectedQuestionContainer() {
           questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questionList.length === 0 ? (
+      {questionList.length === 0 &&
+      selectedRecordCard?.questions?.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -45,7 +42,7 @@ export default function TemplateSelectedQuestionContainer() {
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questionList.map(question => (
+        questionList?.map(question => (
           <Question
             key={question.order}
             order={question.order}
@@ -55,6 +52,25 @@ export default function TemplateSelectedQuestionContainer() {
           />
         ))
       )}
+      {selectedRecordCard?.questions &&
+        selectedRecordCard?.questions.map(currentQuestion => (
+          <Question
+            key={currentQuestion.order}
+            order={currentQuestion.order}
+            title={currentQuestion.title}
+            tagName={
+              basicQuestion.includes(currentQuestion.type) ? '기본' : '전문'
+            }
+            type={currentQuestion.type}
+            onChange={handleQuestionContent}
+            required={currentQuestion.required}
+            description={currentQuestion.description}
+            paragraph={currentQuestion.paragraph}
+            options={currentQuestion.options}
+            allowMultiple={currentQuestion.allowMultiple}
+            addOtherOption={currentQuestion.addOtherOption}
+          />
+        ))}
     </ContentContainer>
   );
 }

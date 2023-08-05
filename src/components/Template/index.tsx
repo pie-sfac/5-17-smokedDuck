@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createTemplate } from '@/apis/Template';
@@ -18,10 +18,20 @@ type NewTemplateContent = {
 };
 
 export default function Template() {
-  const { loginToken, questionList, templateContent, setTemplateContent } =
-    useContext(MainContext);
+  const {
+    loginToken,
+    questionList,
+    templateContent,
+    setTemplateContent,
+    selectedRecordCard,
+  } = useContext(MainContext);
 
   const { recordListData } = useRecord();
+
+  const [currTemplateSubHeader] = useState({
+    title: selectedRecordCard ? selectedRecordCard.title : '',
+    description: selectedRecordCard ? selectedRecordCard.description : '',
+  });
 
   const handleTemplateContent = (id: string, value: string | Questions[]) => {
     templateContent &&
@@ -59,7 +69,10 @@ export default function Template() {
   return (
     <>
       <TemplateTitle />
-      <TemplateContent onChange={handleTemplateContent} />
+      <TemplateContent
+        currTemplateSubHeader={currTemplateSubHeader}
+        onChange={handleTemplateContent}
+      />
       <TemplateFooter handleClickedSaveButton={handleClickedSaveButton} />
     </>
   );
