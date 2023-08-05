@@ -9,8 +9,14 @@ import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 import Loading from '../Common/Loading';
 
-export default function MediaListContainer() {
-  const { mediaList, isLoading, error } = useMediaCards();
+type MediaListContainerPropType = {
+  selectedCategory: string;
+};
+
+export default function MediaListContainer({
+  selectedCategory,
+}: MediaListContainerPropType) {
+  const { mediaList, isLoading, error } = useMediaCards(selectedCategory);
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

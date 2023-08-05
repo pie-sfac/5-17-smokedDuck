@@ -1,14 +1,20 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useCategory from '@/hooks/useCategory';
+import useMediaCards from '@/hooks/useMediaCards';
 
-export default function MediaCategorySelector() {
+type MediaCategorySelectorPropsType = {
+  selectedCategory: string;
+  categoryChange: (title: string) => void;
+};
+
+export default function MediaCategorySelector({
+  selectedCategory,
+  categoryChange,
+}: MediaCategorySelectorPropsType) {
   const { categoryListData, isLoading, error } = useCategory();
-  const [selectedCategory, setSelectedCategory] = useState(
-    categoryListData?.categories[0].id
-  );
+  const { totalLinksCount } = useMediaCards();
   const navigate = useNavigate();
 
   const categoryMap: { [key: string]: number } = {};
@@ -25,11 +31,17 @@ export default function MediaCategorySelector() {
   return (
     <MediaCategorySelectorContainer>
       <CategoryTitle>
+        <CategoryItem
+          onClick={() => categoryChange('전체')}
+          className={selectedCategory === '전체' ? 'active' : ''}
+        >
+          {`전체(${totalLinksCount})`}
+        </CategoryItem>
         {categoryListData.categories.map((item, index) => {
           return (
             <CategoryItem
-              onClick={() => setSelectedCategory(item.id)}
-              className={selectedCategory === item.id ? 'active' : ''}
+              onClick={() => categoryChange(item.title)}
+              className={selectedCategory === item.title ? 'active' : ''}
               key={`${item.id}-${index}`}
             >
               {item.title}({categoryMap[item.title] || 0})

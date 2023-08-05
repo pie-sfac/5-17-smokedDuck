@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { MainContext } from '@/store';
 
@@ -9,11 +9,17 @@ import MediaListContainer from './MediaListContainer';
 
 export default function Media() {
   const { mediaModalOpen, setMediaModalState } = useContext(MainContext);
-
+  const [selectedCategory, setSelectedCategory] = useState('전체');
+  const categoryChange = (title: string) => {
+    setSelectedCategory(title);
+  };
   return (
     <>
-      <MediaCategorySelector />
-      <MediaListContainer />
+      <MediaCategorySelector
+        selectedCategory={selectedCategory}
+        categoryChange={categoryChange}
+      />
+      <MediaListContainer selectedCategory={selectedCategory} />
       {mediaModalOpen && (
         <Modal
           width={940}
