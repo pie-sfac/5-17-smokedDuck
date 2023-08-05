@@ -3,13 +3,29 @@ import { useCallback, useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Question from '../Question';
 
 const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
-export default function TemplateSelectedQuestionContainer() {
-  const { questionList, setQuestionList, selectedRecordCard } =
-    useContext(MainContext);
+
+type TemplateSelectedQuestionContainerProps = {
+  isEditMode: boolean | undefined;
+  totalQuestionList: recordQuestionsType[];
+  setUpdateQuestions: React.Dispatch<
+    React.SetStateAction<recordQuestionsType[] | undefined>
+  >;
+  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
+};
+
+export default function TemplateSelectedQuestionContainer({
+  isEditMode,
+  totalQuestionList,
+  setUpdateQuestions,
+  setAddQuestions,
+}: TemplateSelectedQuestionContainerProps) {
+  const { questionList, setQuestionList } = useContext(MainContext);
 
   const handleQuestionContent = useCallback(
     (order: number, id: string, value: string | string[] | boolean) => {
@@ -20,8 +36,27 @@ export default function TemplateSelectedQuestionContainer() {
       );
 
       setQuestionList(currentUpdatedQuestion);
+      setAddQuestions(currentUpdatedQuestion);
+      if (isEditMode) {
+        const currentUpdatedQuestion = totalQuestionList?.map(updateQuestion =>
+          updateQuestion.order === order
+            ? {
+                ...updateQuestion,
+                [id === 'title' ? updateQuestion.title : id]: value,
+              }
+            : updateQuestion
+        );
+        setUpdateQuestions(currentUpdatedQuestion);
+      }
     },
-    [questionList, setQuestionList]
+    [
+      isEditMode,
+      questionList,
+      setAddQuestions,
+      setQuestionList,
+      setUpdateQuestions,
+      totalQuestionList,
+    ]
   );
 
   useEffect(
@@ -36,8 +71,7 @@ export default function TemplateSelectedQuestionContainer() {
           questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questionList.length === 0 &&
-      selectedRecordCard?.questions?.length === 0 ? (
+      {questionList.length === 0 && totalQuestionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -57,8 +91,8 @@ export default function TemplateSelectedQuestionContainer() {
           />
         ))
       )}
-      {selectedRecordCard?.questions &&
-        selectedRecordCard?.questions.map(currentQuestion => (
+      {totalQuestionList &&
+        totalQuestionList.map(currentQuestion => (
           <Question
             key={currentQuestion.order}
             order={currentQuestion.order}

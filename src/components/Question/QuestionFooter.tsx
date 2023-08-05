@@ -67,7 +67,7 @@ export default function QuestionFooter({
           size="sm"
           onChange={() => {
             setIsRequired(prevIsRequired => !prevIsRequired);
-            onChange(order, 'required', isRequired);
+            onChange(order, 'required', !isRequired);
           }}
           defaultChecked={isRequired ? true : false}
         />
