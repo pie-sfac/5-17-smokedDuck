@@ -13,6 +13,7 @@ type MediaCardProps = {
   description: string;
   linkUrl: string;
   thumbnailUrl: string;
+  categoryId: number;
   onClick: () => void;
 };
 
@@ -22,6 +23,7 @@ export default function MediaCard({
   description,
   thumbnailUrl,
   onClick,
+  categoryId,
 }: MediaCardProps) {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -67,6 +69,7 @@ export default function MediaCard({
           title={'삭제 확인'}
           text={'해당 링크를 삭제하시겠습니까?'}
           id={id}
+          categoryId={categoryId}
           setDeleteModalOpen={setDeleteModalOpen}
         />
       )}

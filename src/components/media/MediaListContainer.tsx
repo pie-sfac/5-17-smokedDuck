@@ -35,6 +35,7 @@ export default function MediaListContainer({
               id={item.id}
               title={item.title}
               description={item.description}
+              categoryId={item.category.id}
               linkUrl={getLinkUrlInfo(item.url).linkUrl || ''}
               thumbnailUrl={getLinkUrlInfo(item.url).thumbnailUrl || ''}
               onClick={() => {
