@@ -9,10 +9,14 @@ import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
 type TemplateContentProps = {
+  currTemplateSubHeader: { title: string; description?: string };
   onChange: (id: string, value: string | Questions[]) => void;
 };
 
-export default function TemplateContent({ onChange }: TemplateContentProps) {
+export default function TemplateContent({
+  currTemplateSubHeader,
+  onChange,
+}: TemplateContentProps) {
   const { selectedTemplateTitle } = useContext(MainContext);
 
   return (
@@ -21,7 +25,10 @@ export default function TemplateContent({ onChange }: TemplateContentProps) {
         <TemplateSelections />
       ) : (
         <>
-          <TemplateSubHeader onChange={onChange} />
+          <TemplateSubHeader
+            currTemplateSubHeader={currTemplateSubHeader}
+            onChange={onChange}
+          />
           <TemplateQuestionSelections />
           <TemplateSelectedQuestionContainer />
         </>
