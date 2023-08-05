@@ -5,13 +5,13 @@ import { useContext } from 'react';
 import { MainContext } from '@/store';
 
 type TemplateFooterProps = {
-  handleClickedSaveButton: () => Promise<void>;
+  handleClickedSaveButton: (id?: number) => Promise<void>;
 };
 
 export default function TemplateFooter({
   handleClickedSaveButton,
 }: TemplateFooterProps) {
-  const { questionList } = useContext(MainContext);
+  const { selectedRecordCard, questionList } = useContext(MainContext);
 
   return (
     <FooterContainer>
@@ -23,7 +23,7 @@ export default function TemplateFooter({
         }}
         borderRadius={'20px 20px 20px 20px'}
         isDisabled={questionList.length < 1 ? true : false}
-        onClick={handleClickedSaveButton}
+        onClick={() => handleClickedSaveButton(selectedRecordCard?.id)}
       >
         저장
       </Button>
