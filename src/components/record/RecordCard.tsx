@@ -84,7 +84,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
       )}
       {editModalOpen && (
         <Modal setIsOpen={setEditModalOpen}>
-          <Template />
+          <Template isEditMode={editModalOpen} />
         </Modal>
       )}
       {deleteModalOpen && (
