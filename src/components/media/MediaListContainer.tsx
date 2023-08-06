@@ -29,6 +29,14 @@ export default function MediaListContainer({
     );
   }
 
+  if (mediaList.length === 0) {
+    return (
+      <EmptyListBackground>
+        <img src="src/assets/EmptyMedia.svg" />
+      </EmptyListBackground>
+    );
+  }
+
   return (
     <>
       <ListBackGround>
@@ -100,4 +108,14 @@ const LoadingBackGround = styled('div')`
   width: 1408px;
   height: 624px;
   border: 1px solid #e7e7e7;
+`;
+
+const EmptyListBackground = styled('div')`
+  margin: 1rem 0;
+  padding: 16px;
+  width: 1408px;
+  height: 624px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
