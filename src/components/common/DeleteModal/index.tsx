@@ -20,6 +20,7 @@ type DeleteModalPropsType = {
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
   title: string;
   text: string;
+  categoryId?: number;
 };
 
 export default function DeleteModalContainer({
@@ -27,6 +28,7 @@ export default function DeleteModalContainer({
   title,
   text,
   setDeleteModalOpen,
+  categoryId,
 }: DeleteModalPropsType) {
   const { pathname } = useLocation();
 
@@ -62,6 +64,30 @@ export default function DeleteModalContainer({
         },
         false
       );
+      if (categoryListData) {
+        const pickedCategory = categoryListData.categories.find(
+          item => item.id === categoryId
+        );
+
+        const pickedCategoryIndex = categoryListData.categories.findIndex(
+          item => item.id === categoryId
+        );
+
+        if (pickedCategory && pickedCategoryIndex) {
+          const newCategory = {
+            ...pickedCategory,
+            totalCount: pickedCategory.totalCount - 1,
+          };
+
+          categoryListData.categories.splice(
+            pickedCategoryIndex,
+            1,
+            newCategory
+          );
+
+          mutateCategory(categoryListData, false);
+        }
+      }
     }
 
     if (pathname === '/category') {
