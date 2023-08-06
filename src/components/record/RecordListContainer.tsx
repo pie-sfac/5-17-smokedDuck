@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import Loading from '@/components/Common/Loading';
 import RecordCard from '@/components/Record/RecordCard';
 import useRecord from '@/hooks/useRecord';
 
@@ -13,18 +14,20 @@ export default function RecordListContainer({
   const { recordListData, isLoading, error } = useRecord(category);
 
   if (isLoading || error || !recordListData) {
-    return <div>Loading...</div>;
+    return (
+      <ListBackGround>
+        <Loading />
+      </ListBackGround>
+    );
   }
   return (
-    <>
-      <ListBackGround>
-        <ListContainer>
-          {recordListData.map(item => (
-            <RecordCard title={item.title} key={item.id} id={item.id} />
-          ))}
-        </ListContainer>
-      </ListBackGround>
-    </>
+    <ListBackGround>
+      <ListContainer>
+        {recordListData.map(item => (
+          <RecordCard title={item.title} key={item.id} id={item.id} />
+        ))}
+      </ListContainer>
+    </ListBackGround>
   );
 }
 

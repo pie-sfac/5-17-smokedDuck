@@ -22,7 +22,11 @@ export default function MediaListContainer({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (isLoading || error || !mediaList) {
-    return <Loading />;
+    return (
+      <LoadingBackGround>
+        <Loading />
+      </LoadingBackGround>
+    );
   }
 
   return (
@@ -75,14 +79,25 @@ const ListBackGround = styled('div')`
   flex-wrap: wrap;
   justify-content: flex-start;
   overflow: auto;
-  margin: 1rem;
+  margin: 1rem 0;
   width: 1408px;
   height: 624px;
   padding: 16px;
   background-color: rgba(235, 241, 255, 0.8);
   border-radius: 16px;
+  border: 1px solid #e7e7e7;
 
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const LoadingBackGround = styled('div')`
+  background-color: rgba(235, 241, 255, 0.8);
+  border-radius: 16px;
+  margin: 1rem 0;
+  padding: 16px;
+  width: 1408px;
+  height: 624px;
+  border: 1px solid #e7e7e7;
 `;
