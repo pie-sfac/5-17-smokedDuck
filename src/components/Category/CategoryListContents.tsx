@@ -95,9 +95,8 @@ export default function CategoryListContents({
               );
             })
           : categoryListData.categories.map((item, index) => (
-              <CategoryListInputWrapper>
+              <CategoryListInputWrapper key={`${item.id}-${index}`}>
                 <CategoryListInput
-                  key={`${item.id}-${index}`}
                   value={item.title}
                   onChange={e => handleUpdateCategory(item.id, e.target.value)}
                   onBlur={e => handleUpdateBlur(item.id, e.target.value)}
@@ -133,9 +132,12 @@ export default function CategoryListContents({
       {deleteModalOpen && (
         <DeleteModalContainer
           title={'삭제 확인'}
-          text={'해당 링크를 삭제하시겠습니까?'}
+          text={
+            '선택하신 카테고리를 삭제하시겠습니까? \n (주의) 링크가 있는 경우, 함께 삭제 됩니다.'
+          }
           id={selectedIds}
           setDeleteModalOpen={setDeleteModalOpen}
+          setIsDeleteMode={setIsDeleteMode}
         />
       )}
     </>

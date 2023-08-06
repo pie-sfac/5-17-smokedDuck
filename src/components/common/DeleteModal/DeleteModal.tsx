@@ -9,6 +9,7 @@ type DeleteModalPropsType = {
   title: string;
   text: string;
   handleDeleteClick: () => Promise<void>;
+  setIsDeleteMode?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function DeleteModal({
@@ -51,6 +52,7 @@ const TitleArea = styled.h4`
 const TextArea = styled.div`
   font-size: 14px;
   margin-bottom: 28px;
+  white-space: pre-line;
 `;
 
 const BlueButton = chakra(Button, {
