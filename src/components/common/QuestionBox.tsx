@@ -75,6 +75,7 @@ const QuestionBoxConatiner = styled('div')`
   height: 5.3rem;
   border: 1px solid #e7e7e7;
   border-radius: 10px 10px 10px 10px;
+  cursor: pointer;
 `;
 
 const TagNameContainer = styled('div')`

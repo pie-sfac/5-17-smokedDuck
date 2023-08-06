@@ -64,6 +64,7 @@ const SelectionBoxContainer = styled('div')`
   margin: 1rem;
   border: 1px solid #e7e7e7;
   border-radius: 10px 10px 10px 10px;
+  cursor: pointer;
   :hover {
     border: 1px solid #2d62ea;
     * {

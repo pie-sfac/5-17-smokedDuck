@@ -10,25 +10,15 @@ type NewTemplateContent = {
   description?: string | undefined;
 };
 
-const BASE_URL: string = import.meta.env.VITE_BASE_URL as string;
 const TEMPLATE_URL = 'record-templates';
 
-export const requestUrl = `${BASE_URL}/${TEMPLATE_URL}`;
+export const requestUrl = `/${TEMPLATE_URL}`;
 
-export async function createTemplate(
-  loginToken: string,
-  templateContent: NewTemplateContent
-) {
+export async function createTemplate(templateContent: NewTemplateContent) {
   try {
     const response: AxiosResponse<CreateTemplateResponse> = await axios.post(
       requestUrl,
-      templateContent,
-      {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
+      templateContent
     );
     return response.data;
   } catch (error) {
