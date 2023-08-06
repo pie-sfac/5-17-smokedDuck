@@ -21,6 +21,7 @@ type DeleteModalPropsType = {
   title: string;
   text: string;
   categoryId?: number;
+  setIsDeleteMode: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function DeleteModalContainer({
@@ -29,6 +30,7 @@ export default function DeleteModalContainer({
   text,
   setDeleteModalOpen,
   categoryId,
+  setIsDeleteMode,
 }: DeleteModalPropsType) {
   const { pathname } = useLocation();
 
@@ -105,9 +107,10 @@ export default function DeleteModalContainer({
         categories: updatedCategoryList,
       };
       mutateCategory(updatedCategoryListData, false);
+      setIsDeleteMode(false);
       setSelectedIds([]);
     }
-
+    setSelectedIds([]);
     setDeleteModalOpen(false);
   };
 
@@ -117,6 +120,7 @@ export default function DeleteModalContainer({
       title={title}
       text={text}
       handleDeleteClick={handleDeleteClick}
+      setIsDeleteMode={setIsDeleteMode}
     />
   );
 }
