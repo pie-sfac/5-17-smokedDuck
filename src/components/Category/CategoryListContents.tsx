@@ -28,6 +28,9 @@ export default function CategoryListContents({
   const { selectedIds, setSelectedIds } = useContext(MainContext);
   const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [duplicateCategoryId, setDuplicateCategoryId] = useState<number | null>(
+    null
+  );
 
   const handleCategoryClick = useCallback(
     (categoryId: number) => {
@@ -40,6 +43,25 @@ export default function CategoryListContents({
       });
     },
     [setSelectedIds]
+  );
+
+  const handleUpdateBlur = useCallback(
+    (categoryId: number, updateText: string) => {
+      const duplicateTitle = categoryListData?.categories.find(
+        category => category.id !== categoryId && category.title === updateText
+      );
+
+      setDuplicateCategoryId(duplicateTitle ? categoryId : null);
+    },
+    [categoryListData?.categories]
+  );
+
+  const handleDeleteCategory = useCallback(
+    (categoryId: number) => {
+      handleUpdateCategory(categoryId, '');
+      setDuplicateCategoryId(null);
+    },
+    [handleUpdateCategory]
   );
 
   const handlercancelButton = useCallback(() => {
@@ -73,18 +95,26 @@ export default function CategoryListContents({
               );
             })
           : categoryListData.categories.map((item, index) => (
-              <CategoryListInput
-                key={`${item.id}-${index}`}
-                value={item.title}
-                onChange={e => handleUpdateCategory(item.id, e.target.value)}
-                maxLength={15}
-                ref={
-                  item.id === addedCategory[addedCategory.length - 1].id
-                    ? newCategoryInputRef
-                    : null
-                }
-                placeholder="카테고리명을 입력하세요"
-              />
+              <CategoryListInputWrapper>
+                <CategoryListInput
+                  key={`${item.id}-${index}`}
+                  value={item.title}
+                  onChange={e => handleUpdateCategory(item.id, e.target.value)}
+                  onBlur={e => handleUpdateBlur(item.id, e.target.value)}
+                  maxLength={15}
+                  ref={
+                    item.id === addedCategory[addedCategory.length - 1].id
+                      ? newCategoryInputRef
+                      : null
+                  }
+                  placeholder="카테고리명을 입력하세요"
+                />
+                {duplicateCategoryId === item.id && (
+                  <DuplicateText onClick={() => handleDeleteCategory(item.id)}>
+                    카테고리명이 중복됩니다
+                  </DuplicateText>
+                )}
+              </CategoryListInputWrapper>
             ))}
       </CategoryListContentsContainer>
       {isDeleteMode && (
@@ -111,6 +141,17 @@ export default function CategoryListContents({
     </>
   );
 }
+const CategoryListInputWrapper = styled('div')`
+  position: relative;
+`;
+
+const DuplicateText = styled.p`
+  color: red;
+  font-size: 14px;
+  position: absolute;
+  bottom: 1rem;
+  left: 2rem;
+`;
 
 const CategoryListContentsContainer = styled('div')`
   display: grid;
