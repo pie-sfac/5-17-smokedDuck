@@ -77,9 +77,6 @@ export const MainContext = React.createContext<ContextType>({
   setNewQuestionList: () => {},
   selectedIds: [],
   setSelectedIds: () => {},
-  setLoginToken: function (value: React.SetStateAction<string>): void {
-    throw new Error('Function not implemented.');
-  },
 });
 
 export default function MainContextProvider(props: {
@@ -128,9 +125,6 @@ export default function MainContextProvider(props: {
     setNewQuestionList,
     selectedIds,
     setSelectedIds,
-    setLoginToken: function (value: React.SetStateAction<string>): void {
-      throw new Error('Function not implemented.');
-    },
   };
 
   return (
