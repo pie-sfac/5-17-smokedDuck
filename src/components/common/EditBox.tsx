@@ -79,10 +79,13 @@ const EditContainer = styled.div`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  width: 35px;
+  height: 35px;
 `;
 
 const ImgContainer = styled.img`
   width: 1rem;
   height: 1rem;
   z-index: 999;
+  margin-left: calc(35px - 1rem);
 `;

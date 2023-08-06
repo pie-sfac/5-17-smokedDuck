@@ -27,7 +27,6 @@ type ContextType = {
   setSelectedRecordCard: React.Dispatch<
     React.SetStateAction<recordDetailType | undefined>
   >;
-  setLoginToken: Dispatch<SetStateAction<string>>;
   templateContent: Template | undefined;
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
   setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
@@ -78,9 +77,6 @@ export const MainContext = React.createContext<ContextType>({
   setNewQuestionList: () => {},
   selectedIds: [],
   setSelectedIds: () => {},
-  setLoginToken: function (value: React.SetStateAction<string>): void {
-    throw new Error('Function not implemented.');
-  },
 });
 
 export default function MainContextProvider(props: {
@@ -129,9 +125,6 @@ export default function MainContextProvider(props: {
     setNewQuestionList,
     selectedIds,
     setSelectedIds,
-    setLoginToken: function (value: React.SetStateAction<string>): void {
-      throw new Error('Function not implemented.');
-    },
   };
 
   return (
