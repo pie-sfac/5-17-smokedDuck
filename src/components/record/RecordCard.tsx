@@ -12,10 +12,6 @@ import { MainContext } from '@/store';
 // import { recordDetailType } from '@/types/recordDetail.interface';
 // import Template from '../Template';
 
-// import useRecordDetail from '@/hooks/useRecordDetail';
-// import { recordDetailType } from '@/types/recordDetail.interface';
-// import Template from '../Template';
-
 type RecordCardPropsType = {
   title: string;
   id: number;
