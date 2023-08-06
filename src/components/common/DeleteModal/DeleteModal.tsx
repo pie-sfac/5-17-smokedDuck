@@ -51,7 +51,7 @@ const TitleArea = styled.h4`
 
 const TextArea = styled.div`
   font-size: 14px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   white-space: pre-line;
 `;
 
