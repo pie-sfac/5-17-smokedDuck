@@ -125,9 +125,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
       title: title || (youtubeVideo && youtubeVideo.title) || '',
     });
 
-    if (categories) {
-      handleCategoryCount(category);
-    }
+    handleCategoryCount(category);
   }, [
     isRequiredFieldsEmpty,
     category,
@@ -137,7 +135,6 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
     description,
     onSubmit,
     youtubeVideo,
-    categories,
     handleCategoryCount,
   ]);
 
