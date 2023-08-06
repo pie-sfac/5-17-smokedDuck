@@ -110,7 +110,6 @@ export default function DeleteModalContainer({
       setIsDeleteMode(false);
       setSelectedIds([]);
     }
-    setSelectedIds([]);
     setDeleteModalOpen(false);
   };
 
