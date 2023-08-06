@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +12,6 @@ interface StyledPasswordIconProps {
 }
 
 export default function LoginForm() {
-  axios.defaults.baseURL = 'http://223.130.161.221/api/v1';
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
