@@ -87,4 +87,5 @@ const MediaContainer = styled('div')`
   padding: 24px;
   margin: 8px;
   box-shadow: 0px 1px 3px -2px rgba(0, 0, 0, 0.75);
+  cursor: pointer;
 `;
