@@ -8,6 +8,7 @@ export async function recordListFetcher(url: string) {
   return res.data.templates;
 }
 
-export function recordDetailFetcher(url: string) {
-  return axios.get<recordDetailType>(`${url}`).then(res => res.data);
+export async function recordDetailFetcher(url: string) {
+  const res = await axios.get<recordDetailType>(`/${url}`);
+  return res.data;
 }

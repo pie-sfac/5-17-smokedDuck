@@ -8,13 +8,22 @@ import Modal from '@/components/Common/Modal';
 import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
 import { MainContext } from '@/store';
 
+// import useRecordDetail from '@/hooks/useRecordDetail';
+// import { recordDetailType } from '@/types/recordDetail.interface';
+// import Template from '../Template';
+
 type RecordCardPropsType = {
   title: string;
   id: number;
 };
 
 export default function RecordCard({ title, id }: RecordCardPropsType) {
-  const { setSeletedRecordCardId, setIsRecordEdit } = useContext(MainContext);
+  const {
+    setSeletedRecordCardId,
+    setIsRecordEdit,
+    // setSelectedTemplateTitle,
+    // setSelectedRecordCard,
+  } = useContext(MainContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -23,6 +32,27 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
     setSeletedRecordCardId(id);
     setIsRecordEdit(false);
   };
+
+  // const { recordDetailData } = useRecordDetail(id);
+
+  // const handleClickedEditButton = () => {
+  //   setIsRecordEdit(true);
+  //   setEditModalOpen(true);
+  //   setSelectedTemplateTitle(
+  //     recordDetailData?.category === 'INTERVIEW' ? '문진 템플릿' : '처치 템플릿'
+  //   );
+  //   const previousTemplateContent: recordDetailType = {
+  //     id: recordDetailData!.id,
+  //     category: recordDetailData!.category,
+  //     title: recordDetailData!.title,
+  //     description: recordDetailData?.description,
+  //     questions: recordDetailData!.questions,
+  //     createdAt: recordDetailData!.createdAt,
+  //     updatedAt: recordDetailData!.updatedAt,
+  //     message: recordDetailData?.message,
+  //   };
+  //   setSelectedRecordCard(previousTemplateContent);
+  // };
 
   return (
     <>
@@ -35,10 +65,9 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
           top={0}
           right={13}
           id={id}
-          onEditClick={() => {
-            setIsRecordEdit(true);
-            setEditModalOpen(true);
-          }}
+          // onEditClick={() => {
+          //   handleClickedEditButton();
+          // }}
           onDeleteClick={() => {
             setDeleteModalOpen(true);
           }}

@@ -1,7 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
+import {
+  recordDetailType,
+  recordQuestionsType,
+} from '@/types/recordDetail.interface';
 import { Template } from '@/types/template.interface';
 import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 
@@ -20,8 +23,10 @@ type ContextType = {
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Questions[]>>;
   setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
-  selectedRecordCard: string;
-  setSelectedRecordCard: Dispatch<SetStateAction<string>>;
+  selectedRecordCard: recordDetailType | undefined;
+  setSelectedRecordCard: React.Dispatch<
+    React.SetStateAction<recordDetailType | undefined>
+  >;
   templateContent: Template | undefined;
   setTemplateContent: Dispatch<SetStateAction<Template | undefined>>;
   setSeletedRecordCardId: Dispatch<SetStateAction<number>>;
@@ -54,7 +59,16 @@ export const MainContext = React.createContext<ContextType>({
   setSelectedTemplateTitle: () => {},
   setQuestionList: () => {},
   setStoredCategoryList: () => {},
-  selectedRecordCard: '',
+  selectedRecordCard: {
+    id: 0,
+    category: '',
+    title: '',
+    description: '',
+    questions: [],
+    createdAt: '',
+    updatedAt: '',
+    message: '',
+  },
   setSelectedRecordCard: () => {},
   setSeletedRecordCardId: () => {},
   setIsRecordEdit: () => {},
@@ -78,7 +92,8 @@ export default function MainContextProvider(props: {
   const [questions, setQuestions] = useState<Questions>();
   const [templateContent, setTemplateContent] = useState<Template>();
   const [storedQuestionList, setStoredQuestionList] = useState<Questions[]>([]);
-  const [selectedRecordCard, setSelectedRecordCard] = useState<string>('');
+  const [selectedRecordCard, setSelectedRecordCard] =
+    useState<recordDetailType>();
   const [selectedRecordCardId, setSeletedRecordCardId] = useState(0);
 
   const [storedCategoryList, setStoredCategoryList] =

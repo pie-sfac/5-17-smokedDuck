@@ -1,14 +1,30 @@
 import styled from '@emotion/styled';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { Questions } from '@/types/question.interface';
 
 type TemplateSubHeaderProps = {
+  currTemplateSubHeader: {
+    title: string;
+    description?: string;
+  };
+  setCurrTemplateSubHeader: Dispatch<
+    SetStateAction<{ title: string; description: string | undefined }>
+  >;
   onChange: (id: string, value: string | Questions[]) => void;
 };
 
 export default function TemplateSubHeader({
+  currTemplateSubHeader,
+  setCurrTemplateSubHeader,
   onChange,
 }: TemplateSubHeaderProps) {
+  const [currentTemplateTitle, setCurrentTemplateTitle] = useState(
+    currTemplateSubHeader.title
+  );
+  const [currentTemplateDescription, setCurrentTemplateDescription] = useState(
+    currTemplateSubHeader.description
+  );
   return (
     <TemplateContentContainer>
       <label htmlFor="template-title">템플릿 제목*</label>
@@ -16,8 +32,16 @@ export default function TemplateSubHeader({
         type="text"
         name="template-title"
         id="template-title"
+        value={currentTemplateTitle}
         required
-        onChange={e => onChange('title', e.target.value)}
+        onChange={e => {
+          setCurrentTemplateTitle(e.target.value);
+          onChange('title', e.target.value);
+          setCurrTemplateSubHeader({
+            title: e.target.value,
+            description: currTemplateSubHeader.description,
+          });
+        }}
       />
       <br />
       <label htmlFor="template-title">설명</label>
@@ -25,7 +49,15 @@ export default function TemplateSubHeader({
         type="text"
         name="template-title"
         id="template-title"
-        onChange={e => onChange('description', e.target.value)}
+        value={currentTemplateDescription}
+        onChange={e => {
+          setCurrentTemplateDescription(e.target.value);
+          onChange('description', e.target.value);
+          setCurrTemplateSubHeader({
+            title: currTemplateSubHeader.title,
+            description: e.target.value,
+          });
+        }}
       />
     </TemplateContentContainer>
   );

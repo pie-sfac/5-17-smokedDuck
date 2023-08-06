@@ -1,32 +1,63 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Question from '../Question';
 
-interface AddedSelection {
-  _id: number;
-  selectionName: string;
-}
+// const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
 
-export default function TemplateSelectedQuestionContainer() {
+type TemplateSelectedQuestionContainerProps = {
+  isEditMode: boolean | undefined;
+  totalQuestionList: recordQuestionsType[];
+  setUpdateQuestions: React.Dispatch<
+    React.SetStateAction<recordQuestionsType[] | undefined>
+  >;
+  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
+};
+
+export default function TemplateSelectedQuestionContainer({
+  isEditMode,
+  totalQuestionList,
+  setUpdateQuestions,
+  setAddQuestions,
+}: TemplateSelectedQuestionContainerProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
-  const handleQuestionContent = (
-    order: number,
-    id: string,
-    value: string | AddedSelection[] | boolean
-  ) => {
-    const updatedQuestion = questionList.map(question =>
-      question.order === order
-        ? { ...question, [id === 'title' ? question.title : id]: value }
-        : question
-    );
+  const handleQuestionContent = useCallback(
+    (order: number, id: string, value: string | string[] | boolean) => {
+      const currentUpdatedQuestion = questionList.map(question =>
+        question.order === order
+          ? { ...question, [id === 'title' ? question.title : id]: value }
+          : question
+      );
 
-    setQuestionList(updatedQuestion);
-  };
+      setQuestionList(currentUpdatedQuestion);
+      setAddQuestions(currentUpdatedQuestion);
+      if (isEditMode) {
+        const currentUpdatedQuestion = totalQuestionList?.map(updateQuestion =>
+          updateQuestion.order === order
+            ? {
+                ...updateQuestion,
+                [id === 'title' ? updateQuestion.title : id]: value,
+              }
+            : updateQuestion
+        );
+        setUpdateQuestions(currentUpdatedQuestion);
+      }
+    },
+    [
+      isEditMode,
+      questionList,
+      setAddQuestions,
+      setQuestionList,
+      setUpdateQuestions,
+      totalQuestionList,
+    ]
+  );
 
   useEffect(
     () => setQuestionList([...questionList.sort((a, b) => a.order - b.order)]),
@@ -40,7 +71,7 @@ export default function TemplateSelectedQuestionContainer() {
           questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questionList.length === 0 ? (
+      {questionList.length === 0 && totalQuestionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -50,7 +81,7 @@ export default function TemplateSelectedQuestionContainer() {
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questionList.map(question => (
+        questionList?.map(question => (
           <Question
             key={question.order}
             order={question.order}
@@ -60,6 +91,25 @@ export default function TemplateSelectedQuestionContainer() {
           />
         ))
       )}
+      {/* {totalQuestionList &&
+        totalQuestionList.map(currentQuestion => (
+          <Question
+            key={currentQuestion.order}
+            order={currentQuestion.order}
+            title={currentQuestion.title}
+            tagName={
+              basicQuestion.includes(currentQuestion.type) ? '기본' : '전문'
+            }
+            type={currentQuestion.type}
+            onChange={handleQuestionContent}
+            required={currentQuestion.required}
+            description={currentQuestion.description}
+            paragraph={currentQuestion.paragraph}
+            options={currentQuestion.options}
+            allowMultiple={currentQuestion.allowMultiple}
+            addOtherOption={currentQuestion.addOtherOption}
+          />
+        ))} */}
     </ContentContainer>
   );
 }

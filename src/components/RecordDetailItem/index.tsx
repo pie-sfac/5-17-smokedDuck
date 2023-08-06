@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { MainContext } from '@/store';
 import { recordQuestionsType } from '@/types/recordDetail.interface';
@@ -18,11 +18,34 @@ export default function RecordDetailItem({
   const basicContent = ['TEXT', 'MEDIA', 'SELECT'];
   const isbasic = basicContent.includes(questionInfo.type);
   const { isRecordEdit } = useContext(MainContext);
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    switch (questionInfo.type) {
+      case 'PAIN_HSTRY':
+        setTitle('통증 정도');
+        return;
+        break;
+      case 'CONDITION':
+        setTitle('오늘의 컨디션');
+        return;
+        break;
+      case 'PAIN_INTV':
+        setTitle('통증 문진');
+        return;
+        break;
+
+      default:
+        setTitle(questionInfo.title);
+        return;
+        break;
+    }
+  }, [questionInfo.title, questionInfo.type]);
   return (
     <QuestionContainer>
       <RecordDetailItemHeader
         id={questionInfo.id}
-        title={questionInfo.title}
+        title={title}
         type={questionInfo.type}
         paragraph={questionInfo.paragraph}
         allowMultiple={questionInfo.allowMultiple}
