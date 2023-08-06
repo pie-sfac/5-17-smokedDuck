@@ -3,14 +3,23 @@ import styled from '@emotion/styled';
 
 export default function Loading() {
   return (
-    <LodingContainer>
-      <CircularProgress isIndeterminate color="blue.300" />
-    </LodingContainer>
+    <LoadingArea>
+      <LodingContainer>
+        <CircularProgress isIndeterminate color="blue.300" />
+      </LodingContainer>
+    </LoadingArea>
   );
 }
 
 const LodingContainer = styled.div`
-  marigin: auto;
-  width: 50px;
-  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const LoadingArea = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
 `;

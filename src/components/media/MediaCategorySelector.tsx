@@ -20,7 +20,7 @@ export default function MediaCategorySelector({
   const categoryMap: { [key: string]: number } = {};
 
   if (isLoading || error || !categoryListData) {
-    return <div>Loading...</div>;
+    return <LoadingContainer>Loading...</LoadingContainer>;
   }
 
   categoryListData.categories.forEach(category => {
@@ -88,4 +88,11 @@ const EditButton = styled('button')`
   padding-top: 4px;
   border: 1px solid #e7e7e7;
   border-radius: 8px;
+`;
+
+const LoadingContainer = styled('div')`
+  margin-top: 3rem;
+  padding: 0 1rem;
+  height: 2rem;
+  font-size: 18px;
 `;

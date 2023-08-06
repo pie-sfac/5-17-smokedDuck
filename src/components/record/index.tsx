@@ -1,13 +1,30 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
-import RecordListContainer from './RecordListContainer';
-import TypeSelector from './TypeSelector';
+import Modal from '@/components/Common/Modal';
+import TypeSelector from '@/components/Record//TypeSelector';
+import RecordListContainer from '@/components/Record/RecordListContainer';
+import Template from '@/components/Template';
+import { MainContext } from '@/store';
 
 export default function Record() {
   const [templateCategory, setTemplateCategory] = useState('INTERVIEW');
   const changeListType = useCallback((type: string) => {
     setTemplateCategory(type);
   }, []);
+  const {
+    recordModalOpen,
+    setRecordModalState,
+    selectedTemplateTitle,
+    setSelectedTemplateTitle,
+    setQuestionList,
+  } = useContext(MainContext);
+
+  useEffect(() => {
+    if (!recordModalOpen) {
+      setSelectedTemplateTitle('');
+      setQuestionList([]);
+    }
+  }, [recordModalOpen, setQuestionList, setSelectedTemplateTitle]);
 
   return (
     <>
@@ -16,6 +33,15 @@ export default function Record() {
         changeListType={changeListType}
       />
       <RecordListContainer category={templateCategory} />
+      {recordModalOpen && (
+        <Modal
+          width={selectedTemplateTitle.length === 0 ? 700 : undefined}
+          height={selectedTemplateTitle.length === 0 ? 400 : undefined}
+          setIsOpen={setRecordModalState}
+        >
+          <Template />
+        </Modal>
+      )}
     </>
   );
 }
