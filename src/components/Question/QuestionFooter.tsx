@@ -106,10 +106,12 @@ const MoveContainer = styled('div')`
   justify-content: center;
   align-items: center;
   margin-right: 1rem;
+  cursot: pointer;
 `;
 
 const RemoveContainer = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursot: pointer;
 `;

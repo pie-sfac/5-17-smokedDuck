@@ -18,7 +18,7 @@ type NewTemplateContent = {
 };
 
 export default function Template() {
-  const { loginToken, questionList, templateContent, setTemplateContent } =
+  const { questionList, templateContent, setTemplateContent } =
     useContext(MainContext);
 
   const { recordListData } = useRecord();
@@ -51,9 +51,9 @@ export default function Template() {
       },
     ];
 
-    await createTemplate(loginToken, newTemplateContent);
+    await createTemplate(newTemplateContent);
 
-    mutate(['record-templates', loginToken], newRecordListData, false);
+    mutate('record-templates', newRecordListData, false);
   };
 
   return (
