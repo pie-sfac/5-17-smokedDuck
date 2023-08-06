@@ -24,7 +24,6 @@ type NewTemplateContent = {
 
 export default function Template({ isEditMode }: TemplateProps) {
   const {
-    loginToken,
     questionList,
     templateContent,
     setTemplateContent,
@@ -73,9 +72,9 @@ export default function Template({ isEditMode }: TemplateProps) {
         },
       ];
 
-      await createTemplate(loginToken, newTemplateContent);
+      await createTemplate(newTemplateContent);
 
-      mutate(['record-templates', loginToken], newRecordListData, false);
+      mutate('record-templates', newRecordListData, false);
     } else {
       const updatedTemplateContent: UpdateTemplate = {
         title: currTemplateSubHeader.title,
@@ -86,7 +85,7 @@ export default function Template({ isEditMode }: TemplateProps) {
       };
 
       if (id) {
-        await updateTemplate(loginToken, id, updatedTemplateContent);
+        await updateTemplate(id, updatedTemplateContent);
       }
     }
   };
