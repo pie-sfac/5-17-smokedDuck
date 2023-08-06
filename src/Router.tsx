@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Header from '@/components/Common/Header';
@@ -10,6 +11,7 @@ import Footer from './components/Common/Footer';
 import CategoryManagementPage from './pages/CategoryManagementPage';
 
 export default function AppRouter() {
+  axios.defaults.baseURL = import.meta.env.VITE_BASE_URL as string;
   return (
     <Router>
       <Header />
