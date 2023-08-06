@@ -14,14 +14,12 @@ type NewTemplateContent = {
   description?: string | undefined;
 };
 
-const TEMPLATE_URL = 'record-templates';
-
-export const requestUrl = `/${TEMPLATE_URL}`;
+const TEMPLATE_URL = '/record-templates';
 
 export async function createTemplate(templateContent: NewTemplateContent) {
   try {
     const response: AxiosResponse<CreateTemplateResponse> = await axios.post(
-      requestUrl,
+      TEMPLATE_URL,
       templateContent
     );
     return response.data;
@@ -31,42 +29,13 @@ export async function createTemplate(templateContent: NewTemplateContent) {
 }
 
 export async function updateTemplate(
-  loginToken: string,
   id: number,
   editedTemplateContent: UpdateTemplate
 ) {
   try {
     const response: AxiosResponse<UpdateTemplateResponse> = await axios.put(
-      `${requestUrl}/${id}`,
-      editedTemplateContent,
-      {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-export async function updateTemplate(
-  loginToken: string,
-  id: number,
-  editedTemplateContent: UpdateTemplate
-) {
-  try {
-    const response: AxiosResponse<UpdateTemplateResponse> = await axios.put(
-      `${requestUrl}/${id}`,
-      editedTemplateContent,
-      {
-        headers: {
-          Authorization: `Bearer ${loginToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
+      `${TEMPLATE_URL}/${id}`,
+      editedTemplateContent
     );
     return response.data;
   } catch (error) {

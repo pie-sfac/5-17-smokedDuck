@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { tokenType } from '@/types/token.interface';
-axios.defaults.baseURL = 'http://223.130.161.221/api/v1';
 const refreshAxios = axios.create({
   baseURL: 'http://223.130.161.221/api/v1',
   headers: {
