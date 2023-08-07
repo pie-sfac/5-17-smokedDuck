@@ -47,7 +47,7 @@ export default function QuestionBox({
               totalQuestionList.length === 0
                 ? 1
                 : totalQuestionList[totalQuestionList.length - 1].order + 1,
-            required: false,
+            required: tagName === '전문' ? true : false,
             title,
             tagName,
             description: '',

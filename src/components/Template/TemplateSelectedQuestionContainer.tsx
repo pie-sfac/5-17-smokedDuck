@@ -59,10 +59,11 @@ export default function TemplateSelectedQuestionContainer({
     ]
   );
 
-  useEffect(
-    () => setQuestionList([...questionList.sort((a, b) => a.order - b.order)]),
-    [questionList, setQuestionList]
-  );
+  useEffect(() => {
+    setQuestionList(prevQuestionList => [
+      ...prevQuestionList.sort((a, b) => a.order - b.order),
+    ]);
+  }, [setQuestionList]);
 
   return (
     <ContentContainer
