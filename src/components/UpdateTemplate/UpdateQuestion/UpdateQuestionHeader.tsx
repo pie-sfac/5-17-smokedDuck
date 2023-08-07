@@ -1,38 +1,65 @@
 import styled from '@emotion/styled';
+import { useCallback, useState } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
 
-type UpdateTemplateHeaderPropsType = {
-  id: number;
-  title: string;
+type QuestionHeaderProps = {
+  order: number;
   type: string;
-  paragraph: boolean;
-  allowMultiple: boolean;
-  isbasic: boolean;
-  isRecordEdit: boolean;
+  paragraph: boolean | undefined;
+  isBasic: boolean;
+  onChange: (
+    order: number,
+    valueKey: string,
+    value: string | string[] | boolean
+  ) => void;
 };
 
-export default function UpdateTemplateHeader({
-  id,
-  title,
+export default function QuestionHeader({
+  order,
   type,
   paragraph,
-  allowMultiple,
-  isbasic,
-  isRecordEdit,
-}: UpdateTemplateHeaderPropsType) {
+  onChange,
+  isBasic,
+}: QuestionHeaderProps) {
+  const [isAllowMultiple, setIsAllowMultiple] = useState(false);
+  const [isParagraph, setIsParagraph] = useState(paragraph);
+
+  const setTitle = useCallback((type: string) => {
+    switch (type) {
+      case 'PAIN_HSTRY':
+        return '통증 정도';
+        break;
+      case 'CONDITION':
+        return '오늘의 컨디션';
+        break;
+      case 'PAIN_INTV':
+        return '통증 문진';
+        break;
+      case 'TEXT':
+        return '텍스트';
+        break;
+      case 'SELECT':
+        return '선택형';
+        break;
+      case 'MEDIA':
+        return '미디어';
+        break;
+    }
+  }, []);
+
   return (
     <HeaderContainer>
       <TitleContainer>
-        {title}
+        {order < 10 ? '0' + order : order}. {setTitle(type)}
         <TagNameContainer>
           <StyledTagName
             style={{
-              backgroundColor: isbasic ? '#EBF1FF' : '#E6F9EA',
-              color: isbasic ? '#6691FF' : '#1FB881',
+              backgroundColor: isBasic ? '#EBF1FF' : '#E6F9EA',
+              color: isBasic ? '#6691FF' : '#1FB881',
             }}
           >
-            {isbasic ? '기본' : '전문'} 문항
+            {isBasic ? '기본' : '전문'} 문항
           </StyledTagName>
         </TagNameContainer>
         <img src={QuestionMark} alt={'물음표 아이콘'} />
@@ -41,10 +68,13 @@ export default function UpdateTemplateHeader({
         <OptionContainer>
           <input
             type="radio"
-            name={`answerType${id}`}
+            name={`answerType${order}`}
             id="shortAnswer"
-            disabled={!isRecordEdit}
-            checked={paragraph}
+            onChange={() => {
+              setIsParagraph(prevIsParagraph => !prevIsParagraph);
+              onChange(order, 'paragraph', false);
+            }}
+            checked={isParagraph ? false : true}
           />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
@@ -53,10 +83,13 @@ export default function UpdateTemplateHeader({
           &nbsp;
           <input
             type="radio"
-            name={`answerType${id}`}
+            name={`answerType${order}`}
             id="longAnswer"
-            disabled={!isRecordEdit}
-            checked={!paragraph}
+            onChange={() => {
+              setIsParagraph(prevIsParagraph => !prevIsParagraph);
+              onChange(order, 'paragraph', true);
+            }}
+            checked={isParagraph ? true : false}
           />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>
@@ -68,10 +101,12 @@ export default function UpdateTemplateHeader({
         <OptionContainer>
           <input
             type="checkbox"
-            name={`allowDuplicates${id}`}
+            name={`allowDuplicates${order}`}
             id="allowDuplicates"
-            disabled={isRecordEdit}
-            checked={allowMultiple}
+            onChange={() => {
+              setIsAllowMultiple(prevIsAllowMultiple => !prevIsAllowMultiple);
+              onChange(order, 'allowMultiple', isAllowMultiple ? false : true);
+            }}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>

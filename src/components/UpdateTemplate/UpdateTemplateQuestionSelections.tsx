@@ -8,10 +8,21 @@ import Pain from '@/assets/Pain.svg';
 import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
+import { Questions } from '@/types/question.interface';
 
-import QuestionBox from '../Common/QuestionBox';
+import UpdateQuestionBox from './UpdateQuestion/UpdateQuestionBox';
 
-export default function UpdateTemplateQuestionSeletor() {
+type UpdateTemplateQuestionSelectionsProps = {
+  totalOrder: number;
+  addQuestions: Questions[];
+  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
+};
+
+export default function UpdateTemplateQuestionSelections({
+  totalOrder,
+  addQuestions,
+  setAddQuestions,
+}: UpdateTemplateQuestionSelectionsProps) {
   const [selectedQuestion, setSelectedQuestion] = useState('basic');
   return (
     <EntireQuestionContainer>
@@ -55,57 +66,75 @@ export default function UpdateTemplateQuestionSeletor() {
       </QeustionsContainer>
       {selectedQuestion === 'basic' && (
         <QuestionBoxContainer>
-          <QuestionBox
+          <UpdateQuestionBox
             image={Text}
-            title={'텍스트'}
+            tagTitle={'텍스트'}
             description={'텍스트 형식의 답변을 입력하는 문항입니다.'}
             tagName={'기본'}
             margin={'0.4rem'}
-            type="TEXT"
+            type={'TEXT'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
-          <QuestionBox
+          <UpdateQuestionBox
             image={Media}
-            title={'미디어'}
+            tagTitle={'미디어'}
             description={'이미지 혹은 영상을 답변으로 첨부하는 문항입니다. '}
             tagName={'기본'}
             margin={'0.4rem'}
-            type="MEDIA"
+            type={'MEDIA'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
-          <QuestionBox
+          <UpdateQuestionBox
             image={Selections}
-            title={'선택형'}
+            tagTitle={'선택형'}
             description={'보기 중 선택해서 답변하는 문항입니다.'}
             tagName={'기본'}
-            type="SELECT"
+            type={'SELECT'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
         </QuestionBoxContainer>
       )}
       {selectedQuestion === 'specialty' && (
         <QuestionBoxContainer>
-          <QuestionBox
+          <UpdateQuestionBox
             image={Pain}
-            title={'통증 정도'}
+            tagTitle={'통증 정도'}
             description={'회원의 통증 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
-            type="PAIN_HSTRY"
+            type={'PAIN_HSTRY'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
-          <QuestionBox
+          <UpdateQuestionBox
             image={Condition}
-            title={'오늘의 컨디션'}
+            tagTitle={'오늘의 컨디션'}
             description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
             tagName={'전문'}
             margin={'0.4rem'}
-            type="CONDITION"
+            type={'CONDITION'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
-          <QuestionBox
+          <UpdateQuestionBox
             image={PainQuestion}
-            title={'통증 문진'}
+            tagTitle={'통증 문진'}
             description={
               '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
             }
             tagName={'전문'}
-            type="PAIN_INTV"
+            type={'PAIN_INTV'}
+            addQuestions={addQuestions}
+            setAddQuestions={setAddQuestions}
+            totalOrder={totalOrder}
           />
         </QuestionBoxContainer>
       )}

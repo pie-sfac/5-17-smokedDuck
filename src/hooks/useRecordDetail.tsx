@@ -15,6 +15,7 @@ export default function useRecordDetail(id: number) {
 
   return {
     recordDetailData: recordDetailData,
+    recordQuestions: recordDetailData?.questions,
     mutate: mutate,
     isLoading: !error && !recordDetailData,
   };
