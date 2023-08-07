@@ -9,22 +9,15 @@ import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
 import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import QuestionBox from '../Common/QuestionBox';
 
 type TemplateQuestionSelectionsProps = {
-  totalQuestionList: recordQuestionsType[];
-  setTotalQuestionList: React.Dispatch<
-    React.SetStateAction<recordQuestionsType[]>
-  >;
   addQuestions: Questions[];
   setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
 };
 
 export default function TemplateQuestionSelections({
-  totalQuestionList,
-  setTotalQuestionList,
   addQuestions,
   setAddQuestions,
 }: TemplateQuestionSelectionsProps) {
@@ -78,8 +71,6 @@ export default function TemplateQuestionSelections({
             tagName={'기본'}
             margin={'0.4rem'}
             type={'TEXT'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
@@ -90,8 +81,6 @@ export default function TemplateQuestionSelections({
             tagName={'기본'}
             margin={'0.4rem'}
             type={'MEDIA'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
@@ -101,8 +90,6 @@ export default function TemplateQuestionSelections({
             description={'보기 중 선택해서 답변하는 문항입니다.'}
             tagName={'기본'}
             type={'SELECT'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
@@ -117,8 +104,6 @@ export default function TemplateQuestionSelections({
             tagName={'전문'}
             margin={'0.4rem'}
             type={'PAIN_HSTRY'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
@@ -129,8 +114,6 @@ export default function TemplateQuestionSelections({
             tagName={'전문'}
             margin={'0.4rem'}
             type={'CONDITION'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
@@ -142,8 +125,6 @@ export default function TemplateQuestionSelections({
             }
             tagName={'전문'}
             type={'PAIN_INTV'}
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />

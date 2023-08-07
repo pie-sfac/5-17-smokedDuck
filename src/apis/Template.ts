@@ -3,8 +3,8 @@ import axios, { AxiosResponse } from 'axios';
 import { Questions } from '@/types/question.interface';
 import {
   CreateTemplateResponse,
-  UpdateTemplate,
   UpdateTemplateResponse,
+  UpdateTemplateType,
 } from '@/types/template.interface';
 
 type NewTemplateContent = {
@@ -28,9 +28,9 @@ export async function createTemplate(templateContent: NewTemplateContent) {
   }
 }
 
-export async function updateTemplate(
+export async function updateTemplateAPI(
   id: number,
-  editedTemplateContent: UpdateTemplate
+  editedTemplateContent: UpdateTemplateType
 ) {
   try {
     const response: AxiosResponse<UpdateTemplateResponse> = await axios.put(

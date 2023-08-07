@@ -6,7 +6,7 @@ import { Questions } from '@/types/question.interface';
 
 type QuestionBoxProps = {
   image: string;
-  title: string;
+  tagTitle: string;
   description: string;
   tagName: string;
   margin?: string;
@@ -17,7 +17,7 @@ type QuestionBoxProps = {
 };
 export default function QuestionBox({
   image,
-  title,
+  tagTitle,
   description,
   tagName,
   margin,
@@ -43,7 +43,7 @@ export default function QuestionBox({
                 ? 1
                 : questionList[questionList.length - 1].order + 1,
             required: false,
-            title,
+            title: '',
             tagName,
             description: '',
             paragraph: false,
@@ -63,7 +63,7 @@ export default function QuestionBox({
                   ? totalOrder + 1
                   : addQuestions[addQuestions.length - 1].order + 1,
               required: false,
-              title,
+              title: '',
               tagName,
               description: '',
               paragraph: false,
@@ -88,7 +88,7 @@ export default function QuestionBox({
       <EntireContentContainer>
         <img src={image} alt={'아이콘 이미지'} width={45} height={30} />
         <TextContentContainer>
-          <div style={{ fontSize: '0.8rem' }}>{title}</div>
+          <div style={{ fontSize: '0.8rem' }}>{tagTitle}</div>
           <div style={{ fontSize: '0.6rem', width: '12.5rem' }}>
             {description}
           </div>

@@ -1,11 +1,11 @@
-import UpdateTemplateTemplateContent from '@/components/Template/UpdateTemplateContent';
-import RecordDetailTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
+import RecordContents from '@/components/Record/RecordContents';
+import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
 
-export default function RecordDetailTemplate() {
+export default function RecordInfo() {
   return (
     <>
-      <RecordDetailTitle />
-      <UpdateTemplateTemplateContent />
+      <UpdateTemplateTitle />
+      <RecordContents />
     </>
   );
 }

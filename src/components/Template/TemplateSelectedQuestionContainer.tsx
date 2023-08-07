@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
@@ -8,11 +8,7 @@ import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Question from '../Question';
 
-const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
-
 type TemplateSelectedQuestionContainerProps = {
-  isEditMode: boolean | undefined;
-  totalQuestionList: recordQuestionsType[];
   setUpdateQuestions: React.Dispatch<
     React.SetStateAction<recordQuestionsType[] | undefined>
   >;
@@ -20,9 +16,6 @@ type TemplateSelectedQuestionContainerProps = {
 };
 
 export default function TemplateSelectedQuestionContainer({
-  isEditMode,
-  totalQuestionList,
-  setUpdateQuestions,
   setAddQuestions,
 }: TemplateSelectedQuestionContainerProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
@@ -37,32 +30,14 @@ export default function TemplateSelectedQuestionContainer({
 
       setQuestionList(currentUpdatedQuestion);
       setAddQuestions(currentUpdatedQuestion);
-      if (isEditMode) {
-        const currentUpdatedQuestion = totalQuestionList?.map(updateQuestion =>
-          updateQuestion.order === order
-            ? {
-                ...updateQuestion,
-                [id === 'title' ? updateQuestion.title : id]: value,
-              }
-            : updateQuestion
-        );
-        setUpdateQuestions(currentUpdatedQuestion);
-      }
     },
-    [
-      isEditMode,
-      questionList,
-      setAddQuestions,
-      setQuestionList,
-      setUpdateQuestions,
-      totalQuestionList,
-    ]
+    [questionList, setAddQuestions, setQuestionList]
   );
 
-  useEffect(
-    () => setQuestionList([...questionList.sort((a, b) => a.order - b.order)]),
-    [questionList, setQuestionList]
-  );
+  // useEffect(
+  //   () => setQuestionList([...questionList.sort((a, b) => a.order - b.order)]),
+  //   [questionList, setQuestionList]
+  // );
 
   return (
     <ContentContainer
@@ -71,7 +46,7 @@ export default function TemplateSelectedQuestionContainer({
           questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questionList.length === 0 && totalQuestionList.length === 0 ? (
+      {questionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -91,25 +66,6 @@ export default function TemplateSelectedQuestionContainer({
           />
         ))
       )}
-      {totalQuestionList &&
-        totalQuestionList.map(currentQuestion => (
-          <Question
-            key={currentQuestion.order}
-            order={currentQuestion.order}
-            title={currentQuestion.title}
-            tagName={
-              basicQuestion.includes(currentQuestion.type) ? '기본' : '전문'
-            }
-            type={currentQuestion.type}
-            onChange={handleQuestionContent}
-            required={currentQuestion.required}
-            description={currentQuestion.description}
-            paragraph={currentQuestion.paragraph}
-            options={currentQuestion.options}
-            allowMultiple={currentQuestion.allowMultiple}
-            addOtherOption={currentQuestion.addOtherOption}
-          />
-        ))}
     </ContentContainer>
   );
 }

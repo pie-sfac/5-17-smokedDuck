@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
@@ -10,7 +10,6 @@ import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
 type TemplateContentProps = {
-  isEditMode: boolean | undefined;
   currTemplateSubHeader: { title: string; description?: string | undefined };
   setCurrTemplateSubHeader: Dispatch<
     SetStateAction<{ title: string; description: string | undefined }>
@@ -25,7 +24,6 @@ type TemplateContentProps = {
 };
 
 export default function TemplateContent({
-  isEditMode,
   currTemplateSubHeader,
   setCurrTemplateSubHeader,
   setUpdateQuestions,
@@ -33,12 +31,7 @@ export default function TemplateContent({
   setAddQuestions,
   onChange,
 }: TemplateContentProps) {
-  const { selectedTemplateTitle, selectedRecordCard } = useContext(MainContext);
-
-  const [totalQuestionList, setTotalQuestionList] = useState(
-    selectedRecordCard ? selectedRecordCard.questions : []
-  );
-
+  const { selectedTemplateTitle } = useContext(MainContext);
   return (
     <div>
       {selectedTemplateTitle.length === 0 ? (
@@ -51,14 +44,10 @@ export default function TemplateContent({
             onChange={onChange}
           />
           <TemplateQuestionSelections
-            totalQuestionList={totalQuestionList}
-            setTotalQuestionList={setTotalQuestionList}
             addQuestions={addQuestions}
             setAddQuestions={setAddQuestions}
           />
           <TemplateSelectedQuestionContainer
-            isEditMode={isEditMode}
-            totalQuestionList={totalQuestionList}
             setUpdateQuestions={setUpdateQuestions}
             setAddQuestions={setAddQuestions}
           />
