@@ -11,7 +11,7 @@ import Text from '@/assets/Text.svg';
 
 import QuestionBox from '../Common/QuestionBox';
 
-export default function RecordDetailItemQuestionSeletor() {
+export default function UpdateTemplateQuestionSeletor() {
   const [selectedQuestion, setSelectedQuestion] = useState('basic');
   return (
     <EntireQuestionContainer>

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
 
-type RecordDetailItemHeaderPropsType = {
+type UpdateTemplateHeaderPropsType = {
   id: number;
   title: string;
   type: string;
@@ -12,7 +12,7 @@ type RecordDetailItemHeaderPropsType = {
   isRecordEdit: boolean;
 };
 
-export default function RecordDetailItemHeader({
+export default function UpdateTemplateHeader({
   id,
   title,
   type,
@@ -20,7 +20,7 @@ export default function RecordDetailItemHeader({
   allowMultiple,
   isbasic,
   isRecordEdit,
-}: RecordDetailItemHeaderPropsType) {
+}: UpdateTemplateHeaderPropsType) {
   return (
     <HeaderContainer>
       <TitleContainer>
