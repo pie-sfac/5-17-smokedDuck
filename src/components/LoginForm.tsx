@@ -14,8 +14,10 @@ interface StyledPasswordIconProps {
 export default function LoginForm() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [centercode, setCentercode] = useState<string>('');
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [changeUser, setChangeUser] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const isButtonDisabled: boolean =
@@ -36,9 +38,25 @@ export default function LoginForm() {
     <StyledLoginForm onSubmit={handleSubmit}>
       <StyledImg src={Logo} alt="logo" />
       <StyledUl>
-        <StyledLi>관리자 로그인</StyledLi>
-        <StyledLi>직원 로그인</StyledLi>
+        <StyledLi onClick={() => setChangeUser(false)} clicked={!changeUser}>
+          관리자 로그인
+        </StyledLi>
+        <StyledLi onClick={() => setChangeUser(true)} clicked={changeUser}>
+          직원 로그인
+        </StyledLi>
       </StyledUl>
+      {changeUser && (
+        <div>
+          <label htmlFor="centercode">센터코드</label>
+          <br />
+          <StyledInput
+            type="text"
+            id="centercode"
+            value={centercode}
+            onChange={e => setCentercode(e.target.value)}
+          />
+        </div>
+      )}
       <div>
         <label htmlFor="username">아이디</label>
         <br />
@@ -68,13 +86,17 @@ export default function LoginForm() {
         />
       </StyledDivInput>
       <StyledFind>
-        <span>아이디 찾기</span>
+        <span onClick={() => alert('아이디 찾기 페이지입니다.')}>
+          아이디 찾기
+        </span>
         <span> / </span>
-        <span>비밀번호 찾기</span>
+        <span onClick={() => alert('비밀번호 찾기 페이지입니다.')}>
+          비밀번호 찾기
+        </span>
       </StyledFind>
       <StyledSignup>
-        <span>포인티 계정이 없으세요? |</span>
-        <span>회원가입</span>
+        <span>포인티 계정이 없으세요? | </span>
+        <span onClick={() => alert('회원가입 페이지입니다.')}>회원가입</span>
       </StyledSignup>
       <StyledLoginButton type="submit" disabled={isButtonDisabled}>
         로그인
@@ -101,20 +123,15 @@ const StyledUl = styled.ul`
   display: flex;
   margin-right: 160px;
   margin-bottom: 24px;
+  cursor: pointer;
 `;
 
-const StyledLi = styled.li`
+const StyledLi = styled('li')<{ clicked: boolean }>`
   padding: 0 12px;
   list-style-type: none;
-  &:first-of-type {
-    color: #6691ff;
-    border-bottom: 2px solid #6691ff;
-  }
-  &:last-of-type {
-    color: #cfcfcf;
-    border-bottom: 1px solid #cfcfcf;
-    cursor: pointer;
-  }
+  color: ${props => (props.clicked ? '#6691ff' : '#cfcfcf')};
+  border-bottom: ${props =>
+    props.clicked ? '2px solid #6691ff' : '1px solid #cfcfcf'};
 `;
 
 const StyledInput = styled.input`
