@@ -72,7 +72,6 @@ export default function Question({
         case 'PAIN_INTV':
           return '통증 문진';
           break;
-
         default:
           return title;
           break;
@@ -96,7 +95,12 @@ export default function Question({
           currentQuestion={currentQuestion}
         />
       )}
-      <QuestionFooter order={order} onChange={onChange} required={required} />
+      <QuestionFooter
+        order={order}
+        onChange={onChange}
+        tagName={tagName}
+        required={required}
+      />
     </QuestionContainer>
   );
 }
