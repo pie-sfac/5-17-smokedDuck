@@ -22,7 +22,6 @@ export default function TemplateContent({
   onChange,
 }: TemplateContentProps) {
   const { selectedTemplateTitle } = useContext(MainContext);
-
   return (
     <div>
       {selectedTemplateTitle.length === 0 ? (

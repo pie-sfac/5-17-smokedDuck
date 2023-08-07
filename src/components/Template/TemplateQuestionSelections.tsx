@@ -78,10 +78,6 @@ export default function TemplateQuestionSelections() {
             tagName={'기본'}
             type={'SELECT'}
           />
-        </QuestionBoxContainer>
-      )}
-      {selectedQuestion === 'specialty' && (
-        <QuestionBoxContainer>
           <QuestionBox
             image={Pain}
             tagTitle={'통증 정도'}
