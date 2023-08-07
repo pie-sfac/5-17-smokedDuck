@@ -11,7 +11,7 @@ interface QuestionProps {
   onChange: (
     order: number,
     id: string,
-    value: string | string[] | boolean
+    value: string | string[] | boolean | number
   ) => void;
   type?: string;
   required?: boolean;

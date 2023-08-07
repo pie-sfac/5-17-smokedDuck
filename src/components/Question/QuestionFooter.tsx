@@ -5,13 +5,14 @@ import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
 
 import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
 type QuestionFooterProps = {
   order: number;
   onChange: (
     order: number,
     id: string,
-    value: string | string[] | boolean
+    value: string | string[] | boolean | number
   ) => void;
   tagName: string;
   required?: boolean;
@@ -27,22 +28,41 @@ export default function QuestionFooter({
 
   const handleClickedMoveButton = useCallback(
     (moveDirection: string) => {
+      const handleChangedOrder = (tmpQuestionList: Questions[]) => {
+        const changedOrderList = tmpQuestionList.map((question, idx) => ({
+          ...question,
+          order: idx + 1,
+        }));
+        setQuestionList(changedOrderList);
+      };
       const changeOrder = (currentOrder: number) => {
-        const tmp = questionList[currentOrder];
-        questionList[currentOrder] = questionList[order - 1];
-        questionList[order - 1] = tmp;
+        const tmpQuestionList = [...questionList];
+
+        const targetOrder = order - 1;
+
+        const tmp = tmpQuestionList[currentOrder];
+        tmpQuestionList[currentOrder] = tmpQuestionList[targetOrder];
+        tmpQuestionList[targetOrder] = tmp;
+
+        handleChangedOrder(tmpQuestionList);
       };
 
       if (moveDirection === 'up') {
-        if (order === 1) alert('첫번째 문항입니다.');
+        if (order === 1) {
+          alert('첫번째 문항입니다.');
+          return;
+        }
         changeOrder(order - 2);
       } else if (moveDirection === 'down') {
-        if (order === questionList.length) alert('마지막 문항입니다.');
+        if (order === questionList.length) {
+          alert('마지막 문항입니다.');
+          return;
+        }
         changeOrder(order);
       }
       questionList.map((question, idx) => (question.order = idx + 1));
     },
-    [order, questionList]
+    [order, questionList, setQuestionList]
   );
 
   const handleClickedDeleteButton = useCallback(
