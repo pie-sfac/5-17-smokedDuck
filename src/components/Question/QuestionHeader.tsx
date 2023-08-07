@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
 
@@ -25,10 +25,14 @@ export default function QuestionHeader({
   const [isAllowMultiple, setIsAllowMultiple] = useState(false);
   const [isParagraph, setIsParagraph] = useState(paragraph);
 
+  const [currentOrder, setCurrentOrder] = useState(order);
+
+  useEffect(() => setCurrentOrder(order), [order]);
+
   return (
     <HeaderContainer>
       <TitleContainer>
-        {order < 10 ? '0' + order : order}. {title}
+        {currentOrder < 10 ? '0' + currentOrder : currentOrder}. {title}
         <TagNameContainer>
           <StyledTagName
             style={{

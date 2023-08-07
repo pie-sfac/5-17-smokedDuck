@@ -28,7 +28,11 @@ export default function TemplateSelectedQuestionContainer({
   const { questionList, setQuestionList } = useContext(MainContext);
 
   const handleQuestionContent = useCallback(
-    (order: number, id: string, value: string | string[] | boolean) => {
+    (
+      order: number,
+      id: string,
+      value: string | string[] | boolean | number
+    ) => {
       const currentUpdatedQuestion = questionList.map(question =>
         question.order === order
           ? { ...question, [id === 'title' ? question.title : id]: value }
@@ -37,6 +41,7 @@ export default function TemplateSelectedQuestionContainer({
 
       setQuestionList(currentUpdatedQuestion);
       setAddQuestions(currentUpdatedQuestion);
+
       if (isEditMode) {
         const currentUpdatedQuestion = totalQuestionList?.map(updateQuestion =>
           updateQuestion.order === order
