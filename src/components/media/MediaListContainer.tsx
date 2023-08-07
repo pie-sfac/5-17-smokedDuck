@@ -5,6 +5,7 @@ import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
 import useMediaCards from '@/hooks/useMediaCards';
+import { GetLinkDetailResponse } from '@/types/media.interface';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 import Loading from '../Common/Loading';
@@ -20,6 +21,15 @@ export default function MediaListContainer({
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const compareUpdateDate = (
+    a: GetLinkDetailResponse,
+    b: GetLinkDetailResponse
+  ) => {
+    const aUpdatedAt = new Date(a.updatedAt).getTime();
+    const bUpdatedAt = new Date(b.updatedAt).getTime();
+    return bUpdatedAt - aUpdatedAt;
+  };
 
   if (isLoading || error || !mediaList) {
     return (
@@ -40,7 +50,7 @@ export default function MediaListContainer({
   return (
     <>
       <ListBackGround>
-        {mediaList.map((item, index) => {
+        {mediaList.sort(compareUpdateDate).map((item, index) => {
           return (
             <MediaCard
               key={item.id}
