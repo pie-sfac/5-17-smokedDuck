@@ -2,14 +2,13 @@ export interface recordQuestionsType {
   id: number;
   type: string;
   order: number;
-  tagName: string;
   required: boolean;
   title: string;
-  description: string;
-  paragraph: boolean;
-  options: string[];
-  allowMultiple: boolean;
-  addOtherOption: boolean;
+  description?: string;
+  paragraph?: boolean;
+  options?: string[];
+  allowMultiple?: boolean;
+  addOtherOption?: boolean;
 }
 
 export interface recordDetailType {

@@ -14,7 +14,7 @@ export interface CreateTemplateResponse {
   question: Questions[];
 }
 
-export interface UpdateTemplate {
+export interface UpdateTemplateType {
   title: string;
   description: string | undefined;
   updateQuestions: recordQuestionsType[] | [];

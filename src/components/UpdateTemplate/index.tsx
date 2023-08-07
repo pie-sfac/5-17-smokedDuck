@@ -1,79 +1,79 @@
-import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { MainContext } from '@/store';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
+import { updateTemplateAPI } from '@/apis/Template';
+import useRecord from '@/hooks/useRecord';
+import useRecordDetail from '@/hooks/useRecordDetail';
+import { Questions } from '@/types/question.interface';
+import { UpdateTemplateType } from '@/types/template.interface';
 
 import UpdateTemplateContent from './UpdateTemplateContent';
 import UpdateTemplateFooter from './UpdateTemplateFooter';
-import UpdateTemplateHeader from './UpdateTemplateHeader';
+import UpdateTemplateTitle from './UpdateTemplateTitle';
 
-type UpdateTemplatePropsType = {
-  questionInfo: recordQuestionsType;
+type UpdateTemplatePropType = {
+  id: number;
 };
 
-export default function UpdateTemplate({
-  questionInfo,
-}: UpdateTemplatePropsType) {
-  const basicContent = ['TEXT', 'MEDIA', 'SELECT'];
-  const isbasic = basicContent.includes(questionInfo.type);
-  const { isRecordEdit } = useContext(MainContext);
-  const [title, setTitle] = useState('');
+export default function UpdateTemplate({ id }: UpdateTemplatePropType) {
+  const { recordDetailData } = useRecordDetail(id);
+  const { recordListData, mutate } = useRecord();
+  const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
+    title: recordDetailData ? recordDetailData.title : '',
+    description: recordDetailData ? recordDetailData.description : '',
+  });
 
-  useEffect(() => {
-    switch (questionInfo.type) {
-      case 'PAIN_HSTRY':
-        setTitle('통증 정도');
-        return;
-        break;
-      case 'CONDITION':
-        setTitle('오늘의 컨디션');
-        return;
-        break;
-      case 'PAIN_INTV':
-        setTitle('통증 문진');
-        return;
-        break;
+  const [updateQuestions, setUpdateQuestions] = useState(
+    recordDetailData ? recordDetailData.questions : []
+  );
+  const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
+  const [deleteIds] = useState<number[]>([]);
 
-      default:
-        setTitle(questionInfo.title);
-        return;
-        break;
+  const handleClickedSaveButton = async (templateId?: number) => {
+    const updatedTemplateContent: UpdateTemplateType = {
+      title: currTemplateSubHeader.title,
+      description: currTemplateSubHeader.description,
+      updateQuestions: updateQuestions ? updateQuestions : [],
+      addQuestions,
+      deleteIds,
+    };
+
+    if (templateId) {
+      await updateTemplateAPI(templateId, updatedTemplateContent);
     }
-  }, [questionInfo.title, questionInfo.type]);
+
+    if (recordListData) {
+      mutate(
+        recordListData.map(listItem => {
+          return listItem.id === id
+            ? { ...listItem, title: currTemplateSubHeader.title }
+            : listItem;
+        }),
+        true
+      );
+    }
+  };
+
+  if (!recordDetailData) {
+    return <></>;
+  }
+
   return (
-    <QuestionContainer>
-      <UpdateTemplateHeader
-        id={questionInfo.id}
-        title={title}
-        type={questionInfo.type}
-        paragraph={questionInfo.paragraph}
-        allowMultiple={questionInfo.allowMultiple}
-        isbasic={isbasic}
-        isRecordEdit={isRecordEdit}
+    <>
+      <UpdateTemplateTitle category={recordDetailData.category} />
+      <UpdateTemplateContent
+        id={id}
+        setCurrTemplateSubHeader={setCurrTemplateSubHeader}
+        updateQuestions={updateQuestions}
+        setUpdateQuestions={setUpdateQuestions}
+        addQuestions={addQuestions}
+        setAddQuestions={setAddQuestions}
       />
-      {isbasic && (
-        <UpdateTemplateContent
-          title={questionInfo.title}
-          description={questionInfo.description}
-          options={questionInfo.options}
-          type={questionInfo.type}
-          isRecordEdit={isRecordEdit}
-        />
-      )}
-      <UpdateTemplateFooter isRecordEdit={isRecordEdit} />
-    </QuestionContainer>
+      <UpdateTemplateFooter
+        handleClickedSaveButton={handleClickedSaveButton}
+        updateQuestions={updateQuestions}
+        addQuestions={addQuestions}
+        id={id}
+      />
+    </>
   );
 }
-
-const QuestionContainer = styled('div')`
-  width: 96%;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #ffffff;
-  border: 1px solid #e7e7e7;
-  border-radius: 10px 10px 10px 10px;
-`;
