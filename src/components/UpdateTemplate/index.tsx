@@ -4,17 +4,17 @@ import { useContext, useEffect, useState } from 'react';
 import { MainContext } from '@/store';
 import { recordQuestionsType } from '@/types/recordDetail.interface';
 
-import RecordDetailItemContent from './RecordDetailItemContent';
-import RecordDetailItemFooter from './RecordDetailItemFooter';
-import RecordDetailItemHeader from './RecordDetailItemHeader';
+import UpdateTemplateContent from './UpdateTemplateContent';
+import UpdateTemplateFooter from './UpdateTemplateFooter';
+import UpdateTemplateHeader from './UpdateTemplateHeader';
 
-type RecordDetailItemPropsType = {
+type UpdateTemplatePropsType = {
   questionInfo: recordQuestionsType;
 };
 
-export default function RecordDetailItem({
+export default function UpdateTemplate({
   questionInfo,
-}: RecordDetailItemPropsType) {
+}: UpdateTemplatePropsType) {
   const basicContent = ['TEXT', 'MEDIA', 'SELECT'];
   const isbasic = basicContent.includes(questionInfo.type);
   const { isRecordEdit } = useContext(MainContext);
@@ -43,7 +43,7 @@ export default function RecordDetailItem({
   }, [questionInfo.title, questionInfo.type]);
   return (
     <QuestionContainer>
-      <RecordDetailItemHeader
+      <UpdateTemplateHeader
         id={questionInfo.id}
         title={title}
         type={questionInfo.type}
@@ -53,7 +53,7 @@ export default function RecordDetailItem({
         isRecordEdit={isRecordEdit}
       />
       {isbasic && (
-        <RecordDetailItemContent
+        <UpdateTemplateContent
           title={questionInfo.title}
           description={questionInfo.description}
           options={questionInfo.options}
@@ -61,7 +61,7 @@ export default function RecordDetailItem({
           isRecordEdit={isRecordEdit}
         />
       )}
-      <RecordDetailItemFooter isRecordEdit={isRecordEdit} />
+      <UpdateTemplateFooter isRecordEdit={isRecordEdit} />
     </QuestionContainer>
   );
 }

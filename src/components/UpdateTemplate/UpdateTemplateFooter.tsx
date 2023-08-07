@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
 
-type RecordDetailItemFooterPropsType = {
+type UpdateTemplateFooterPropsType = {
   isRecordEdit: boolean;
 };
 
-export default function RecordDetailItemFooter({
+export default function UpdateTemplateFooter({
   isRecordEdit,
-}: RecordDetailItemFooterPropsType) {
+}: UpdateTemplateFooterPropsType) {
   return (
     <QuestionFooterContainer>
       <EssentialContainer>

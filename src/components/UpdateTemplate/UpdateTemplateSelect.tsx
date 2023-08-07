@@ -6,7 +6,7 @@ interface AddedSelection {
   selectionName: string;
 }
 
-export default function RecordDetailItemSelect() {
+export default function UpdateTemplateSelect() {
   const [currentSelection, setCurrentSelection] = useState('');
   const [addedSelections, setAddedSelections] = useState<AddedSelection[]>([]);
   const handleAddedSelections = useCallback(() => {
