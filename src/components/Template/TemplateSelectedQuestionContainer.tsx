@@ -91,25 +91,6 @@ export default function TemplateSelectedQuestionContainer({
           />
         ))
       )}
-      {/* {totalQuestionList &&
-        totalQuestionList.map(currentQuestion => (
-          <Question
-            key={currentQuestion.order}
-            order={currentQuestion.order}
-            title={currentQuestion.title}
-            tagName={
-              basicQuestion.includes(currentQuestion.type) ? '기본' : '전문'
-            }
-            type={currentQuestion.type}
-            onChange={handleQuestionContent}
-            required={currentQuestion.required}
-            description={currentQuestion.description}
-            paragraph={currentQuestion.paragraph}
-            options={currentQuestion.options}
-            allowMultiple={currentQuestion.allowMultiple}
-            addOtherOption={currentQuestion.addOtherOption}
-          />
-        ))} */}
     </ContentContainer>
   );
 }
