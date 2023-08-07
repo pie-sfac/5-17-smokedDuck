@@ -5,7 +5,7 @@ import { useContext, useState } from 'react';
 import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
-import RecordDetailTemplate from '@/components/Template/RecordDetailTemplate';
+import RecordInfo from '@/components/Record/RecordInfo';
 import { MainContext } from '@/store';
 
 // import useRecordDetail from '@/hooks/useRecordDetail';
@@ -75,12 +75,12 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
       </CardContainer>
       {recordTemplateOpen && (
         <Modal setIsOpen={setRecordTemplateOpen}>
-          <RecordDetailTemplate />
+          <RecordInfo />
         </Modal>
       )}
       {editModalOpen && (
         <Modal setIsOpen={setEditModalOpen}>
-          <RecordDetailTemplate />
+          <RecordInfo />
         </Modal>
       )}
       {deleteModalOpen && (
