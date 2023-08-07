@@ -16,7 +16,7 @@ const NotFoundContainer = styled('div')`
 `;
 
 const Title = styled('div')`
-  font-size: 200px;
+  font-size: 170px;
   color: #6691ff;
   font-weight: 800;
 `;
