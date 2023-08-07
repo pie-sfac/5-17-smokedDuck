@@ -27,6 +27,7 @@ export default function Template({ isEditMode }: TemplateProps) {
     questionList,
     templateContent,
     setTemplateContent,
+    selectedTemplateTitle,
     selectedRecordCard,
   } = useContext(MainContext);
 
@@ -103,7 +104,9 @@ export default function Template({ isEditMode }: TemplateProps) {
         setAddQuestions={setAddQuestions}
         onChange={handleTemplateContent}
       />
-      <TemplateFooter handleClickedSaveButton={handleClickedSaveButton} />
+      {selectedTemplateTitle && (
+        <TemplateFooter handleClickedSaveButton={handleClickedSaveButton} />
+      )}
     </>
   );
 }
