@@ -8,7 +8,7 @@ import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Question from '../Question';
 
-// const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
+const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
 
 type TemplateSelectedQuestionContainerProps = {
   isEditMode: boolean | undefined;
@@ -91,7 +91,7 @@ export default function TemplateSelectedQuestionContainer({
           />
         ))
       )}
-      {/* {totalQuestionList &&
+      {totalQuestionList &&
         totalQuestionList.map(currentQuestion => (
           <Question
             key={currentQuestion.order}
@@ -109,7 +109,7 @@ export default function TemplateSelectedQuestionContainer({
             allowMultiple={currentQuestion.allowMultiple}
             addOtherOption={currentQuestion.addOtherOption}
           />
-        ))} */}
+        ))}
     </ContentContainer>
   );
 }

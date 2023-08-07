@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useCallback, useRef, useState } from 'react';
 
-import RecordDetailCheckOutSelection from '@/components/RecordDetailItem/RecordDetailCheckOutSelection';
+import RecordDetailCheckOutSelection from '@/components/UpdateTemplate/UpdateTemplateCheckOutSelection';
 import { AddedFile } from '@/types/question.interface';
 
 type QuestionContentProps = {
