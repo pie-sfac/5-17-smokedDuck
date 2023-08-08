@@ -18,21 +18,16 @@ export default function QuestionOptionalContent({
   type,
   onChange,
 }: QuestionOptionalContentProps) {
-  const [currentOptions, setCurrentOptions] = useState(options);
+  const [currentOptions, setCurrentOptions] = useState<string[] | undefined>(
+    options
+  );
   const [currentSelection, setCurrentSelection] = useState('');
 
   const handleAddedOptions = useCallback(
     (currentSelection: string) => {
-      setCurrentOptions(prevCurrentOptions => [
-        ...(prevCurrentOptions || []),
-        currentSelection,
-      ]);
-
-      currentOptions?.length !== 0 &&
-        onChange(order, 'options', [
-          ...(currentOptions || []),
-          currentSelection,
-        ]);
+      const newAddedOptions = [...(currentOptions || []), currentSelection];
+      setCurrentOptions(newAddedOptions);
+      onChange(order, 'options', newAddedOptions);
       setCurrentSelection('');
     },
     [currentOptions, onChange, order]
@@ -44,8 +39,9 @@ export default function QuestionOptionalContent({
         (_, idx) => targetId !== idx
       );
       setCurrentOptions(deletedOptions);
+      deletedOptions && onChange(order, 'options', deletedOptions);
     },
-    [currentOptions]
+    [currentOptions, onChange, order]
   );
 
   return (

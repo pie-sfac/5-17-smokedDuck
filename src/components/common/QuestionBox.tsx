@@ -3,6 +3,13 @@ import { useContext } from 'react';
 
 import { MainContext } from '@/store';
 
+type checkedSpecialQuestions = {
+  [key: string]: boolean;
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};
+
 type QuestionBoxProps = {
   image: string;
   tagTitle: string;
@@ -10,7 +17,12 @@ type QuestionBoxProps = {
   tagName: string;
   margin?: string;
   type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
+  isCheckedSpecialQuestions?: checkedSpecialQuestions;
+  setIsCheckedSpecialQuestions?: React.Dispatch<
+    React.SetStateAction<checkedSpecialQuestions>
+  >;
 };
+
 export default function QuestionBox({
   image,
   tagTitle,
@@ -18,6 +30,8 @@ export default function QuestionBox({
   tagName,
   margin,
   type,
+  isCheckedSpecialQuestions,
+  setIsCheckedSpecialQuestions,
 }: QuestionBoxProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
@@ -27,6 +41,44 @@ export default function QuestionBox({
         marginRight: margin,
       }}
       onClick={() => {
+        if (type === 'PAIN_HSTRY') {
+          if (isCheckedSpecialQuestions?.isPAIN_HSTRY) {
+            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            return;
+          } else {
+            setIsCheckedSpecialQuestions &&
+              setIsCheckedSpecialQuestions(prevIsChecked => ({
+                ...prevIsChecked,
+                isPAIN_HSTRY: true,
+              }));
+          }
+        } else if (type === 'CONDITION') {
+          if (isCheckedSpecialQuestions?.isCONDITION) {
+            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            return;
+          } else {
+            setIsCheckedSpecialQuestions &&
+              setIsCheckedSpecialQuestions(prevIsChecked => ({
+                ...prevIsChecked,
+                isCONDITION: true,
+              }));
+          }
+        } else if (type === 'PAIN_INTV') {
+          if (isCheckedSpecialQuestions?.isPAIN_INTV) {
+            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            return;
+          } else {
+            setIsCheckedSpecialQuestions &&
+              setIsCheckedSpecialQuestions(prevIsChecked => ({
+                ...prevIsChecked,
+                isPAIN_INTV: true,
+              }));
+          }
+        }
+        if (questionList.length === 30) {
+          alert('템플릿당 문항수는 30개를 초과할 수 없습니다.');
+          return;
+        }
         setQuestionList([
           ...questionList,
           {
