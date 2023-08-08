@@ -70,7 +70,7 @@ export default function Template() {
       return;
     }
     questionList.map(question => {
-      if (question.title.length === 0) {
+      if (question.tagName === '기본' && question.title.length === 0) {
         alert(`${setTitle(question.type)} 문항의 제목을 입력해주세요.`);
         return;
       }
