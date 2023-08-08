@@ -27,6 +27,10 @@ export default function QuestionBox({
         marginRight: margin,
       }}
       onClick={() => {
+        if (questionList.length === 30) {
+          alert('템플릿당 문항수는 30개를 초과할 수 없습니다.');
+          return;
+        }
         setQuestionList([
           ...questionList,
           {
