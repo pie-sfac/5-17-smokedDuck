@@ -1,21 +1,20 @@
 import { Switch } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useCallback, useContext, useState } from 'react';
+import { useState } from 'react';
 import { RxTrash } from 'react-icons/rx';
 import { VscTriangleDown, VscTriangleUp } from 'react-icons/vsc';
-
-import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
 
 type QuestionFooterProps = {
   order: number;
   onChange: (
     order: number,
     id: string,
-    value: string | string[] | boolean | number
+    value: string | string[] | boolean
   ) => void;
   tagName: string;
   required?: boolean;
+  handleClickedDeleteButton: (order: number) => void;
+  handleClickedMoveButton: (moveDirection: string) => void;
 };
 
 export default function QuestionFooter({
@@ -23,62 +22,11 @@ export default function QuestionFooter({
   onChange,
   tagName,
   required,
+  handleClickedDeleteButton,
+  handleClickedMoveButton,
 }: QuestionFooterProps) {
-  const { questionList, setQuestionList } = useContext(MainContext);
-
-  const handleClickedMoveButton = useCallback(
-    (moveDirection: string) => {
-      const handleChangedOrder = (tmpQuestionList: Questions[]) => {
-        const changedOrderList = tmpQuestionList.map((question, idx) => ({
-          ...question,
-          order: idx + 1,
-        }));
-        setQuestionList(changedOrderList);
-      };
-      const changeOrder = (currentOrder: number) => {
-        const tmpQuestionList = [...questionList];
-
-        const targetOrder = order - 1;
-
-        const tmp = tmpQuestionList[currentOrder];
-        tmpQuestionList[currentOrder] = tmpQuestionList[targetOrder];
-        tmpQuestionList[targetOrder] = tmp;
-
-        handleChangedOrder(tmpQuestionList);
-      };
-
-      if (moveDirection === 'up') {
-        if (order === 1) {
-          alert('첫번째 문항입니다.');
-          return;
-        }
-        changeOrder(order - 2);
-      } else if (moveDirection === 'down') {
-        if (order === questionList.length) {
-          alert('마지막 문항입니다.');
-          return;
-        }
-        changeOrder(order);
-      }
-      questionList.map((question, idx) => (question.order = idx + 1));
-    },
-    [order, questionList, setQuestionList]
-  );
-
-  const handleClickedDeleteButton = useCallback(
-    (order: number) => {
-      const deletedQuestions = questionList.filter(
-        question => question.order !== order
-      );
-      deletedQuestions.map((question, index) => {
-        question.order = index + 1;
-      });
-      setQuestionList(deletedQuestions);
-    },
-    [questionList, setQuestionList]
-  );
-
   const [isRequired, setIsRequired] = useState(required ? required : false);
+
   return (
     <QuestionFooterContainer
       style={{

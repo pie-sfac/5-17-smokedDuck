@@ -8,6 +8,7 @@ type QuestionHeaderProps = {
   title: string;
   tagName: string;
   paragraph: boolean;
+  allowMultiple: boolean | undefined;
   onChange: (
     order: number,
     id: string,
@@ -20,10 +21,11 @@ export default function QuestionHeader({
   title,
   tagName,
   paragraph,
+  allowMultiple,
   onChange,
 }: QuestionHeaderProps) {
-  const [isAllowMultiple, setIsAllowMultiple] = useState(false);
   const [isParagraph, setIsParagraph] = useState(paragraph);
+  const [isAllowMultiple, setIsAllowMultiple] = useState(allowMultiple);
 
   const [currentOrder, setCurrentOrder] = useState(order);
 
