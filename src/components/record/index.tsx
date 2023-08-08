@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@chakra-ui/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
@@ -8,6 +9,7 @@ import { MainContext } from '@/store';
 
 export default function Record() {
   const [templateCategory, setTemplateCategory] = useState('INTERVIEW');
+  const [isSmallScreen] = useMediaQuery('(min-height: 800px)');
   const changeListType = useCallback((type: string) => {
     setTemplateCategory(type);
   }, []);
@@ -36,7 +38,13 @@ export default function Record() {
       {recordModalOpen && (
         <Modal
           width={selectedTemplateTitle.length === 0 ? 700 : undefined}
-          height={selectedTemplateTitle.length === 0 ? 400 : undefined}
+          height={
+            selectedTemplateTitle.length === 0
+              ? 400
+              : isSmallScreen
+              ? 720
+              : undefined
+          }
           setIsOpen={setRecordModalState}
         >
           <Template />

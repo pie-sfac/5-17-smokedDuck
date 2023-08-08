@@ -57,7 +57,6 @@ const CategoryTitle = styled('ul')`
 
   list-style: none;
   cursor: pointer;
-  padding: 0 1rem;
 `;
 
 const CategoryItem = styled('li')`

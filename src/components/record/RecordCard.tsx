@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@chakra-ui/media-query';
 import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
@@ -15,6 +16,7 @@ type RecordCardPropsType = {
 };
 
 export default function RecordCard({ title, id }: RecordCardPropsType) {
+  const [isSmallScreen] = useMediaQuery('(min-height: 800px)');
   const { setSeletedRecordCardId, setIsRecordEdit } = useContext(MainContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -45,12 +47,18 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
         />
       </CardContainer>
       {recordTemplateOpen && (
-        <Modal setIsOpen={setRecordTemplateOpen}>
+        <Modal
+          setIsOpen={setRecordTemplateOpen}
+          height={isSmallScreen ? 720 : undefined}
+        >
           <RecordInfo id={id} />
         </Modal>
       )}
       {editModalOpen && (
-        <Modal setIsOpen={setEditModalOpen}>
+        <Modal
+          setIsOpen={setEditModalOpen}
+          height={isSmallScreen ? 720 : undefined}
+        >
           <UpdateTemplate id={id} />
         </Modal>
       )}
