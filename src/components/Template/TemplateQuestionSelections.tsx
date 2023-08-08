@@ -11,8 +11,25 @@ import Text from '@/assets/Text.svg';
 
 import QuestionBox from '../Common/QuestionBox';
 
-export default function TemplateQuestionSelections() {
+type checkedSpecialQuestions = {
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};
+
+type TemplateQuestionSelectionsProps = {
+  isCheckedSpecialQuestions: checkedSpecialQuestions;
+  setIsCheckedSpecialQuestions: React.Dispatch<
+    React.SetStateAction<checkedSpecialQuestions>
+  >;
+};
+
+export default function TemplateQuestionSelections({
+  isCheckedSpecialQuestions,
+  setIsCheckedSpecialQuestions,
+}: TemplateQuestionSelectionsProps) {
   const [selectedQuestion, setSelectedQuestion] = useState('');
+
   return (
     <EntireQuestionContainer>
       <QeustionsContainer>
@@ -89,6 +106,8 @@ export default function TemplateQuestionSelections() {
             tagName={'전문'}
             margin={'0.4rem'}
             type={'PAIN_HSTRY'}
+            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
           />
           <QuestionBox
             image={Condition}
@@ -97,6 +116,8 @@ export default function TemplateQuestionSelections() {
             tagName={'전문'}
             margin={'0.4rem'}
             type={'CONDITION'}
+            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
           />
           <QuestionBox
             image={PainQuestion}
@@ -106,6 +127,8 @@ export default function TemplateQuestionSelections() {
             }
             tagName={'전문'}
             type={'PAIN_INTV'}
+            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
           />
         </QuestionBoxContainer>
       )}
