@@ -1,9 +1,13 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext } from 'react';
+
+import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
+import QuestionOptionalContent from './QuestionOptionalContent';
 interface QuestionProps {
   order: number;
   title: string;
@@ -11,21 +15,8 @@ interface QuestionProps {
   onChange: (
     order: number,
     id: string,
-    value: string | string[] | boolean | number
+    value: string | string[] | boolean
   ) => void;
-  type?: string;
-  required?: boolean;
-  description?: string;
-  paragraph?: boolean;
-  options?: string[];
-  allowMultiple?: boolean;
-  addOtherOption?: boolean;
-}
-
-interface CurrentQuestion {
-  order: number;
-  title: string;
-  tagName: string;
   type?: string;
   required?: boolean;
   description?: string;
@@ -46,19 +37,8 @@ export default function Question({
   paragraph,
   options,
   allowMultiple,
-  addOtherOption,
 }: QuestionProps) {
-  const [currentQuestion] = useState<CurrentQuestion>({
-    order,
-    title,
-    tagName,
-    required,
-    description,
-    paragraph,
-    options,
-    allowMultiple,
-    addOtherOption,
-  });
+  const { questionList, setQuestionList } = useContext(MainContext);
 
   const setSpecialtyTitle = useCallback(
     (currentType: string | undefined, title: string) => {
@@ -80,6 +60,59 @@ export default function Question({
     []
   );
 
+  const handleClickedMoveButton = useCallback(
+    (moveDirection: string) => {
+      const handleChangedOrder = (tmpQuestionList: Questions[]) => {
+        const copyedOrderList = [...tmpQuestionList];
+        const changedOrderList = copyedOrderList.map((question, idx) => ({
+          ...question,
+          order: idx + 1,
+        }));
+        setQuestionList(changedOrderList);
+      };
+      const changeOrder = (currentOrder: number) => {
+        const tmpQuestionList = [...questionList];
+
+        const targetOrder = order - 1;
+
+        const tmp = tmpQuestionList[currentOrder];
+        tmpQuestionList[currentOrder] = tmpQuestionList[targetOrder];
+        tmpQuestionList[targetOrder] = tmp;
+
+        handleChangedOrder(tmpQuestionList);
+      };
+
+      if (moveDirection === 'up') {
+        if (order === 1) {
+          alert('첫번째 문항입니다.');
+          return;
+        }
+        changeOrder(order - 2);
+      } else if (moveDirection === 'down') {
+        if (order === questionList.length) {
+          alert('마지막 문항입니다.');
+          return;
+        }
+        changeOrder(order);
+      }
+      questionList.map((question, idx) => (question.order = idx + 1));
+    },
+    [order, questionList, setQuestionList]
+  );
+
+  const handleClickedDeleteButton = useCallback(
+    (order: number) => {
+      const deletedQuestions = questionList.filter(
+        question => question.order !== order
+      );
+      deletedQuestions.map((question, index) => {
+        question.order = index + 1;
+      });
+      setQuestionList(deletedQuestions);
+    },
+    [questionList, setQuestionList]
+  );
+
   return (
     <QuestionContainer>
       <QuestionHeader
@@ -87,12 +120,32 @@ export default function Question({
         title={setSpecialtyTitle(type, title)}
         tagName={tagName}
         paragraph={paragraph ? paragraph : false}
+        allowMultiple={allowMultiple}
         onChange={onChange}
       />
       {tagName === '기본' && (
         <QuestionContent
+          order={order}
           onChange={onChange}
-          currentQuestion={currentQuestion}
+          title={title}
+          description={description}
+        />
+      )}
+      {title === '미디어' && (
+        <QuestionOptionalContent
+          order={order}
+          options={options}
+          title={title}
+          onChange={onChange}
+        />
+      )}
+
+      {title === '선택형' && (
+        <QuestionOptionalContent
+          order={order}
+          options={options}
+          title={title}
+          onChange={onChange}
         />
       )}
       <QuestionFooter
@@ -100,6 +153,8 @@ export default function Question({
         onChange={onChange}
         tagName={tagName}
         required={required}
+        handleClickedDeleteButton={handleClickedDeleteButton}
+        handleClickedMoveButton={handleClickedMoveButton}
       />
     </QuestionContainer>
   );
