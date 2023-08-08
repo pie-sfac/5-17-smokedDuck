@@ -37,6 +37,7 @@ export async function updateTemplateAPI(
       `${TEMPLATE_URL}/${id}`,
       editedTemplateContent
     );
+
     return response.data;
   } catch (error) {
     console.error(error);

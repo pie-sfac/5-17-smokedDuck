@@ -14,8 +14,6 @@ type UpdateTemplateFooterProps = {
 export default function UpdateTemplateFooter({
   handleClickedSaveButton,
   id,
-  updateQuestions,
-  addQuestions,
 }: UpdateTemplateFooterProps) {
   return (
     <FooterContainer>
@@ -26,9 +24,6 @@ export default function UpdateTemplateFooter({
           color: '#F2F0F0',
         }}
         borderRadius={'20px 20px 20px 20px'}
-        isDisabled={
-          updateQuestions.length > 1 || addQuestions.length > 1 ? false : true
-        }
         onClick={() => handleClickedSaveButton(id)}
       >
         저장
