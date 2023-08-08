@@ -20,7 +20,6 @@ type UpdateTemplateSelectedQuestionContainerProps = {
 };
 
 export default function UpdateTemplateSelectedQuestionContainer({
-  updateQuestions,
   setUpdateQuestions,
   setAddQuestions,
   addQuestions,
@@ -59,12 +58,11 @@ export default function UpdateTemplateSelectedQuestionContainer({
 
   useEffect(
     () =>
-      setUpdateQuestions([
-        ...updateQuestions.sort((a, b) => a.order - b.order),
+      setUpdateQuestions(prevQuestions => [
+        ...prevQuestions.sort((a, b) => a.order - b.order),
       ]),
-    [setUpdateQuestions, updateQuestions]
+    [setUpdateQuestions]
   );
-
   if (!recordDetailData) {
     return (
       <ContentContainer

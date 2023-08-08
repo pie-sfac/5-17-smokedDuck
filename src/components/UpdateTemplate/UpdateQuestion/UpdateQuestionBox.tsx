@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
 
-import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
 
 type QuestionBoxProps = {
@@ -26,33 +24,12 @@ export default function QuestionBox({
   addQuestions,
   setAddQuestions,
 }: QuestionBoxProps) {
-  const { questionList, setQuestionList } = useContext(MainContext);
-
   return (
     <QuestionBoxConatiner
       style={{
         marginRight: margin,
       }}
       onClick={() => {
-        setQuestionList([
-          ...questionList,
-          {
-            type,
-            order:
-              questionList.length === 0
-                ? 1
-                : questionList[questionList.length - 1].order + 1,
-            required: false,
-            title: '',
-            tagName,
-            description: '',
-            paragraph: false,
-            options: [],
-            allowMultiple: false,
-            addOtherOption: false,
-          },
-        ]);
-
         if (totalOrder) {
           setAddQuestions([
             ...addQuestions,
