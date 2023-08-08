@@ -1,22 +1,27 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
-import RecordDetailCheckOutSelection from '@/components/RecordDetailItem/RecordDetailCheckOutSelection';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 type QuestionContentProps = {
-  title: string;
-  description: string;
-  options: string[];
-  type: string;
-  isRecordEdit: boolean;
+  onChange: (
+    order: number,
+    valueKey: string,
+    value: string | string[] | boolean
+  ) => void;
+  question: recordQuestionsType;
+  isCheckOut: boolean;
 };
 
 export default function QuestionContent({
-  title,
-  description,
-  options,
-  type,
-  isRecordEdit,
+  onChange,
+  question,
+  isCheckOut,
 }: QuestionContentProps) {
+  const [currentTitle, setCurrentTitle] = useState(question.title);
+  const [currentDescription, setCurrentDescription] = useState(
+    question.description
+  );
   return (
     <QuestionContentContainer>
       <StyledLabel htmlFor="questionTitle">문항 제목</StyledLabel>
@@ -29,9 +34,14 @@ export default function QuestionContent({
           height: '2.5rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        value={title}
-        title={title}
-        disabled={!isRecordEdit}
+        onChange={e => {
+          setCurrentTitle(e.target.value);
+        }}
+        onBlur={e => {
+          onChange(question.order, 'title', e.target.value);
+        }}
+        value={currentTitle}
+        disabled={isCheckOut}
       />
       <StyledLabel htmlFor="questionDescription">문항 설명</StyledLabel>
       <StyledTextArea
@@ -42,15 +52,15 @@ export default function QuestionContent({
           height: '4.2rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        value={description}
-        disabled={!isRecordEdit}
+        onChange={e => {
+          setCurrentDescription(e.target.value);
+        }}
+        onBlur={e => {
+          onChange(question.order, 'description', e.target.value);
+        }}
+        value={currentDescription}
+        disabled={isCheckOut}
       />
-      {type === 'MEDIA' && (
-        <AddMediaContainer>
-          * 답변자 미디어를 첨부할 수 있습니다.
-        </AddMediaContainer>
-      )}
-      {type === 'SELECT' && <RecordDetailCheckOutSelection options={options} />}
     </QuestionContentContainer>
   );
 }
@@ -86,12 +96,4 @@ const StyledTextArea = styled('textarea')`
     color: #cfcfcf;
     font-size: 0.8rem;
   }
-`;
-
-const AddMediaContainer = styled('div')`
-  display: flex;
-  align-items: center;
-  color: #aeaeae;
-  font-size: 0.8rem;
-  margin: 0.2rem;
 `;

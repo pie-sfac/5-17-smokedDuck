@@ -1,29 +1,34 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import QuestionMark from '@/assets/QuestionMark.svg';
 
 type QuestionHeaderProps = {
   order: number;
-  type: string | undefined;
+  type: string;
   paragraph: boolean | undefined;
   isBasic: boolean;
+  isCheckOut: boolean;
+  allowMultiple: boolean;
   onChange: (
     order: number,
-    id: string,
+    valueKey: string,
     value: string | string[] | boolean
   ) => void;
-  allowMultiple: boolean | undefined;
 };
 
-export default function QuestionHeader({
+export default function UpdateQuestionHeader({
   order,
   type,
   paragraph,
+  onChange,
   isBasic,
   allowMultiple,
-  onChange,
+  isCheckOut,
 }: QuestionHeaderProps) {
+  const [isAllowMultiple, setIsAllowMultiple] = useState(allowMultiple);
+  const [isParagraph, setIsParagraph] = useState(paragraph);
+
   const setTitle = useCallback((type: string) => {
     switch (type) {
       case 'PAIN_HSTRY':
@@ -46,20 +51,11 @@ export default function QuestionHeader({
         break;
     }
   }, []);
-  const [isParagraph, setIsParagraph] = useState(paragraph);
-  const [isAllowMultiple, setIsAllowMultiple] = useState(
-    allowMultiple ? allowMultiple : false
-  );
-
-  const [currentOrder, setCurrentOrder] = useState(order);
-
-  useEffect(() => setCurrentOrder(order), [order]);
 
   return (
     <HeaderContainer>
       <TitleContainer>
-        {currentOrder < 10 ? '0' + currentOrder : currentOrder}.{' '}
-        {type && setTitle(type)}
+        {order < 10 ? '0' + order : order}. {setTitle(type)}
         <TagNameContainer>
           <StyledTagName
             style={{
@@ -83,6 +79,7 @@ export default function QuestionHeader({
               onChange(order, 'paragraph', false);
             }}
             checked={isParagraph ? false : true}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
@@ -98,6 +95,7 @@ export default function QuestionHeader({
               onChange(order, 'paragraph', true);
             }}
             checked={isParagraph ? true : false}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>
@@ -117,6 +115,7 @@ export default function QuestionHeader({
             onBlur={() => {
               onChange(order, 'allowMultiple', isAllowMultiple);
             }}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>

@@ -14,12 +14,11 @@ export interface CreateTemplateResponse {
   question: Questions[];
 }
 
-export interface UpdateTemplate {
+export interface UpdateTemplateType {
   title: string;
   description: string | undefined;
   updateQuestions: recordQuestionsType[] | [];
   addQuestions: Questions[];
-  deleteIds: number[];
 }
 
 export interface UpdateTemplateResponse {

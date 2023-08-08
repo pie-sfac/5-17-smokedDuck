@@ -3,11 +3,12 @@ import { useContext } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
-import RecordDetailItem from '@/components/RecordDetailItem';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
 
-export default function RecordDetailTemplateContent() {
+import UpdateQuestion from '../UpdateTemplate/UpdateQuestion';
+
+export default function RecordContents() {
   const { selectedRecordCardId } = useContext(MainContext);
   const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
   const { isRecordEdit } = useContext(MainContext);
@@ -36,9 +37,10 @@ export default function RecordDetailTemplateContent() {
         </EmptyQuestionContainer>
       ) : (
         recordDetailData.questions.map(question => (
-          <RecordDetailItem
-            questionInfo={{ ...question, id: Math.random() * 100 }}
+          <UpdateQuestion
+            question={question}
             key={Math.random() * 100}
+            isCheckOut={true}
           />
         ))
       )}
