@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 
-import UpdateQuestionContent from '@/components/UpdateTemplate/UpdateQuestion/UpdateQuestionContent';
-import UpdateQuestionFooter from '@/components/UpdateTemplate/UpdateQuestion/UpdateQuestionFooter';
-import UpdateQuestionHeader from '@/components/UpdateTemplate/UpdateQuestion/UpdateQuestionHeader';
-import UpdateQuestionOptionalContent from '@/components/UpdateTemplate/UpdateQuestion/UpdateQuestionOptionalContent';
-import { Questions } from '@/types/question.interface';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
+
+import UpdateQuestionContent from './UpdateQuestionContent';
+import UpdateQuestionFooter from './UpdateQuestionFooter';
+import UpdateQuestionHeader from './UpdateQuestionHeader';
+import UpdateQuestionOptionalContent from './UpdateQuestionOptionalContent';
 
 interface QuestionProps {
   onChange?: (
@@ -12,7 +13,7 @@ interface QuestionProps {
     valueKey: string,
     value: string | string[] | boolean
   ) => void;
-  question: Questions;
+  question: recordQuestionsType;
   isCheckOut?: boolean;
 }
 
@@ -36,30 +37,20 @@ export default function UpdateQuestion({
       {isBasic && (
         <UpdateQuestionContent
           onChange={onChange!}
+          question={question}
           isCheckOut={isCheckOut ? isCheckOut : false}
-          title={question.title}
-          description={question.description ? question.description : ''}
-          order={question.order}
         />
       )}
-      {question.type === 'MEDIA' && (
-        <UpdateQuestionOptionalContent
-          order={question.order}
-          options={question.options}
-          type={question.type}
-          isCheckOut={isCheckOut ? isCheckOut : false}
-          onChange={onChange!}
-        />
-      )}
-      {question.type === 'SELECT' && (
-        <UpdateQuestionOptionalContent
-          order={question.order}
-          options={question.options}
-          type={question.type}
-          isCheckOut={isCheckOut ? isCheckOut : false}
-          onChange={onChange!}
-        />
-      )}
+      {question.type === 'MEDIA' ||
+        (question.type === 'SELECT' && (
+          <UpdateQuestionOptionalContent
+            order={question.order}
+            options={question.options}
+            type={question.type}
+            isCheckOut={isCheckOut ? isCheckOut : false}
+            onChange={onChange!}
+          />
+        ))}
       {isCheckOut ? (
         <></>
       ) : (

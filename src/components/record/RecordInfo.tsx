@@ -1,30 +1,16 @@
-import Loading from '@/components/Common/Loading';
 import RecordContents from '@/components/Record/RecordContents';
-import RecordModalHeader from '@/components/Record/RecordModalHeader';
-import UpdateTemplate from '@/components/UpdateTemplate';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
-import useRecordDetail from '@/hooks/useRecordDetail';
+
+import RecordModalHeader from './RecordModalTitle';
 
 type RecordInfo = {
   id: number;
-  isEditing: boolean;
 };
 
-export default function RecordInfo({ id, isEditing }: RecordInfo) {
-  const { recordDetailData } = useRecordDetail(id);
-
-  if (!recordDetailData) {
-    return (
-      <>
-        <Loading />
-      </>
-    );
-  }
-  return isEditing ? (
-    <UpdateTemplate id={id} recordDetailData={recordDetailData} />
-  ) : (
+export default function RecordInfo({ id }: RecordInfo) {
+  return (
     <>
-      <UpdateTemplateTitle id={id} isEditing={isEditing} />
+      <UpdateTemplateTitle />
       <RecordModalHeader id={id} />
       <RecordContents />
     </>

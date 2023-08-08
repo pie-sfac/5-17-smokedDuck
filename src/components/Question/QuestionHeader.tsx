@@ -117,7 +117,6 @@ export default function QuestionHeader({
             onBlur={() => {
               onChange(order, 'allowMultiple', isAllowMultiple);
             }}
-            checked={isAllowMultiple}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>
