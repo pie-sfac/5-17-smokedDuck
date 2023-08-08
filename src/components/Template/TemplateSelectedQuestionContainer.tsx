@@ -70,7 +70,7 @@ export default function TemplateSelectedQuestionContainer() {
 
 const ContentContainer = styled('div')`
   width: 940;
-  height: 30rem;
+  height: 13rem;
   display: flex;
   align-items: center;
   flex-direction: column;
