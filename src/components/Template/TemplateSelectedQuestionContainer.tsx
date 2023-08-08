@@ -3,28 +3,10 @@ import { useCallback, useContext, useEffect } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Question from '../Question';
 
-// const basicQuestion = ['TEXT', 'MEDIA', 'SELECT'];
-
-type TemplateSelectedQuestionContainerProps = {
-  isEditMode: boolean | undefined;
-  totalQuestionList: recordQuestionsType[];
-  setUpdateQuestions: React.Dispatch<
-    React.SetStateAction<recordQuestionsType[] | undefined>
-  >;
-  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
-};
-
-export default function TemplateSelectedQuestionContainer({
-  isEditMode,
-  totalQuestionList,
-  setUpdateQuestions,
-  setAddQuestions,
-}: TemplateSelectedQuestionContainerProps) {
+export default function TemplateSelectedQuestionContainer() {
   const { questionList, setQuestionList } = useContext(MainContext);
 
   const handleQuestionContent = useCallback(
@@ -40,28 +22,8 @@ export default function TemplateSelectedQuestionContainer({
       );
 
       setQuestionList(currentUpdatedQuestion);
-      setAddQuestions(currentUpdatedQuestion);
-
-      if (isEditMode) {
-        const currentUpdatedQuestion = totalQuestionList?.map(updateQuestion =>
-          updateQuestion.order === order
-            ? {
-                ...updateQuestion,
-                [id === 'title' ? updateQuestion.title : id]: value,
-              }
-            : updateQuestion
-        );
-        setUpdateQuestions(currentUpdatedQuestion);
-      }
     },
-    [
-      isEditMode,
-      questionList,
-      setAddQuestions,
-      setQuestionList,
-      setUpdateQuestions,
-      totalQuestionList,
-    ]
+    [questionList, setQuestionList]
   );
 
   useEffect(() => {
@@ -77,7 +39,7 @@ export default function TemplateSelectedQuestionContainer({
           questionList.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {questionList.length === 0 && totalQuestionList.length === 0 ? (
+      {questionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -87,9 +49,15 @@ export default function TemplateSelectedQuestionContainer({
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questionList?.map(question => (
+        questionList?.map((question, idx) => (
           <Question
-            key={question.order}
+            key={
+              questionList
+                ? questionList[questionList.length - 1].order +
+                  idx +
+                  Math.random()
+                : idx + Math.random()
+            }
             order={question.order}
             title={question.title}
             tagName={question.tagName}
@@ -103,7 +71,7 @@ export default function TemplateSelectedQuestionContainer({
 
 const ContentContainer = styled('div')`
   width: 940;
-  height: 13rem;
+  height: 30rem;
   display: flex;
   align-items: center;
   flex-direction: column;
