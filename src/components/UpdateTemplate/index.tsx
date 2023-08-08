@@ -26,7 +26,6 @@ export default function UpdateTemplate({ id }: UpdateTemplatePropType) {
     recordDetailData ? recordDetailData.questions : []
   );
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
-  const [deleteIds] = useState<number[]>([]);
 
   const handleClickedSaveButton = async (templateId?: number) => {
     const updatedTemplateContent: UpdateTemplateType = {
@@ -34,7 +33,6 @@ export default function UpdateTemplate({ id }: UpdateTemplatePropType) {
       description: currTemplateSubHeader.description,
       updateQuestions: updateQuestions ? updateQuestions : [],
       addQuestions,
-      deleteIds,
     };
 
     if (templateId) {

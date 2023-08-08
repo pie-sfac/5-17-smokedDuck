@@ -1,5 +1,3 @@
-<<<<<<<< HEAD:src/components/Template/UpdateTemplateContent.tsx
-========
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
@@ -39,7 +37,11 @@ export default function RecordContents() {
         </EmptyQuestionContainer>
       ) : (
         recordDetailData.questions.map(question => (
-          <UpdateQuestion question={question} key={Math.random() * 100} />
+          <UpdateQuestion
+            question={question}
+            key={Math.random() * 100}
+            isCheckOut={true}
+          />
         ))
       )}
     </ContentContainer>
@@ -70,4 +72,3 @@ const EmptyQuestionContainer = styled('div')`
   flex-direction: column;
   justify-content: center;
 `;
->>>>>>>> f6def5d (fix: record edit and checkOut bug fix):src/components/record/RecordContents.tsx

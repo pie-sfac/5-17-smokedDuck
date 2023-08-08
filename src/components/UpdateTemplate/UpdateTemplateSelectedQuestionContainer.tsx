@@ -20,6 +20,7 @@ type UpdateTemplateSelectedQuestionContainerProps = {
 };
 
 export default function UpdateTemplateSelectedQuestionContainer({
+  updateQuestions,
   setUpdateQuestions,
   setAddQuestions,
   addQuestions,
@@ -94,7 +95,7 @@ export default function UpdateTemplateSelectedQuestionContainer({
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        recordDetailData.questions.map(question => (
+        updateQuestions.map(question => (
           <UpdateQuestion
             key={question.order}
             question={question}
@@ -106,7 +107,7 @@ export default function UpdateTemplateSelectedQuestionContainer({
         addQuestions.map(question => (
           <UpdateQuestion
             key={question.order}
-            question={{ ...question, id: Math.random() * 100 }}
+            question={{ ...question, id: question.order }}
             onChange={handleNewQuestionContent}
           />
         ))}

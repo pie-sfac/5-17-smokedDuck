@@ -47,7 +47,9 @@ export default function QuestionHeader({
     }
   }, []);
   const [isParagraph, setIsParagraph] = useState(paragraph);
-  const [isAllowMultiple, setIsAllowMultiple] = useState(allowMultiple);
+  const [isAllowMultiple, setIsAllowMultiple] = useState(
+    allowMultiple ? allowMultiple : false
+  );
 
   const [currentOrder, setCurrentOrder] = useState(order);
 
@@ -111,7 +113,9 @@ export default function QuestionHeader({
             id="allowDuplicates"
             onChange={() => {
               setIsAllowMultiple(prevIsAllowMultiple => !prevIsAllowMultiple);
-              onChange(order, 'allowMultiple', isAllowMultiple ? false : true);
+            }}
+            onBlur={() => {
+              onChange(order, 'allowMultiple', isAllowMultiple);
             }}
           />
           &nbsp;

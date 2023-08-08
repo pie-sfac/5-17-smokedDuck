@@ -19,7 +19,6 @@ export interface UpdateTemplateType {
   description: string | undefined;
   updateQuestions: recordQuestionsType[] | [];
   addQuestions: Questions[];
-  deleteIds: number[];
 }
 
 export interface UpdateTemplateResponse {

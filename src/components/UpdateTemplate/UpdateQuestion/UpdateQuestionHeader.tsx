@@ -8,6 +8,8 @@ type QuestionHeaderProps = {
   type: string;
   paragraph: boolean | undefined;
   isBasic: boolean;
+  isCheckOut: boolean;
+  allowMultiple: boolean;
   onChange: (
     order: number,
     valueKey: string,
@@ -15,14 +17,16 @@ type QuestionHeaderProps = {
   ) => void;
 };
 
-export default function QuestionHeader({
+export default function UpdateQuestionHeader({
   order,
   type,
   paragraph,
   onChange,
   isBasic,
+  allowMultiple,
+  isCheckOut,
 }: QuestionHeaderProps) {
-  const [isAllowMultiple, setIsAllowMultiple] = useState(false);
+  const [isAllowMultiple, setIsAllowMultiple] = useState(allowMultiple);
   const [isParagraph, setIsParagraph] = useState(paragraph);
 
   const setTitle = useCallback((type: string) => {
@@ -75,6 +79,7 @@ export default function QuestionHeader({
               onChange(order, 'paragraph', false);
             }}
             checked={isParagraph ? false : true}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="shortAnswer" style={{ fontSize: '0.7rem' }}>
@@ -90,6 +95,7 @@ export default function QuestionHeader({
               onChange(order, 'paragraph', true);
             }}
             checked={isParagraph ? true : false}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="longAnswer" style={{ fontSize: '0.7rem' }}>
@@ -105,8 +111,11 @@ export default function QuestionHeader({
             id="allowDuplicates"
             onChange={() => {
               setIsAllowMultiple(prevIsAllowMultiple => !prevIsAllowMultiple);
-              onChange(order, 'allowMultiple', isAllowMultiple ? false : true);
             }}
+            onBlur={() => {
+              onChange(order, 'allowMultiple', isAllowMultiple);
+            }}
+            disabled={isCheckOut}
           />
           &nbsp;
           <label htmlFor="allowDuplicates" style={{ fontSize: '0.7rem' }}>

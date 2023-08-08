@@ -5,6 +5,7 @@ import { recordQuestionsType } from '@/types/recordDetail.interface';
 import UpdateQuestionContent from './UpdateQuestionContent';
 import UpdateQuestionFooter from './UpdateQuestionFooter';
 import UpdateQuestionHeader from './UpdateQuestionHeader';
+import UpdateQuestionOptionalContent from './UpdateQuestionOptionalContent';
 
 interface QuestionProps {
   onChange?: (
@@ -13,11 +14,15 @@ interface QuestionProps {
     value: string | string[] | boolean
   ) => void;
   question: recordQuestionsType;
+  isCheckOut?: boolean;
 }
 
-export default function UpdateQuestion({ question, onChange }: QuestionProps) {
+export default function UpdateQuestion({
+  question,
+  onChange,
+  isCheckOut,
+}: QuestionProps) {
   const isBasic = ['TEXT', 'MEDIA', 'SELECT'].includes(question.type);
-
   return (
     <QuestionContainer>
       <UpdateQuestionHeader
@@ -25,16 +30,36 @@ export default function UpdateQuestion({ question, onChange }: QuestionProps) {
         type={question.type}
         isBasic={isBasic}
         paragraph={question.paragraph}
+        isCheckOut={isCheckOut ? isCheckOut : false}
+        allowMultiple={question.allowMultiple ? question.allowMultiple : false}
         onChange={onChange!}
       />
       {isBasic && (
-        <UpdateQuestionContent onChange={onChange!} question={question} />
+        <UpdateQuestionContent
+          onChange={onChange!}
+          question={question}
+          isCheckOut={isCheckOut ? isCheckOut : false}
+        />
       )}
-      <UpdateQuestionFooter
-        order={question.order}
-        onChange={onChange!}
-        required={question.required}
-      />
+      {question.type === 'MEDIA' ||
+        (question.type === 'SELECT' && (
+          <UpdateQuestionOptionalContent
+            order={question.order}
+            options={question.options}
+            type={question.type}
+            isCheckOut={isCheckOut ? isCheckOut : false}
+            onChange={onChange!}
+          />
+        ))}
+      {isCheckOut ? (
+        <></>
+      ) : (
+        <UpdateQuestionFooter
+          order={question.order}
+          onChange={onChange!}
+          required={question.required}
+        />
+      )}
     </QuestionContainer>
   );
 }
