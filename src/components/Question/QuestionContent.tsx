@@ -1,25 +1,25 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { Questions } from '@/types/question.interface';
+
 type QuestionContentProps = {
-  order: number;
-  title: string;
-  description: string | undefined;
   onChange: (
     order: number,
     id: string,
     value: string | string[] | boolean
   ) => void;
+  question: Questions;
 };
 
 export default function QuestionContent({
-  order,
-  title,
-  description,
+  question,
   onChange,
 }: QuestionContentProps) {
-  const [currentTitle, setCurrentTitle] = useState(title);
-  const [currentDescription, setCurrentDescription] = useState(description);
+  const [currentTitle, setCurrentTitle] = useState(question.title);
+  const [currentDescription, setCurrentDescription] = useState(
+    question.description
+  );
 
   return (
     <QuestionContentContainer>
@@ -35,8 +35,8 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentTitle(e.target.value);
-          onChange(order, 'title', e.target.value);
         }}
+        onBlur={() => onChange(question.order, 'title', currentTitle)}
         value={currentTitle}
       />
       <StyledLabel htmlFor="questionDescription">문항 설명</StyledLabel>
@@ -50,8 +50,10 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentDescription(e.target.value);
-          onChange(order, 'description', e.target.value);
         }}
+        onBlur={() =>
+          onChange(question.order, 'description', currentDescription!)
+        }
         value={currentDescription}
       />
     </QuestionContentContainer>
