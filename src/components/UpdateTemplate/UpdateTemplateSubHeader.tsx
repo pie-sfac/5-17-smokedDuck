@@ -1,30 +1,22 @@
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-import useRecordDetail from '@/hooks/useRecordDetail';
-
 type UpdateTemplateSubHeaderProps = {
   setCurrTemplateSubHeader: Dispatch<
-    SetStateAction<{ title: string; description: string | undefined }>
+    SetStateAction<{ title: string; description: string }>
   >;
-  id: number;
+  title: string;
+  description: string;
 };
 
 export default function UpdateTemplateSubHeader({
   setCurrTemplateSubHeader,
-  id,
+  title,
+  description,
 }: UpdateTemplateSubHeaderProps) {
-  const { recordDetailData } = useRecordDetail(id);
-  const [currentTemplateTitle, setCurrentTemplateTitle] = useState(
-    recordDetailData ? recordDetailData.title : ''
-  );
-  const [currentTemplateDescription, setCurrentTemplateDescription] = useState(
-    !recordDetailData
-      ? ''
-      : recordDetailData.description
-      ? recordDetailData.description
-      : ''
-  );
+  const [currentTemplateTitle, setCurrentTemplateTitle] = useState(title);
+  const [currentTemplateDescription, setCurrentTemplateDescription] =
+    useState(description);
 
   return (
     <TemplateContentContainer>
