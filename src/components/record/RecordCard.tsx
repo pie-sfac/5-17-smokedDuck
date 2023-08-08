@@ -46,7 +46,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
       </CardContainer>
       {recordTemplateOpen && (
         <Modal setIsOpen={setRecordTemplateOpen}>
-          <RecordInfo />
+          <RecordInfo id={id} />
         </Modal>
       )}
       {editModalOpen && (
