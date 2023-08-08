@@ -2,34 +2,22 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 type QuestionBoxProps = {
   image: string;
-  title: string;
+  tagTitle: string;
   description: string;
   tagName: string;
   margin?: string;
   type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
-  totalQuestionList: recordQuestionsType[];
-  setTotalQuestionList: React.Dispatch<
-    React.SetStateAction<recordQuestionsType[]>
-  >;
-  addQuestions: Questions[];
-  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
 };
 export default function QuestionBox({
   image,
-  title,
+  tagTitle,
   description,
   tagName,
   margin,
   type,
-  totalQuestionList,
-  setTotalQuestionList,
-  addQuestions,
-  setAddQuestions,
 }: QuestionBoxProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
@@ -44,51 +32,11 @@ export default function QuestionBox({
           {
             type,
             order:
-              totalQuestionList.length === 0
+              questionList.length === 0
                 ? 1
-                : totalQuestionList[totalQuestionList.length - 1].order + 1,
-            required: false,
-            title,
-            tagName,
-            description: '',
-            paragraph: false,
-            options: [],
-            allowMultiple: false,
-            addOtherOption: false,
-          },
-        ]);
-        setTotalQuestionList([
-          ...totalQuestionList,
-          {
-            id:
-              totalQuestionList.length === 0
-                ? 1
-                : totalQuestionList[totalQuestionList.length - 1].order + 1,
-            type,
-            order:
-              totalQuestionList.length === 0
-                ? 1
-                : totalQuestionList[totalQuestionList.length - 1].order + 1,
-            required: false,
-            title,
-            tagName,
-            description: '',
-            paragraph: false,
-            options: [],
-            allowMultiple: false,
-            addOtherOption: false,
-          },
-        ]);
-        setAddQuestions([
-          ...addQuestions,
-          {
-            type,
-            order:
-              totalQuestionList.length === 0
-                ? 1
-                : totalQuestionList[totalQuestionList.length - 1].order + 1,
-            required: false,
-            title,
+                : questionList[questionList.length - 1].order + 1,
+            required: tagName === '전문' ? true : false,
+            title: '',
             tagName,
             description: '',
             paragraph: false,
@@ -112,7 +60,7 @@ export default function QuestionBox({
       <EntireContentContainer>
         <img src={image} alt={'아이콘 이미지'} width={45} height={30} />
         <TextContentContainer>
-          <div style={{ fontSize: '0.8rem' }}>{title}</div>
+          <div style={{ fontSize: '0.8rem' }}>{tagTitle}</div>
           <div style={{ fontSize: '0.6rem', width: '12.5rem' }}>
             {description}
           </div>

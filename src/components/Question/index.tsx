@@ -1,102 +1,116 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext } from 'react';
+
+import { MainContext } from '@/store';
+import { Questions } from '@/types/question.interface';
 
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
+import QuestionOptionalContent from './QuestionOptionalContent';
 interface QuestionProps {
-  order: number;
-  title: string;
-  tagName: string;
   onChange: (
     order: number,
     id: string,
     value: string | string[] | boolean
   ) => void;
-  type?: string;
-  required?: boolean;
-  description?: string;
-  paragraph?: boolean;
-  options?: string[];
-  allowMultiple?: boolean;
-  addOtherOption?: boolean;
+  question: Questions;
 }
 
-interface CurrentQuestion {
-  order: number;
-  title: string;
-  tagName: string;
-  type?: string;
-  required?: boolean;
-  description?: string;
-  paragraph?: boolean;
-  options?: string[];
-  allowMultiple?: boolean;
-  addOtherOption?: boolean;
-}
+export default function Question({ onChange, question }: QuestionProps) {
+  const { questionList, setQuestionList } = useContext(MainContext);
 
-export default function Question({
-  order,
-  title,
-  tagName,
-  onChange,
-  required,
-  type,
-  description,
-  paragraph,
-  options,
-  allowMultiple,
-  addOtherOption,
-}: QuestionProps) {
-  const [currentQuestion] = useState<CurrentQuestion>({
-    order,
-    title,
-    tagName,
-    required,
-    description,
-    paragraph,
-    options,
-    allowMultiple,
-    addOtherOption,
-  });
+  const handleClickedMoveButton = useCallback(
+    (moveDirection: string) => {
+      const handleChangedOrder = (tmpQuestionList: Questions[]) => {
+        const copyedOrderList = [...tmpQuestionList];
+        const changedOrderList = copyedOrderList.map((question, idx) => ({
+          ...question,
+          order: idx + 1,
+        }));
+        setQuestionList(changedOrderList);
+      };
+      const changeOrder = (currentOrder: number) => {
+        const tmpQuestionList = [...questionList];
 
-  const setSpecialtyTitle = useCallback(
-    (currentType: string | undefined, title: string) => {
-      switch (currentType) {
-        case 'PAIN_HSTRY':
-          return '통증 정도';
-          break;
-        case 'CONDITION':
-          return '오늘의 컨디션';
-          break;
-        case 'PAIN_INTV':
-          return '통증 문진';
-          break;
+        const targetOrder = question.order - 1;
 
-        default:
-          return title;
-          break;
+        const tmp = tmpQuestionList[currentOrder];
+        tmpQuestionList[currentOrder] = tmpQuestionList[targetOrder];
+        tmpQuestionList[targetOrder] = tmp;
+
+        handleChangedOrder(tmpQuestionList);
+      };
+
+      if (moveDirection === 'up') {
+        if (question.order === 1) {
+          alert('첫번째 문항입니다.');
+          return;
+        }
+        changeOrder(question.order - 2);
+      } else if (moveDirection === 'down') {
+        if (question.order === questionList.length) {
+          alert('마지막 문항입니다.');
+          return;
+        }
+        changeOrder(question.order);
       }
+      questionList.map((question, idx) => (question.order = idx + 1));
     },
-    []
+    [question.order, questionList, setQuestionList]
   );
+
+  const handleClickedDeleteButton = useCallback(
+    (order: number) => {
+      const deletedQuestions = questionList.filter(
+        question => question.order !== order
+      );
+      deletedQuestions.map((question, index) => {
+        question.order = index + 1;
+      });
+      setQuestionList(deletedQuestions);
+    },
+    [questionList, setQuestionList]
+  );
+
+  const isBasic = ['TEXT', 'MEDIA', 'SELECT'].includes(question.type);
 
   return (
     <QuestionContainer>
       <QuestionHeader
-        order={order}
-        title={setSpecialtyTitle(type, title)}
-        tagName={tagName}
-        paragraph={paragraph ? paragraph : false}
+        order={question.order}
+        type={question.type}
+        paragraph={question.paragraph}
+        isBasic={isBasic}
+        allowMultiple={question.allowMultiple}
         onChange={onChange}
       />
-      {tagName === '기본' && (
-        <QuestionContent
+      {isBasic && <QuestionContent onChange={onChange} question={question} />}
+      {question.type === 'MEDIA' && (
+        <QuestionOptionalContent
+          order={question.order}
+          options={question.options}
+          type={question.type}
           onChange={onChange}
-          currentQuestion={currentQuestion}
         />
       )}
-      <QuestionFooter order={order} onChange={onChange} required={required} />
+
+      {question.type === 'SELECT' && (
+        <QuestionOptionalContent
+          order={question.order}
+          options={question.options}
+          type={question.type}
+          onChange={onChange}
+        />
+      )}
+      <QuestionFooter
+        order={question.order}
+        onChange={onChange}
+        tagName={question.tagName}
+        required={question.required}
+        handleClickedDeleteButton={handleClickedDeleteButton}
+        handleClickedMoveButton={handleClickedMoveButton}
+      />
     </QuestionContainer>
   );
 }

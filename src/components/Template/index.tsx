@@ -1,19 +1,14 @@
 import { useContext, useState } from 'react';
 import { mutate } from 'swr';
 
-import { createTemplate, updateTemplate } from '@/apis/Template';
+import { createTemplate } from '@/apis/Template';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
-import { UpdateTemplate } from '@/types/template.interface';
 
 import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';
 import TemplateTitle from './TemplateTitle';
-
-type TemplateProps = {
-  isEditMode?: boolean;
-};
 
 type NewTemplateContent = {
   questions: Questions[];
@@ -22,11 +17,12 @@ type NewTemplateContent = {
   description?: string | undefined;
 };
 
-export default function Template({ isEditMode }: TemplateProps) {
+export default function Template() {
   const {
     questionList,
     templateContent,
     setTemplateContent,
+    selectedTemplateTitle,
     selectedRecordCard,
   } = useContext(MainContext);
 
@@ -37,12 +33,6 @@ export default function Template({ isEditMode }: TemplateProps) {
     description: selectedRecordCard ? selectedRecordCard.description : '',
   });
 
-  const [updateQuestions, setUpdateQuestions] = useState(
-    selectedRecordCard?.questions
-  );
-  const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
-  const [deleteIds] = useState<number[]>([]);
-
   const handleTemplateContent = (id: string, value: string | Questions[]) => {
     templateContent &&
       setTemplateContent({
@@ -51,59 +41,42 @@ export default function Template({ isEditMode }: TemplateProps) {
       });
   };
 
-  const handleClickedSaveButton = async (id?: number) => {
-    if (!isEditMode) {
-      const newTemplateContent: NewTemplateContent = {
-        ...templateContent,
-        questions: questionList,
-      };
+  const handleClickedSaveButton = async () => {
+    const newTemplateContent: NewTemplateContent = {
+      ...templateContent,
+      questions: questionList,
+    };
 
-      const newRecordListData = [
-        ...(recordListData || []),
-        {
-          id: recordListData
-            ? recordListData[recordListData?.length - 1].id + 1
-            : 1,
-          category: newTemplateContent.category,
-          title: newTemplateContent.title,
-          description: newTemplateContent.description,
-          createdAt: 'temporary',
-          updatedAt: 'temporary',
-        },
-      ];
+    const newRecordListData = [
+      ...(recordListData || []),
+      {
+        id: recordListData
+          ? recordListData[recordListData?.length - 1].id + 1
+          : 1,
+        category: newTemplateContent.category,
+        title: newTemplateContent.title,
+        description: newTemplateContent.description,
+        createdAt: 'temporary',
+        updatedAt: 'temporary',
+      },
+    ];
 
-      await createTemplate(newTemplateContent);
+    await createTemplate(newTemplateContent);
 
-      mutate('record-templates', newRecordListData, false);
-    } else {
-      const updatedTemplateContent: UpdateTemplate = {
-        title: currTemplateSubHeader.title,
-        description: currTemplateSubHeader.description,
-        updateQuestions: updateQuestions ? updateQuestions : [],
-        addQuestions,
-        deleteIds,
-      };
-
-      if (id) {
-        await updateTemplate(id, updatedTemplateContent);
-      }
-    }
+    mutate('record-templates', newRecordListData, false);
   };
 
   return (
     <>
       <TemplateTitle />
       <TemplateContent
-        isEditMode={isEditMode}
         currTemplateSubHeader={currTemplateSubHeader}
         setCurrTemplateSubHeader={setCurrTemplateSubHeader}
-        updateQuestions={updateQuestions}
-        setUpdateQuestions={setUpdateQuestions}
-        addQuestions={addQuestions}
-        setAddQuestions={setAddQuestions}
         onChange={handleTemplateContent}
       />
-      <TemplateFooter handleClickedSaveButton={handleClickedSaveButton} />
+      {selectedTemplateTitle && (
+        <TemplateFooter handleClickedSaveButton={handleClickedSaveButton} />
+      )}
     </>
   );
 }
