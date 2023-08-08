@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Condition from '@/assets/Condition.svg';
 import Media from '@/assets/Media.svg';
@@ -8,6 +8,7 @@ import Pain from '@/assets/Pain.svg';
 import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
+import { MainContext } from '@/store';
 
 import QuestionBox from '../Common/QuestionBox';
 
@@ -28,6 +29,7 @@ export default function TemplateQuestionSelections({
   isCheckedSpecialQuestions,
   setIsCheckedSpecialQuestions,
 }: TemplateQuestionSelectionsProps) {
+  const { selectedTemplateTitle } = useContext(MainContext);
   const [selectedQuestion, setSelectedQuestion] = useState('');
 
   return (
@@ -97,41 +99,47 @@ export default function TemplateQuestionSelections({
           />
         </QuestionBoxContainer>
       )}
-      {selectedQuestion === 'specialty' && (
-        <QuestionBoxContainer>
-          <QuestionBox
-            image={Pain}
-            tagTitle={'통증 정도'}
-            description={'회원의 통증 정도를 선택하는 문항입니다.'}
-            tagName={'전문'}
-            margin={'0.4rem'}
-            type={'PAIN_HSTRY'}
-            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
-            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
-          />
-          <QuestionBox
-            image={Condition}
-            tagTitle={'오늘의 컨디션'}
-            description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
-            tagName={'전문'}
-            margin={'0.4rem'}
-            type={'CONDITION'}
-            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
-            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
-          />
-          <QuestionBox
-            image={PainQuestion}
-            tagTitle={'통증 문진'}
-            description={
-              '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
-            }
-            tagName={'전문'}
-            type={'PAIN_INTV'}
-            isCheckedSpecialQuestions={isCheckedSpecialQuestions}
-            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
-          />
-        </QuestionBoxContainer>
-      )}
+      {selectedQuestion === 'specialty' &&
+        selectedTemplateTitle === '문진 템플릿' && (
+          <QuestionBoxContainer>
+            <QuestionBox
+              image={PainQuestion}
+              tagTitle={'통증 문진'}
+              description={
+                '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
+              }
+              tagName={'전문'}
+              type={'PAIN_INTV'}
+              isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+              setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
+            />
+          </QuestionBoxContainer>
+        )}
+      {selectedQuestion === 'specialty' &&
+        selectedTemplateTitle === '처치 템플릿' && (
+          <QuestionBoxContainer>
+            <QuestionBox
+              image={Pain}
+              tagTitle={'통증 정도'}
+              description={'회원의 통증 정도를 선택하는 문항입니다.'}
+              tagName={'전문'}
+              margin={'0.4rem'}
+              type={'PAIN_HSTRY'}
+              isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+              setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
+            />
+            <QuestionBox
+              image={Condition}
+              tagTitle={'오늘의 컨디션'}
+              description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
+              tagName={'전문'}
+              margin={'0.4rem'}
+              type={'CONDITION'}
+              isCheckedSpecialQuestions={isCheckedSpecialQuestions}
+              setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
+            />
+          </QuestionBoxContainer>
+        )}
     </EntireQuestionContainer>
   );
 }
@@ -149,5 +157,4 @@ const QeustionsContainer = styled('div')`
 const QuestionBoxContainer = styled('div')`
   display: flex;
   margin: 0 2rem 0 2rem;
-  justify-content: space-between;
 `;
