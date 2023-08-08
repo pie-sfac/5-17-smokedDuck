@@ -21,6 +21,16 @@ export default function Header() {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const pathParts = pathname.split('/');
+    const lastPathPart = pathParts[pathParts.length - 1];
+    const matchedCategory = category.find(item => item.name === lastPathPart);
+
+    if (matchedCategory) {
+      setClickedIdNum(matchedCategory.id);
+    }
+  }, [pathname]);
+
   const handlePageMove = (item: categoryType) => {
     if (item.id === 2 || item.id === 3) {
       navigate(`${item.name}`);
