@@ -22,9 +22,7 @@ export default function Header() {
   }, [navigate]);
 
   useEffect(() => {
-    const pathParts = pathname.split('/');
-    const lastPathPart = pathParts[pathParts.length - 1];
-    const matchedCategory = category.find(item => item.name === lastPathPart);
+    const matchedCategory = category.find(item => '/' + item.name === pathname);
 
     if (matchedCategory) {
       setClickedIdNum(matchedCategory.id);
