@@ -73,6 +73,8 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentTitle(e.target.value);
+        }}
+        onBlur={e => {
           onChange(question.order, 'title', e.target.value);
         }}
         value={currentTitle}
@@ -88,6 +90,8 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentDescription(e.target.value);
+        }}
+        onBlur={e => {
           onChange(question.order, 'description', e.target.value);
         }}
         value={currentDescription}
