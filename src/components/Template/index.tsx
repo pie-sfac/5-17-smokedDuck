@@ -23,14 +23,13 @@ export default function Template() {
     templateContent,
     setTemplateContent,
     selectedTemplateTitle,
-    selectedRecordCard,
   } = useContext(MainContext);
 
   const { recordListData } = useRecord();
 
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
-    title: selectedRecordCard ? selectedRecordCard.title : '',
-    description: selectedRecordCard ? selectedRecordCard.description : '',
+    title: '',
+    description: '',
   });
 
   const handleTemplateContent = (id: string, value: string | Questions[]) => {

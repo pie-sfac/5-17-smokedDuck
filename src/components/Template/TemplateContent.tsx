@@ -9,9 +9,9 @@ import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
 type TemplateContentProps = {
-  currTemplateSubHeader: { title: string; description?: string | undefined };
+  currTemplateSubHeader: { title: string; description: string };
   setCurrTemplateSubHeader: Dispatch<
-    SetStateAction<{ title: string; description: string | undefined }>
+    SetStateAction<{ title: string; description: string }>
   >;
   onChange: (id: string, value: string | Questions[]) => void;
 };
