@@ -1,15 +1,29 @@
 import styled from '@emotion/styled';
 
+import useRecordDetail from '@/hooks/useRecordDetail';
+
+import Loading from '../Common/Loading';
+
 type UpdateTemplateTitlePropType = {
-  category?: string;
+  id: number;
+  isEditing: boolean;
 };
 
 export default function UpdateTemplateTitle({
-  category,
+  id,
+  isEditing,
 }: UpdateTemplateTitlePropType) {
-  const UpdateTemplateTitle =
-    category === 'INTERVIEW' ? '문진 템플릿 수정' : '처치 템플릿 수정';
-  return <ModalTitle>{UpdateTemplateTitle}</ModalTitle>;
+  const { recordDetailData } = useRecordDetail(id);
+
+  return recordDetailData ? (
+    <ModalTitle>
+      {recordDetailData.category === 'INTERVIEW'
+        ? `문진 템플릿 ${isEditing ? '수정' : ''}`
+        : `처치 템플릿 ${isEditing ? '수정' : ''}`}
+    </ModalTitle>
+  ) : (
+    <Loading />
+  );
 }
 
 const ModalTitle = styled('div')`

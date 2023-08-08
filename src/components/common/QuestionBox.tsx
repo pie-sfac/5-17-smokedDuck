@@ -82,6 +82,7 @@ export default function QuestionBox({
         setQuestionList([
           ...questionList,
           {
+            id: 0,
             type,
             order:
               questionList.length === 0

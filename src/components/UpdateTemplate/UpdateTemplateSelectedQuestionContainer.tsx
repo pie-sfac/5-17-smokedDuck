@@ -1,69 +1,40 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import useRecordDetail from '@/hooks/useRecordDetail';
 import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Loading from '../Common/Loading';
 import UpdateQuestion from './UpdateQuestion';
 
 type UpdateTemplateSelectedQuestionContainerProps = {
-  updateQuestions: recordQuestionsType[];
-  setUpdateQuestions: React.Dispatch<
-    React.SetStateAction<recordQuestionsType[]>
-  >;
-  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
-  addQuestions: Questions[];
+  newQuestionContentHandler: (
+    order: number,
+    valueKey: string,
+    value: string | string[] | boolean
+  ) => void;
+  existQuestionContentHandler: (
+    order: number,
+    valueKey: string,
+    value: string | string[] | boolean
+  ) => void;
+  totalQuestions: Questions[];
   id: number;
 };
 
 export default function UpdateTemplateSelectedQuestionContainer({
-  updateQuestions,
-  setUpdateQuestions,
-  setAddQuestions,
-  addQuestions,
+  newQuestionContentHandler,
+  existQuestionContentHandler,
+  totalQuestions,
   id,
 }: UpdateTemplateSelectedQuestionContainerProps) {
   const { recordDetailData } = useRecordDetail(id);
+  const [questionList, setQuestionList] = useState(totalQuestions);
+  useEffect(() => {
+    setQuestionList(totalQuestions);
+  }, [totalQuestions]);
 
-  const handleQuestionContent = useCallback(
-    (order: number, valueKey: string, value: string | string[] | boolean) => {
-      if (recordDetailData) {
-        const currentUpdatedQuestion = recordDetailData.questions.map(
-          question =>
-            question.order === order
-              ? { ...question, [valueKey]: value }
-              : question
-        );
-        setUpdateQuestions(currentUpdatedQuestion);
-      }
-    },
-    [recordDetailData, setUpdateQuestions]
-  );
-
-  const handleNewQuestionContent = useCallback(
-    (order: number, valueKey: string, value: string | string[] | boolean) => {
-      if (addQuestions.length !== 0) {
-        const currentUpdatedQuestion = addQuestions.map(question =>
-          question.order === order
-            ? { ...question, [valueKey]: value }
-            : question
-        );
-        setAddQuestions(currentUpdatedQuestion);
-      }
-    },
-    [addQuestions, setAddQuestions]
-  );
-
-  useEffect(
-    () =>
-      setUpdateQuestions(prevQuestions => [
-        ...prevQuestions.sort((a, b) => a.order - b.order),
-      ]),
-    [setUpdateQuestions]
-  );
   if (!recordDetailData) {
     return (
       <ContentContainer
@@ -95,29 +66,25 @@ export default function UpdateTemplateSelectedQuestionContainer({
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        updateQuestions.map(question => (
+        questionList.map(question => (
           <UpdateQuestion
             key={question.order}
             question={question}
-            onChange={handleQuestionContent}
+            onChange={
+              question.tagName
+                ? newQuestionContentHandler
+                : existQuestionContentHandler
+            }
           />
         ))
       )}
-      {addQuestions.length !== 0 &&
-        addQuestions.map(question => (
-          <UpdateQuestion
-            key={question.order}
-            question={{ ...question, id: question.order }}
-            onChange={handleNewQuestionContent}
-          />
-        ))}
     </ContentContainer>
   );
 }
 
 const ContentContainer = styled('div')`
   width: 940;
-  height: 13rem;
+  height: 22rem;
   display: flex;
   align-items: center;
   flex-direction: column;

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import TypeSelector from '@/components/Record//TypeSelector';
@@ -11,20 +11,8 @@ export default function Record() {
   const changeListType = useCallback((type: string) => {
     setTemplateCategory(type);
   }, []);
-  const {
-    recordModalOpen,
-    setRecordModalState,
-    selectedTemplateTitle,
-    setSelectedTemplateTitle,
-    setQuestionList,
-  } = useContext(MainContext);
-
-  useEffect(() => {
-    if (!recordModalOpen) {
-      setSelectedTemplateTitle('');
-      setQuestionList([]);
-    }
-  }, [recordModalOpen, setQuestionList, setSelectedTemplateTitle]);
+  const { recordModalOpen, setRecordModalState, selectedTemplateTitle } =
+    useContext(MainContext);
 
   return (
     <>
