@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 type QuestionOptionalContentProps = {
   order: number;
   options: string[] | undefined;
-  title: string;
+  type: string;
   onChange: (
     order: number,
     id: string,
@@ -15,10 +15,9 @@ type QuestionOptionalContentProps = {
 export default function QuestionOptionalContent({
   order,
   options,
-  title,
+  type,
   onChange,
 }: QuestionOptionalContentProps) {
-  const [currentTitle] = useState(title);
   const [currentOptions, setCurrentOptions] = useState(options);
   const [currentSelection, setCurrentSelection] = useState('');
 
@@ -51,13 +50,13 @@ export default function QuestionOptionalContent({
 
   return (
     <>
-      {currentTitle === '미디어' && (
+      {type === 'MEDIA' && (
         <AddMediaContainer>
           * 답변자 미디어를 첨부할 수 있습니다.
         </AddMediaContainer>
       )}
 
-      {currentTitle === '선택형' && (
+      {type === 'SELECT' && (
         <AddSelectionContainer>
           <StyledLabel htmlFor="questionDescription">보기</StyledLabel>
           <SelectionField>

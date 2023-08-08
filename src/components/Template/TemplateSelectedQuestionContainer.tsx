@@ -12,16 +12,17 @@ export default function TemplateSelectedQuestionContainer() {
   const handleQuestionContent = useCallback(
     (
       order: number,
-      id: string,
+      valueKey: string,
       value: string | string[] | boolean | number
     ) => {
-      const currentUpdatedQuestion = questionList.map(question =>
-        question.order === order
-          ? { ...question, [id === 'title' ? question.title : id]: value }
-          : question
-      );
-
-      setQuestionList(currentUpdatedQuestion);
+      if (questionList.length !== 0) {
+        const currentUpdatedQuestion = questionList.map(question =>
+          question.order === order
+            ? { ...question, [valueKey]: value }
+            : question
+        );
+        setQuestionList(currentUpdatedQuestion);
+      }
     },
     [questionList, setQuestionList]
   );
@@ -58,9 +59,7 @@ export default function TemplateSelectedQuestionContainer() {
                   Math.random()
                 : idx + Math.random()
             }
-            order={question.order}
-            title={question.title}
-            tagName={question.tagName}
+            question={question}
             onChange={handleQuestionContent}
           />
         ))

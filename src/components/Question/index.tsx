@@ -9,56 +9,16 @@ import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
 import QuestionOptionalContent from './QuestionOptionalContent';
 interface QuestionProps {
-  order: number;
-  title: string;
-  tagName: string;
   onChange: (
     order: number,
     id: string,
     value: string | string[] | boolean
   ) => void;
-  type?: string;
-  required?: boolean;
-  description?: string;
-  paragraph?: boolean;
-  options?: string[];
-  allowMultiple?: boolean;
-  addOtherOption?: boolean;
+  question: Questions;
 }
 
-export default function Question({
-  order,
-  title,
-  tagName,
-  onChange,
-  required,
-  type,
-  description,
-  paragraph,
-  options,
-  allowMultiple,
-}: QuestionProps) {
+export default function Question({ onChange, question }: QuestionProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
-
-  const setSpecialtyTitle = useCallback(
-    (currentType: string | undefined, title: string) => {
-      switch (currentType) {
-        case 'PAIN_HSTRY':
-          return '통증 정도';
-          break;
-        case 'CONDITION':
-          return '오늘의 컨디션';
-          break;
-        case 'PAIN_INTV':
-          return '통증 문진';
-          break;
-        default:
-          return title;
-          break;
-      }
-    },
-    []
-  );
 
   const handleClickedMoveButton = useCallback(
     (moveDirection: string) => {
@@ -73,7 +33,7 @@ export default function Question({
       const changeOrder = (currentOrder: number) => {
         const tmpQuestionList = [...questionList];
 
-        const targetOrder = order - 1;
+        const targetOrder = question.order - 1;
 
         const tmp = tmpQuestionList[currentOrder];
         tmpQuestionList[currentOrder] = tmpQuestionList[targetOrder];
@@ -83,21 +43,21 @@ export default function Question({
       };
 
       if (moveDirection === 'up') {
-        if (order === 1) {
+        if (question.order === 1) {
           alert('첫번째 문항입니다.');
           return;
         }
-        changeOrder(order - 2);
+        changeOrder(question.order - 2);
       } else if (moveDirection === 'down') {
-        if (order === questionList.length) {
+        if (question.order === questionList.length) {
           alert('마지막 문항입니다.');
           return;
         }
-        changeOrder(order);
+        changeOrder(question.order);
       }
       questionList.map((question, idx) => (question.order = idx + 1));
     },
-    [order, questionList, setQuestionList]
+    [question.order, questionList, setQuestionList]
   );
 
   const handleClickedDeleteButton = useCallback(
@@ -113,46 +73,41 @@ export default function Question({
     [questionList, setQuestionList]
   );
 
+  const isBasic = ['TEXT', 'MEDIA', 'SELECT'].includes(question.type);
+
   return (
     <QuestionContainer>
       <QuestionHeader
-        order={order}
-        title={setSpecialtyTitle(type, title)}
-        tagName={tagName}
-        paragraph={paragraph ? paragraph : false}
-        allowMultiple={allowMultiple}
+        order={question.order}
+        type={question.type}
+        paragraph={question.paragraph}
+        isBasic={isBasic}
+        allowMultiple={question.allowMultiple}
         onChange={onChange}
       />
-      {tagName === '기본' && (
-        <QuestionContent
-          order={order}
-          onChange={onChange}
-          title={title}
-          description={description}
-        />
-      )}
-      {title === '미디어' && (
+      {isBasic && <QuestionContent onChange={onChange} question={question} />}
+      {question.type === 'MEDIA' && (
         <QuestionOptionalContent
-          order={order}
-          options={options}
-          title={title}
+          order={question.order}
+          options={question.options}
+          type={question.type}
           onChange={onChange}
         />
       )}
 
-      {title === '선택형' && (
+      {question.type === 'SELECT' && (
         <QuestionOptionalContent
-          order={order}
-          options={options}
-          title={title}
+          order={question.order}
+          options={question.options}
+          type={question.type}
           onChange={onChange}
         />
       )}
       <QuestionFooter
-        order={order}
+        order={question.order}
         onChange={onChange}
-        tagName={tagName}
-        required={required}
+        tagName={question.tagName}
+        required={question.required}
         handleClickedDeleteButton={handleClickedDeleteButton}
         handleClickedMoveButton={handleClickedMoveButton}
       />
