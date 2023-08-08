@@ -11,7 +11,6 @@ import UpdateQuestion from '../UpdateTemplate/UpdateQuestion';
 export default function RecordContents() {
   const { selectedRecordCardId } = useContext(MainContext);
   const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
-  const { isRecordEdit } = useContext(MainContext);
 
   if (isLoading || !recordDetailData) {
     return <Loading />;
@@ -23,7 +22,6 @@ export default function RecordContents() {
           recordDetailData.questions.length !== 0
             ? 'rgba(235, 241, 255, 0.26)'
             : 'none',
-        height: isRecordEdit ? '13rem' : '28rem',
       }}
     >
       {recordDetailData.questions.length === 0 ? (
@@ -51,6 +49,7 @@ export default function RecordContents() {
 const ContentContainer = styled('div')`
   width: 940;
   display: flex;
+  height: 22rem;
   align-items: center;
   flex-direction: column;
   margin: 0 2rem 0 2rem;
@@ -60,6 +59,10 @@ const ContentContainer = styled('div')`
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
+  }
+  @media screen and (min-height: 800px) {
+    height: 28rem;
+    margin-bottom: 1rem;
   }
 `;
 

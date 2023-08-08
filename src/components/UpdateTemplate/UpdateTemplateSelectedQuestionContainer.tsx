@@ -129,6 +129,10 @@ const ContentContainer = styled('div')`
   &::-webkit-scrollbar {
     display: none;
   }
+  @media screen and (min-height: 800px) {
+    height: 18rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const EmptyQuestionContainer = styled('div')`
