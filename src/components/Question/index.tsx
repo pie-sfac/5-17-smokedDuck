@@ -8,6 +8,13 @@ import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
 import QuestionOptionalContent from './QuestionOptionalContent';
+
+type checkedSpecialQuestions = {
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};
+
 interface QuestionProps {
   onChange: (
     order: number,
@@ -15,9 +22,16 @@ interface QuestionProps {
     value: string | string[] | boolean
   ) => void;
   question: Questions;
+  setIsCheckedSpecialQuestions: React.Dispatch<
+    React.SetStateAction<checkedSpecialQuestions>
+  >;
 }
 
-export default function Question({ onChange, question }: QuestionProps) {
+export default function Question({
+  onChange,
+  question,
+  setIsCheckedSpecialQuestions,
+}: QuestionProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
   const handleClickedMoveButton = useCallback(
@@ -62,6 +76,25 @@ export default function Question({ onChange, question }: QuestionProps) {
 
   const handleClickedDeleteButton = useCallback(
     (order: number) => {
+      const targetDeleteQuestion = questionList.filter(
+        question => question.order === order
+      );
+      if (targetDeleteQuestion[0].type === 'PAIN_HSTRY') {
+        setIsCheckedSpecialQuestions(prevIsChecked => ({
+          ...prevIsChecked,
+          isPAIN_HSTRY: false,
+        }));
+      } else if (targetDeleteQuestion[0].type === 'CONDITION') {
+        setIsCheckedSpecialQuestions(prevIsChecked => ({
+          ...prevIsChecked,
+          isCONDITION: false,
+        }));
+      } else if (targetDeleteQuestion[0].type === 'PAIN_INTV') {
+        setIsCheckedSpecialQuestions(prevIsChecked => ({
+          ...prevIsChecked,
+          isPAIN_INTV: false,
+        }));
+      }
       const deletedQuestions = questionList.filter(
         question => question.order !== order
       );
@@ -70,7 +103,7 @@ export default function Question({ onChange, question }: QuestionProps) {
       });
       setQuestionList(deletedQuestions);
     },
-    [questionList, setQuestionList]
+    [questionList, setIsCheckedSpecialQuestions, setQuestionList]
   );
 
   const isBasic = ['TEXT', 'MEDIA', 'SELECT'].includes(question.type);

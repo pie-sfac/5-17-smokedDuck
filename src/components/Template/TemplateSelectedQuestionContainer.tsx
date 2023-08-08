@@ -6,7 +6,22 @@ import { MainContext } from '@/store';
 
 import Question from '../Question';
 
-export default function TemplateSelectedQuestionContainer() {
+type checkedSpecialQuestions = {
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};
+
+type TemplateSelectedQuestionContainerProps = {
+  isCheckedSpecialQuestions: checkedSpecialQuestions;
+  setIsCheckedSpecialQuestions: React.Dispatch<
+    React.SetStateAction<checkedSpecialQuestions>
+  >;
+};
+
+export default function TemplateSelectedQuestionContainer({
+  setIsCheckedSpecialQuestions,
+}: TemplateSelectedQuestionContainerProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
 
   const handleQuestionContent = useCallback(
@@ -61,6 +76,7 @@ export default function TemplateSelectedQuestionContainer() {
             }
             question={question}
             onChange={handleQuestionContent}
+            setIsCheckedSpecialQuestions={setIsCheckedSpecialQuestions}
           />
         ))
       )}
