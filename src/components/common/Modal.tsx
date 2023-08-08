@@ -26,7 +26,7 @@ export default function Modal({
   setIsOpen,
   children,
 }: ModalProps) {
-  const { setSelectedRecordCard, setSelectedTemplateTitle, setQuestionList } =
+  const { setSelectedRecordCard, setSelectedTemplateTitle } =
     useContext(MainContext);
   const modalContainerStyle = useMemo(
     () => ({
@@ -46,15 +46,9 @@ export default function Modal({
       if (e.target !== e.currentTarget) return;
       setIsOpen(false);
       setSelectedTemplateTitle('');
-      setQuestionList([]);
       setSelectedRecordCard(undefined);
     },
-    [
-      setIsOpen,
-      setSelectedRecordCard,
-      setSelectedTemplateTitle,
-      setQuestionList,
-    ]
+    [setIsOpen, setSelectedRecordCard, setSelectedTemplateTitle]
   );
 
   return createPortal(

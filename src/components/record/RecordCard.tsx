@@ -7,6 +7,7 @@ import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordInfo from '@/components/Record/RecordInfo';
+import UpdateTemplate from '@/components/UpdateTemplate';
 import { MainContext } from '@/store';
 
 type RecordCardPropsType = {
@@ -50,7 +51,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
           setIsOpen={setRecordTemplateOpen}
           height={isSmallScreen ? 720 : undefined}
         >
-          <RecordInfo id={id} isEditing={false} />
+          <RecordInfo id={id} />
         </Modal>
       )}
       {editModalOpen && (
@@ -58,7 +59,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
           setIsOpen={setEditModalOpen}
           height={isSmallScreen ? 720 : undefined}
         >
-          <RecordInfo id={id} isEditing={true} />
+          <UpdateTemplate id={id} />
         </Modal>
       )}
       {deleteModalOpen && (

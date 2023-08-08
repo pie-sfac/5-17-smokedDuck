@@ -1,19 +1,10 @@
-import { Questions } from '@/types/question.interface';
-
 export interface recordQuestionsType {
   id: number;
-  type:
-    | ''
-    | 'TEXT'
-    | 'MEDIA'
-    | 'SELECT'
-    | 'PAIN_HSTRY'
-    | 'CONDITION'
-    | 'PAIN_INTV';
+  type: string;
   order: number;
+  required: boolean;
   title: string;
   description?: string;
-  required: boolean;
   paragraph?: boolean;
   options?: string[];
   allowMultiple?: boolean;
@@ -25,7 +16,7 @@ export interface recordDetailType {
   category: string;
   title: string;
   description?: string;
-  questions: Questions[];
+  questions: recordQuestionsType[];
   createdAt: string;
   updatedAt: string;
   message?: string;

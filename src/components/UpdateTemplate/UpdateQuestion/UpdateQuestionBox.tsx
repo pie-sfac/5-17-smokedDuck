@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { StringQuestionTypes } from '@/types/question.interface';
+import { Questions } from '@/types/question.interface';
 
 type QuestionBoxProps = {
   image: string;
@@ -10,11 +10,8 @@ type QuestionBoxProps = {
   margin?: string;
   type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
   totalOrder?: number;
-  questionsListHandler: (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => void;
+  addQuestions: Questions[];
+  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
 };
 export default function QuestionBox({
   image,
@@ -24,7 +21,8 @@ export default function QuestionBox({
   margin,
   type,
   totalOrder,
-  questionsListHandler,
+  addQuestions,
+  setAddQuestions,
 }: QuestionBoxProps) {
   return (
     <QuestionBoxConatiner
@@ -33,7 +31,24 @@ export default function QuestionBox({
       }}
       onClick={() => {
         if (totalOrder) {
-          questionsListHandler(type, tagName, totalOrder);
+          setAddQuestions([
+            ...addQuestions,
+            {
+              type,
+              order:
+                addQuestions.length === 0
+                  ? totalOrder + 1
+                  : addQuestions[addQuestions.length - 1].order + 1,
+              required: false,
+              title: '',
+              tagName,
+              description: '',
+              paragraph: false,
+              options: [],
+              allowMultiple: false,
+              addOtherOption: false,
+            },
+          ]);
         }
       }}
     >

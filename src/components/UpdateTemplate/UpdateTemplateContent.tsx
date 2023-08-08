@@ -4,47 +4,37 @@ import UpdateTemplateQuestionSelections from '@/components/UpdateTemplate/Update
 import UpdateTemplateSelectedQuestionContainer from '@/components/UpdateTemplate/UpdateTemplateSelectedQuestionContainer';
 import UpdateTemplateSubHeader from '@/components/UpdateTemplate/UpdateTemplateSubHeader';
 import useRecordDetail from '@/hooks/useRecordDetail';
-import { Questions, StringQuestionTypes } from '@/types/question.interface';
+import { Questions } from '@/types/question.interface';
+import { recordQuestionsType } from '@/types/recordDetail.interface';
 
 import Loading from '../Common/Loading';
 
 type TemplateContentProps = {
   setCurrTemplateSubHeader: Dispatch<
-    SetStateAction<{ title: string; description: string }>
+    SetStateAction<{ title: string; description: string | undefined }>
   >;
-  updateQuestions: Questions[];
+  updateQuestions: recordQuestionsType[];
+  setUpdateQuestions: React.Dispatch<
+    React.SetStateAction<recordQuestionsType[]>
+  >;
   addQuestions: Questions[];
+  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
   id: number;
-  questionsListHandler: (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => void;
-  newQuestionContentHandler: (
-    order: number,
-    valueKey: string,
-    value: string | string[] | boolean
-  ) => void;
-  existQuestionContentHandler: (
-    order: number,
-    valueKey: string,
-    value: string | string[] | boolean
-  ) => void;
 };
 
 export default function UpdateTemplateContent({
   setCurrTemplateSubHeader,
-  questionsListHandler,
-  newQuestionContentHandler,
-  existQuestionContentHandler,
   updateQuestions,
+  setUpdateQuestions,
   addQuestions,
+  setAddQuestions,
   id,
 }: TemplateContentProps) {
   const { recordDetailData } = useRecordDetail(id);
   if (!recordDetailData) {
     return <Loading />;
   }
+
   const totalOrder =
     recordDetailData.questions[recordDetailData.questions.length - 1].order;
 
@@ -52,20 +42,19 @@ export default function UpdateTemplateContent({
     <div>
       <>
         <UpdateTemplateSubHeader
-          title={recordDetailData.title}
-          description={
-            recordDetailData.description ? recordDetailData.description : ''
-          }
+          id={id}
           setCurrTemplateSubHeader={setCurrTemplateSubHeader}
         />
         <UpdateTemplateQuestionSelections
+          addQuestions={addQuestions}
+          setAddQuestions={setAddQuestions}
           totalOrder={totalOrder}
-          questionsListHandler={questionsListHandler}
         />
         <UpdateTemplateSelectedQuestionContainer
-          newQuestionContentHandler={newQuestionContentHandler}
-          existQuestionContentHandler={existQuestionContentHandler}
-          totalQuestions={[...updateQuestions, ...addQuestions]}
+          updateQuestions={updateQuestions}
+          setUpdateQuestions={setUpdateQuestions}
+          setAddQuestions={setAddQuestions}
+          addQuestions={addQuestions}
           id={id}
         />
       </>

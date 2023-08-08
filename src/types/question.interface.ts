@@ -1,5 +1,4 @@
 export interface Questions {
-  id: number;
   type:
     | ''
     | 'TEXT'
@@ -24,12 +23,3 @@ export interface AddedFile {
   path: string | ArrayBuffer | null;
   filename: string;
 }
-
-export type StringQuestionTypes =
-  | ''
-  | 'TEXT'
-  | 'MEDIA'
-  | 'SELECT'
-  | 'PAIN_HSTRY'
-  | 'CONDITION'
-  | 'PAIN_INTV';

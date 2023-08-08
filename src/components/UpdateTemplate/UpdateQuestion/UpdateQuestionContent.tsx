@@ -1,27 +1,27 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { recordQuestionsType } from '@/types/recordDetail.interface';
+
 type QuestionContentProps = {
   onChange: (
     order: number,
     valueKey: string,
     value: string | string[] | boolean
   ) => void;
+  question: recordQuestionsType;
   isCheckOut: boolean;
-  title: string;
-  description: string;
-  order: number;
 };
 
 export default function QuestionContent({
   onChange,
+  question,
   isCheckOut,
-  title,
-  description,
-  order,
 }: QuestionContentProps) {
-  const [currentTitle, setCurrentTitle] = useState(title);
-  const [currentDescription, setCurrentDescription] = useState(description);
+  const [currentTitle, setCurrentTitle] = useState(question.title);
+  const [currentDescription, setCurrentDescription] = useState(
+    question.description
+  );
   return (
     <QuestionContentContainer>
       <StyledLabel htmlFor="questionTitle">문항 제목</StyledLabel>
@@ -36,7 +36,9 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentTitle(e.target.value);
-          onChange(order, 'title', e.target.value);
+        }}
+        onBlur={e => {
+          onChange(question.order, 'title', e.target.value);
         }}
         value={currentTitle}
         disabled={isCheckOut}
@@ -52,7 +54,9 @@ export default function QuestionContent({
         }}
         onChange={e => {
           setCurrentDescription(e.target.value);
-          onChange(order, 'description', e.target.value);
+        }}
+        onBlur={e => {
+          onChange(question.order, 'description', e.target.value);
         }}
         value={currentDescription}
         disabled={isCheckOut}
