@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createTemplate } from '@/apis/Template';
@@ -33,6 +33,29 @@ export default function Template() {
     description: selectedRecordCard ? selectedRecordCard.description : '',
   });
 
+  const setTitle = useCallback((type: string) => {
+    switch (type) {
+      case 'PAIN_HSTRY':
+        return '통증 정도';
+        break;
+      case 'CONDITION':
+        return '오늘의 컨디션';
+        break;
+      case 'PAIN_INTV':
+        return '통증 문진';
+        break;
+      case 'TEXT':
+        return '텍스트';
+        break;
+      case 'SELECT':
+        return '선택형';
+        break;
+      case 'MEDIA':
+        return '미디어';
+        break;
+    }
+  }, []);
+
   const handleTemplateContent = (id: string, value: string | Questions[]) => {
     templateContent &&
       setTemplateContent({
@@ -42,7 +65,15 @@ export default function Template() {
   };
 
   const handleClickedSaveButton = async () => {
+    if (templateContent?.title.length === 0) {
+      alert('템플릿 제목을 입력해주세요.');
+      return;
+    }
     questionList.map(question => {
+      if (question.title.length === 0) {
+        alert(`${setTitle(question.type)} 문항의 제목을 입력해주세요.`);
+        return;
+      }
       if (question.type === 'SELECT') {
         if (question.options?.length === 0) {
           alert('선택형 문항의 보기가 존재하지 않습니다.');
