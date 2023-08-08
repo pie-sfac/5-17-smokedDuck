@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
 
-import Logo from '../assets/Logo.svg';
-
 export default function NotFoundPage() {
   return (
     <NotFoundContainer>
@@ -11,7 +9,7 @@ export default function NotFoundPage() {
   );
 }
 const NotFoundContainer = styled('div')`
-  margin-top: 130px;
+  margin-top: 230px;
   text-align: center;
 `;
 
@@ -24,16 +22,4 @@ const Title = styled('div')`
 const Content = styled('p')`
   font-size: 24px;
   color: #737373;
-  &::after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 46%;
-    width: 1400px;
-    height: 500px;
-    background: url(${Logo});
-    background-repeat: no-repeat;
-    background-size: 1400px;
-    opacity: 0.2;
-  }
 `;
