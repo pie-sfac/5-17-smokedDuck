@@ -22,6 +22,21 @@ export default function QuestionContent({
 }: QuestionContentProps) {
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentDescription, setCurrentDescription] = useState(description);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setCurrentTitle(newTitle);
+    onChange(order, 'title', newTitle);
+  };
+
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const newDescription = e.target.value;
+    setCurrentDescription(newDescription);
+    onChange(order, 'description', newDescription);
+  };
+
   return (
     <QuestionContentContainer>
       <StyledLabel htmlFor="questionTitle">문항 제목</StyledLabel>
@@ -34,10 +49,7 @@ export default function QuestionContent({
           height: '2.5rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        onChange={e => {
-          setCurrentTitle(e.target.value);
-          onChange(order, 'title', e.target.value);
-        }}
+        onChange={handleTitleChange}
         value={currentTitle}
         disabled={isCheckOut}
       />
@@ -50,10 +62,7 @@ export default function QuestionContent({
           height: '4.2rem',
           margin: '0.4rem 0 0.4rem 0',
         }}
-        onChange={e => {
-          setCurrentDescription(e.target.value);
-          onChange(order, 'description', e.target.value);
-        }}
+        onChange={handleDescriptionChange}
         value={currentDescription}
         disabled={isCheckOut}
       />

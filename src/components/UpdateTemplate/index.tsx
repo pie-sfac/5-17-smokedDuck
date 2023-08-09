@@ -80,26 +80,27 @@ export default function UpdateTemplate({
     return isValid;
   };
 
+  const syncOrder = (
+    targetList: Questions[],
+    correctOrderList: Questions[]
+  ) => {
+    return targetList.map(listItem => {
+      const newOrder = correctOrderList.find(item => item.id === listItem.id)
+        ?.order;
+      return {
+        ...listItem,
+        order: newOrder ? newOrder : 0,
+      };
+    });
+  };
+
   //저장버튼 누를때 PUT 요청
   const handleClickedSaveButton = async (templateId?: number) => {
     const isRight = checkValidation();
     if (!isRight) return;
     //total리스트의 order값과 동기화
-    const updateList = updateQuestions.map(listItem => {
-      const newOrder = totalList.find(item => item.id === listItem.id)?.order;
-      return {
-        ...listItem,
-        order: newOrder ? newOrder : 0,
-      };
-    });
-
-    const addList = addQuestions.map(listItem => {
-      const newOrder = totalList.find(item => item.id === listItem.id)?.order;
-      return {
-        ...listItem,
-        order: newOrder ? newOrder : 0,
-      };
-    });
+    const updateList = syncOrder(updateQuestions, totalList);
+    const addList = syncOrder(addQuestions, totalList);
     const updatedTemplateContent: UpdateTemplateType = {
       title: currTemplateSubHeader.title,
       description: currTemplateSubHeader.description,
@@ -187,7 +188,11 @@ export default function UpdateTemplate({
         question.order === order ? { ...question, [valueKey]: value } : question
       );
       setUpdateQuestions(currentUpdatedQuestion);
-      setTotalList([...currentUpdatedQuestion, ...addQuestions]);
+      setTotalList(
+        [...currentUpdatedQuestion, ...addQuestions].sort(
+          (a, b) => a.order - b.order
+        )
+      );
     },
 
     [addQuestions, updateQuestions]
@@ -203,7 +208,11 @@ export default function UpdateTemplate({
             : question
         );
         setAddQuestions(currentUpdatedQuestion);
-        setTotalList([...updateQuestions, ...currentUpdatedQuestion]);
+        setTotalList(
+          [...updateQuestions, ...currentUpdatedQuestion].sort(
+            (a, b) => a.order - b.order
+          )
+        );
       }
     },
     [addQuestions, updateQuestions]
@@ -260,6 +269,8 @@ export default function UpdateTemplate({
         });
 
         setTotalList(newList.sort((a, b) => a.order - b.order));
+        setAddQuestions(syncOrder(addQuestions, newList));
+        setUpdateQuestions(syncOrder(updateQuestions, newList));
       }
       if (direction === 'down') {
         const newList = totalList.map(item => {
@@ -272,9 +283,12 @@ export default function UpdateTemplate({
           return item;
         });
         setTotalList(newList.sort((a, b) => a.order - b.order));
+        setAddQuestions(syncOrder(addQuestions, newList));
+        setUpdateQuestions(syncOrder(updateQuestions, newList));
       }
     },
-    [totalList]
+
+    [addQuestions, totalList, updateQuestions]
   );
   return (
     <>
