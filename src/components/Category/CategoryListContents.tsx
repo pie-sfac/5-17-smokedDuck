@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
 import { useCallback, useContext, useRef, useState } from 'react';
 
-import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
-import { categoryListType } from '@/utils/constants/categoryList';
+import useCategory from '@/utils/categoryData';
 
 import DeleteModal from '../Common/DeleteModal';
+
+type categoryListType = {
+  id: number;
+  title: string;
+};
 
 type CategoryListContentsProps = {
   addedCategory: categoryListType[];

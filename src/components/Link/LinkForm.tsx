@@ -12,9 +12,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
-import useCategory from '@/hooks/useCategory';
 import { CategoryResponseDTO } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
+import useCategory from '@/utils/categoryData';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 import { useYoutubeVideo } from '@/utils/youtubeData';
 
