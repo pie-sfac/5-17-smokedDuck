@@ -4,10 +4,10 @@ import { updateTemplateAPI } from '@/apis/Template';
 import UpdateTemplateContent from '@/components/UpdateTemplate/UpdateTemplateContent';
 import UpdateTemplateFooter from '@/components/UpdateTemplate/UpdateTemplateFooter';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
-import useRecord from '@/hooks/useRecord';
 import { Questions, StringQuestionTypes } from '@/types/question.interface';
 import { recordDetailType } from '@/types/recordDetail.interface';
 import { UpdateTemplateType } from '@/types/template.interface';
+import { useRecord } from '@/utils/recordData';
 
 type UpdateTemplatePropType = {
   id: number;

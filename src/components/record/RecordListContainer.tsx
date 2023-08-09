@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import Loading from '@/components/Common/Loading';
 import RecordCard from '@/components/Record/RecordCard';
-import useRecord from '@/hooks/useRecord';
+import { useRecord } from '@/utils/recordData';
 
 type RecordListContainerPropsType = {
   category: string;

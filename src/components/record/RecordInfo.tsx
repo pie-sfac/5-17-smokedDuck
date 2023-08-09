@@ -3,7 +3,7 @@ import RecordContents from '@/components/Record/RecordContents';
 import RecordModalHeader from '@/components/Record/RecordModalHeader';
 import UpdateTemplate from '@/components/UpdateTemplate';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
-import useRecordDetail from '@/hooks/useRecordDetail';
+import { useRecordDetail } from '@/utils/recordData';
 
 type RecordInfo = {
   id: number;

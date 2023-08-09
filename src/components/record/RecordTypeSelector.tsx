@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import useRecord from '@/hooks/useRecord';
+import { useRecord } from '@/utils/recordData';
 
 type RecordTypeSelectorProps = {
   templateType: string;

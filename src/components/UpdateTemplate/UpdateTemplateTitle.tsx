@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import Loading from '@/components/Common/Loading';
-import useRecordDetail from '@/hooks/useRecordDetail';
+import { useRecordDetail } from '@/utils/recordData';
 
 type UpdateTemplateTitlePropType = {
   id: number;

@@ -4,8 +4,8 @@ import { useContext } from 'react';
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
 import UpdateQuestion from '@/components/UpdateTemplate/UpdateQuestion';
-import useRecordDetail from '@/hooks/useRecordDetail';
 import { MainContext } from '@/store';
+import { useRecordDetail } from '@/utils/recordData';
 
 export default function RecordContents() {
   const { selectedRecordCardId } = useContext(MainContext);

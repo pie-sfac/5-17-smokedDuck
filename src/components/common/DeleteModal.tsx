@@ -8,7 +8,6 @@ import { mutate as globalMutate } from 'swr';
 import { deleteCategory } from '@/apis/Category';
 import { deleteLink, LINK_URL } from '@/apis/Media';
 import Modal from '@/components/Common/Modal';
-import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import {
   GetLinkDetailResponse,
@@ -16,6 +15,7 @@ import {
 } from '@/types/media.interface';
 import { recordListType } from '@/types/recordList.interface';
 import useCategory from '@/utils/categoryData';
+import { useRecord } from '@/utils/recordData';
 
 type DeleteModalPropsType = {
   id: number | number[];
