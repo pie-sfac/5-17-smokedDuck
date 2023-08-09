@@ -13,20 +13,18 @@ type RecordInfo = {
 export default function RecordInfo({ id, isEditing }: RecordInfo) {
   const { recordDetailData } = useRecordDetail(id);
 
-  if (!recordDetailData) {
-    return (
-      <>
-        <Loading />
-      </>
-    );
-  }
-  return isEditing ? (
-    <UpdateTemplate id={id} recordDetailData={recordDetailData} />
-  ) : (
+  return (
     <>
-      <UpdateTemplateTitle id={id} isEditing={isEditing} />
-      <RecordModalHeader id={id} />
-      <RecordContents />
+      {!recordDetailData && <Loading />}
+      {recordDetailData && isEditing ? (
+        <UpdateTemplate id={id} recordDetailData={recordDetailData} />
+      ) : (
+        <>
+          <UpdateTemplateTitle id={id} isEditing={isEditing} />
+          <RecordModalHeader id={id} />
+          <RecordContents />
+        </>
+      )}
     </>
   );
 }

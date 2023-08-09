@@ -11,17 +11,15 @@ export default function RecordContents() {
   const { selectedRecordCardId } = useContext(MainContext);
   const { recordQuestions, isLoading } = useRecordDetail(selectedRecordCardId);
 
-  if (isLoading || !recordQuestions) {
-    return <Loading />;
-  }
   return (
     <ContentContainer
       style={{
         backgroundColor:
-          recordQuestions.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
+          recordQuestions?.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {recordQuestions.length === 0 ? (
+      {isLoading || (!recordQuestions && <Loading />)}
+      {recordQuestions?.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -31,7 +29,7 @@ export default function RecordContents() {
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        recordQuestions.map(question => (
+        recordQuestions?.map(question => (
           <UpdateQuestion
             question={question}
             key={Math.random() * 100}
