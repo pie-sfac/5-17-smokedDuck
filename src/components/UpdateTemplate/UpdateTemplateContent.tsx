@@ -36,7 +36,9 @@ export default function UpdateTemplateContent({
   }
 
   const totalOrder =
-    recordDetailData.questions[recordDetailData.questions.length - 1].order;
+    recordDetailData.questions.length !== 0
+      ? recordDetailData.questions[recordDetailData.questions.length - 1].order
+      : 1;
 
   return (
     <div>
