@@ -3,11 +3,12 @@ import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
-import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordInfo from '@/components/Record/RecordInfo';
 import { MainContext } from '@/store';
+
+import DeleteModal from '../Common/DeleteModal';
 
 type RecordCardPropsType = {
   title: string;
@@ -62,7 +63,7 @@ export default function RecordCard({ title, id }: RecordCardPropsType) {
         </Modal>
       )}
       {deleteModalOpen && (
-        <DeleteModalContainer
+        <DeleteModal
           title={'템플릿 삭제'}
           text={'템플릿을 삭제하시겠습니까?'}
           id={id}
