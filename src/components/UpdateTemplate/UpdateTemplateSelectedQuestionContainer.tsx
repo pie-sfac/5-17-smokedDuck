@@ -56,7 +56,7 @@ export default function UpdateTemplateSelectedQuestionContainer({
             : 'none',
       }}
     >
-      {recordDetailData.questions.length === 0 ? (
+      {questionList.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
