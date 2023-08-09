@@ -160,7 +160,6 @@ const QeustionsContainer = styled('div')`
 const QuestionBoxContainer = styled('div')`
   display: flex;
   margin: 0 2rem 0 2rem;
-  justify-content: space-between;
 `;
 
 const Caption = styled.span`
