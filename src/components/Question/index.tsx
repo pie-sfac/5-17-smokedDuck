@@ -15,7 +15,7 @@ type checkedSpecialQuestions = {
   isPAIN_INTV: boolean;
 };
 
-interface QuestionProps {
+type QuestionProps = {
   onChange: (
     order: number,
     id: string,
@@ -25,7 +25,7 @@ interface QuestionProps {
   setIsCheckedSpecialQuestions: React.Dispatch<
     React.SetStateAction<checkedSpecialQuestions>
   >;
-}
+};
 
 export default function Question({
   onChange,

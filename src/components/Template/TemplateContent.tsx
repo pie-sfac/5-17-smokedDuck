@@ -8,18 +8,18 @@ import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContain
 import TemplateSelections from './TemplateSelections';
 import TemplateSubHeader from './TemplateSubHeader';
 
+type checkedSpecialQuestions = {
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};
+
 type TemplateContentProps = {
   currTemplateSubHeader: { title: string; description?: string | undefined };
   setCurrTemplateSubHeader: Dispatch<
     SetStateAction<{ title: string; description: string | undefined }>
   >;
   onChange: (id: string, value: string | Questions[]) => void;
-};
-
-type checkedSpecialQuestions = {
-  isPAIN_HSTRY: boolean;
-  isCONDITION: boolean;
-  isPAIN_INTV: boolean;
 };
 
 export default function TemplateContent({

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { tokenType } from '@/types/token.interface';
+import { token } from '@/types/token.interface';
 const refreshAxios = axios.create({
   baseURL: 'http://223.130.161.221/api/v1',
   headers: {
@@ -20,7 +20,7 @@ export async function requestLogin(username: string, password: string) {
   };
 
   try {
-    const response = await axios.post<tokenType>(`/admins/login`, '', {
+    const response = await axios.post<token>(`/admins/login`, '', {
       headers,
       withCredentials: true,
     });
@@ -36,13 +36,13 @@ export async function requestLogin(username: string, password: string) {
 }
 
 export function onSlientRefresh() {
-  refreshAxios.post<tokenType>('/tokens').then(res => {
+  refreshAxios.post<token>('/tokens').then(res => {
     onLoginSuccess(res);
     window.localStorage.setItem('refreshToken', res.data.refreshToken);
   });
 }
 
-export function onLoginSuccess(res: { data: tokenType }) {
+export function onLoginSuccess(res: { data: token }) {
   const { accessToken, refreshToken } = res.data;
 
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;

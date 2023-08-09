@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useCategory from '@/utils/categoryData';
 import useMediaList from '@/utils/mediaListData';
 
-type MediaCategorySelectorPropsType = {
+type MediaCategorySelectorProps = {
   selectedCategory: string;
   categoryChange: (title: string) => void;
 };
@@ -12,7 +12,7 @@ type MediaCategorySelectorPropsType = {
 export default function MediaCategorySelector({
   selectedCategory,
   categoryChange,
-}: MediaCategorySelectorPropsType) {
+}: MediaCategorySelectorProps) {
   const { categoryListData, isLoading, error } = useCategory();
   const { totalLinksCount } = useMediaList();
   const navigate = useNavigate();
