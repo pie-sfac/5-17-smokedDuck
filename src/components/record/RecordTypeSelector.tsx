@@ -2,15 +2,15 @@ import styled from '@emotion/styled';
 
 import useRecord from '@/hooks/useRecord';
 
-type TypeSelectorProps = {
+type RecordTypeSelectorProps = {
   templateType: string;
   changeListType: (type: string) => void;
 };
 
-export default function TypeSelector({
+export default function RecordTypeSelector({
   templateType,
   changeListType,
-}: TypeSelectorProps) {
+}: RecordTypeSelectorProps) {
   const { count, isLoading } = useRecord();
 
   if (isLoading) {
