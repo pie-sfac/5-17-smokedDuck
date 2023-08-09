@@ -37,6 +37,7 @@ export default function MediaListContainer({
     if (isLoading || error || !mediaList) {
       setIsShowLoading(true);
     }
+    return setIsShowLoading(false);
   }, [error, isLoading, mediaList]);
 
   return (

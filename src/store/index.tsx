@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { categoryListType } from '@/components/Category/CategoryListContents';
 import { Questions } from '@/types/question.interface';
 import {
   recordDetailType,
   recordQuestionsType,
 } from '@/types/recordDetail.interface';
 import { Template } from '@/types/template.interface';
-import { categoryList, categoryListType } from '@/utils/constants/categoryList';
 
 type ContextType = {
   recordModalOpen: boolean;
@@ -15,14 +15,16 @@ type ContextType = {
   questionList: Questions[];
   questions: Questions | undefined;
   setQuestions: Dispatch<SetStateAction<Questions | undefined>>;
-  storedCategoryList: categoryListType[];
+  storedCategoryList: categoryListType[] | undefined;
   selectedRecordCardId: number;
   isRecordEdit: boolean;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
   setMediaModalState: Dispatch<SetStateAction<boolean>>;
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Questions[]>>;
-  setStoredCategoryList: (storedCategoryList: categoryListType[]) => void;
+  setStoredCategoryList: (
+    storedCategoryList: categoryListType[] | undefined
+  ) => void;
   selectedRecordCard: recordDetailType | undefined;
   setSelectedRecordCard: React.Dispatch<
     React.SetStateAction<recordDetailType | undefined>
@@ -97,7 +99,7 @@ export default function MainContextProvider(props: {
   const [selectedRecordCardId, setSeletedRecordCardId] = useState(0);
 
   const [storedCategoryList, setStoredCategoryList] =
-    useState<categoryListType[]>(categoryList);
+    useState<categoryListType[]>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const contextValue: ContextType = {
     questionList: storedQuestionList,
