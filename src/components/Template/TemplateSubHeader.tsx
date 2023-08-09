@@ -25,6 +25,7 @@ export default function TemplateSubHeader({
   const [currentTemplateDescription, setCurrentTemplateDescription] = useState(
     currTemplateSubHeader.description
   );
+
   return (
     <TemplateContentContainer>
       <label htmlFor="template-title">템플릿 제목*</label>
@@ -36,12 +37,12 @@ export default function TemplateSubHeader({
         required
         onChange={e => {
           setCurrentTemplateTitle(e.target.value);
-          onChange('title', e.target.value);
           setCurrTemplateSubHeader({
             title: e.target.value,
             description: currTemplateSubHeader.description,
           });
         }}
+        onBlur={() => onChange('title', currentTemplateTitle)}
       />
       <br />
       <label htmlFor="template-title">설명</label>
@@ -52,12 +53,15 @@ export default function TemplateSubHeader({
         value={currentTemplateDescription}
         onChange={e => {
           setCurrentTemplateDescription(e.target.value);
-          onChange('description', e.target.value);
           setCurrTemplateSubHeader({
             title: currTemplateSubHeader.title,
             description: e.target.value,
           });
         }}
+        onBlur={() =>
+          currentTemplateDescription &&
+          onChange('description', currentTemplateDescription)
+        }
       />
     </TemplateContentContainer>
   );
