@@ -5,7 +5,7 @@ import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
 import { categoryListType } from '@/utils/constants/categoryList';
 
-import DeleteModalContainer from '../Common/DeleteModal';
+import DeleteModal from '../Common/DeleteModal';
 
 type CategoryListContentsProps = {
   addedCategory: categoryListType[];
@@ -130,7 +130,7 @@ export default function CategoryListContents({
         </CategoryButton>
       )}
       {deleteModalOpen && (
-        <DeleteModalContainer
+        <DeleteModal
           title={'삭제 확인'}
           text={
             '선택하신 카테고리를 삭제하시겠습니까? \n (주의) 링크가 있는 경우, 함께 삭제 됩니다.'

@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-import DeleteModalContainer from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import LinkComponent from '@/components/Link/index';
 import MediaContent from '@/components/Media/MediaContent';
+
+import DeleteModal from '../Common/DeleteModal';
 
 type MediaCardProps = {
   id: number;
@@ -65,7 +66,7 @@ export default function MediaCard({
         </Modal>
       )}
       {deleteModalOpen && (
-        <DeleteModalContainer
+        <DeleteModal
           title={'삭제 확인'}
           text={'해당 링크를 삭제하시겠습니까?'}
           id={id}
