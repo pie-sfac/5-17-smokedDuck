@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type QuestionContentProps = {
   onChange: (
@@ -23,19 +23,23 @@ export default function QuestionContent({
   const [currentTitle, setCurrentTitle] = useState(title);
   const [currentDescription, setCurrentDescription] = useState(description);
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setCurrentTitle(newTitle);
-    onChange(order, 'title', newTitle);
-  };
+  const handleTitleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newTitle = e.target.value;
+      setCurrentTitle(newTitle);
+      onChange(order, 'title', newTitle);
+    },
+    [onChange, order]
+  );
 
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const newDescription = e.target.value;
-    setCurrentDescription(newDescription);
-    onChange(order, 'description', newDescription);
-  };
+  const handleDescriptionChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const newDescription = e.target.value;
+      setCurrentDescription(newDescription);
+      onChange(order, 'description', newDescription);
+    },
+    [onChange, order]
+  );
 
   return (
     <QuestionContentContainer>

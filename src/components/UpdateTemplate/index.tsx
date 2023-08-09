@@ -42,7 +42,7 @@ export default function UpdateTemplate({
     errorMessage: '',
   });
   //벨리데이션 검증
-  const checkValidation = () => {
+  const checkValidation = useCallback(() => {
     let isValid = true;
     let errorMessage = '';
 
@@ -78,21 +78,21 @@ export default function UpdateTemplate({
     });
 
     return isValid;
-  };
+  }, [currTemplateSubHeader.title.length, totalList]);
 
-  const syncOrder = (
-    targetList: Questions[],
-    correctOrderList: Questions[]
-  ) => {
-    return targetList.map(listItem => {
-      const newOrder = correctOrderList.find(item => item.id === listItem.id)
-        ?.order;
-      return {
-        ...listItem,
-        order: newOrder ? newOrder : 0,
-      };
-    });
-  };
+  const syncOrder = useCallback(
+    (targetList: Questions[], correctOrderList: Questions[]) => {
+      return targetList.map(listItem => {
+        const newOrder = correctOrderList.find(item => item.id === listItem.id)
+          ?.order;
+        return {
+          ...listItem,
+          order: newOrder ? newOrder : 0,
+        };
+      });
+    },
+    []
+  );
 
   //저장버튼 누를때 PUT 요청
   const handleClickedSaveButton = async (templateId?: number) => {
@@ -125,61 +125,68 @@ export default function UpdateTemplate({
   };
 
   //문항 박스들 클릭하면 questionList에 담는함수
-  const questionsListHandler = (type: StringQuestionTypes, tagName: string) => {
-    setCaption({
-      isMaximun: false,
-      isduplicate: false,
-      errorMessage: '',
-    });
+  const questionsListHandler = useCallback(
+    (type: StringQuestionTypes, tagName: string) => {
+      setCaption({
+        isMaximun: false,
+        isduplicate: false,
+        errorMessage: '',
+      });
 
-    const newQuestionId =
-      updateQuestions.length === 0
-        ? addQuestions.length === 0
-          ? 1
-          : addQuestions[addQuestions.length - 1].id + 1
-        : addQuestions.length === 0
-        ? updateQuestions[updateQuestions.length - 1].id + 1
-        : addQuestions[addQuestions.length - 1].id + 1;
+      const newQuestionId =
+        updateQuestions.length === 0
+          ? addQuestions.length === 0
+            ? 1
+            : addQuestions[addQuestions.length - 1].id + 1
+          : addQuestions.length === 0
+          ? updateQuestions[updateQuestions.length - 1].id + 1
+          : addQuestions[addQuestions.length - 1].id + 1;
 
-    const newOrder =
-      totalList.length === 0 ? 1 : totalList[totalList.length - 1].order + 1;
+      const newOrder =
+        totalList.length === 0 ? 1 : totalList[totalList.length - 1].order + 1;
 
-    //전문문항 중복되는지 확인
-    if (type === 'PAIN_HSTRY' || type === 'PAIN_INTV' || type === 'CONDITION') {
-      if (totalList.find(listItem => listItem.type === type)) {
+      //전문문항 중복되는지 확인
+      if (
+        type === 'PAIN_HSTRY' ||
+        type === 'PAIN_INTV' ||
+        type === 'CONDITION'
+      ) {
+        if (totalList.find(listItem => listItem.type === type)) {
+          setCaption({
+            ...caption,
+            isduplicate: true,
+            errorMessage: '전문 문항은 중복으로 추가할 수 없습니다.',
+          });
+          return;
+        }
+      }
+      if (totalList.length > 29) {
         setCaption({
           ...caption,
-          isduplicate: true,
-          errorMessage: '전문 문항은 중복으로 추가할 수 없습니다.',
+          isMaximun: true,
+          errorMessage: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
         });
         return;
       }
-    }
-    if (totalList.length > 29) {
-      setCaption({
-        ...caption,
-        isMaximun: true,
-        errorMessage: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
-      });
-      return;
-    }
 
-    const newQuestion = {
-      id: newQuestionId,
-      type,
-      order: newOrder,
-      required: false,
-      title: '',
-      tagName,
-      description: '',
-      paragraph: false,
-      options: [],
-      allowMultiple: false,
-      addOtherOption: false,
-    };
-    setAddQuestions([...addQuestions, newQuestion]);
-    setTotalList([...totalList, newQuestion]);
-  };
+      const newQuestion = {
+        id: newQuestionId,
+        type,
+        order: newOrder,
+        required: false,
+        title: '',
+        tagName,
+        description: '',
+        paragraph: false,
+        options: [],
+        allowMultiple: false,
+        addOtherOption: false,
+      };
+      setAddQuestions([...addQuestions, newQuestion]);
+      setTotalList([...totalList, newQuestion]);
+    },
+    [addQuestions, caption, totalList, updateQuestions]
+  );
 
   //기존의 항목들 수정하는 함수
   const existQuestionContentHandler = useCallback(
@@ -288,7 +295,7 @@ export default function UpdateTemplate({
       }
     },
 
-    [addQuestions, totalList, updateQuestions]
+    [addQuestions, syncOrder, totalList, updateQuestions]
   );
   return (
     <>
