@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { onSlientRefresh } from '@/apis/Login';
 import Logo from '@/assets/Logo.svg';
 import { category, userName } from '@/utils/constants/header';
-import { categoryType } from '@/utils/constants/header';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ export default function Header() {
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
   const handlePageMove = useCallback(
-    (item: categoryType) => {
+    (item: category) => {
       if (item.id === 2 || item.id === 3) {
         navigate(`${item.name}`);
         setClickedIdNum(item.id);

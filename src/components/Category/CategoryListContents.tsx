@@ -6,18 +6,13 @@ import useCategory from '@/utils/categoryData';
 
 import DeleteModal from '../Common/DeleteModal';
 
-export type categoryListType = {
-  id: number;
-  title: string;
-};
-
-export type categoryListType = {
+export type categoryList = {
   id: number;
   title: string;
 };
 
 type CategoryListContentsProps = {
-  addedCategory?: categoryListType[];
+  addedCategory?: categoryList[];
   isDeleteMode: boolean;
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleUpdateCategory: (categoryId: number, updateText: string) => void;

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { categoryListType } from '@/components/Category/CategoryListContents';
+import { categoryList } from '@/components/Category/CategoryListContents';
 import { Questions } from '@/types/question.interface';
 import {
   recordDetailType,
@@ -15,7 +15,7 @@ type ContextType = {
   questionList: Questions[];
   questions: Questions | undefined;
   setQuestions: Dispatch<SetStateAction<Questions | undefined>>;
-  storedCategoryList: categoryListType[] | undefined;
+  storedCategoryList: categoryList[] | undefined;
   selectedRecordCardId: number;
   isRecordEdit: boolean;
   setRecordModalState: Dispatch<SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ type ContextType = {
   setSelectedTemplateTitle: Dispatch<SetStateAction<string>>;
   setQuestionList: Dispatch<SetStateAction<Questions[]>>;
   setStoredCategoryList: (
-    storedCategoryList: categoryListType[] | undefined
+    storedCategoryList: categoryList[] | undefined
   ) => void;
   selectedRecordCard: recordDetailType | undefined;
   setSelectedRecordCard: React.Dispatch<
@@ -99,7 +99,7 @@ export default function MainContextProvider(props: {
   const [selectedRecordCardId, setSeletedRecordCardId] = useState(0);
 
   const [storedCategoryList, setStoredCategoryList] =
-    useState<categoryListType[]>();
+    useState<categoryList[]>();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const contextValue: ContextType = {
     questionList: storedQuestionList,

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createCategory, updateCategory } from '@/apis/Category';
 import { MainContext } from '@/store';
-import { CategoryRequestDTO } from '@/types/category.interface';
+import { CategoryRequest } from '@/types/category.interface';
 import useCategory from '@/utils/categoryData';
 
 import CategoryHeader from './CategoryHeader';
@@ -23,7 +23,7 @@ export default function Category() {
       return;
     }
     try {
-      const newCategoryList: CategoryRequestDTO = {
+      const newCategoryList: CategoryRequest = {
         title: '',
         description: '',
       };
@@ -50,7 +50,7 @@ export default function Category() {
         return data;
       }, false);
 
-      const updatedCategoryData: CategoryRequestDTO = {
+      const updatedCategoryData: CategoryRequest = {
         title: updateText,
         description: '',
       };

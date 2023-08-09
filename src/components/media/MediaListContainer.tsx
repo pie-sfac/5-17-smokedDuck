@@ -10,13 +10,13 @@ import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 import Loading from '../Common/Loading';
 
-type MediaListContainerPropType = {
+type MediaListContainerProp = {
   selectedCategory: string;
 };
 
 export default function MediaListContainer({
   selectedCategory,
-}: MediaListContainerPropType) {
+}: MediaListContainerProp) {
   const { mediaList, isLoading, error } = useMediaList(selectedCategory);
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
