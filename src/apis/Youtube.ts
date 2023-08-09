@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { YoutubeVideoMetadata } from '@/hooks/useGetYoutubeVideoFromMetadata';
+import { YoutubeVideoMetadata } from '@/utils/youtubeData';
 
 export interface YoutubeVideoAPIResponse {
   items: [YoutubeVideoMetadata];
