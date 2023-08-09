@@ -13,6 +13,22 @@ export default function Header() {
   const { pathname } = useLocation();
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
+  const handlePageMove = useCallback(
+    (item: categoryType) => {
+      if (item.id === 2 || item.id === 3) {
+        navigate(`${item.name}`);
+        setClickedIdNum(item.id);
+      }
+    },
+    [navigate]
+  );
+
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    navigate('/');
+    setClickedIdNum(2);
+  }, [navigate]);
+
   useEffect(() => {
     if (!localStorage.getItem('refreshToken')) {
       navigate('/');
@@ -29,46 +45,33 @@ export default function Header() {
     }
   }, [pathname]);
 
-  const handlePageMove = (item: categoryType) => {
-    if (item.id === 2 || item.id === 3) {
-      navigate(`${item.name}`);
-      setClickedIdNum(item.id);
-    }
-  };
-
-  const handleLogout = useCallback(() => {
-    localStorage.clear();
-    navigate('/');
-    setClickedIdNum(2);
-  }, [navigate]);
-
-  if (pathname === '/') {
-    return null;
-  }
-
   return (
-    <HeaderContainer>
-      <img src={Logo} />
-      <HeaderCategoryList>
-        {category.map(item => (
-          <HeaderCategoryListItem
-            key={item.id}
-            onClick={() => handlePageMove(item)}
-            className={item.id === clickedIdNum ? 'active' : ''}
-          >
-            {item.text}
-          </HeaderCategoryListItem>
-        ))}
-      </HeaderCategoryList>
-      <UserArea>
-        <AvatarArea>
-          <Avatar src="https://bit.ly/broken-link" size="xs" />
-        </AvatarArea>
-        {userName}
-        <PlanUser>플랜 이용중</PlanUser>
-      </UserArea>
-      <LogoutArea onClick={handleLogout}>로그아웃</LogoutArea>
-    </HeaderContainer>
+    <>
+      {pathname === '/' ? null : (
+        <HeaderContainer>
+          <img src={Logo} />
+          <HeaderCategoryList>
+            {category.map(item => (
+              <HeaderCategoryListItem
+                key={item.id}
+                onClick={() => handlePageMove(item)}
+                className={item.id === clickedIdNum ? 'active' : ''}
+              >
+                {item.text}
+              </HeaderCategoryListItem>
+            ))}
+          </HeaderCategoryList>
+          <UserArea>
+            <AvatarArea>
+              <Avatar src="https://bit.ly/broken-link" size="xs" />
+            </AvatarArea>
+            {userName}
+            <PlanUser>플랜 이용중</PlanUser>
+          </UserArea>
+          <LogoutArea onClick={handleLogout}>로그아웃</LogoutArea>
+        </HeaderContainer>
+      )}
+    </>
   );
 }
 const HeaderContainer = styled.header`
