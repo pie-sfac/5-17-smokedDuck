@@ -8,20 +8,21 @@ import Pain from '@/assets/Pain.svg';
 import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
-import { Questions } from '@/types/question.interface';
-
-import UpdateQuestionBox from './UpdateQuestion/UpdateQuestionBox';
+import UpdateQuestionBox from '@/components/UpdateTemplate/UpdateQuestion/UpdateQuestionBox';
+import { StringQuestionTypes } from '@/types/question.interface';
 
 type UpdateTemplateQuestionSelectionsProps = {
   totalOrder: number;
-  addQuestions: Questions[];
-  setAddQuestions: React.Dispatch<React.SetStateAction<Questions[]>>;
+  questionsListHandler: (
+    type: StringQuestionTypes,
+    tagName: string,
+    totalOrder: number
+  ) => void;
 };
 
 export default function UpdateTemplateQuestionSelections({
   totalOrder,
-  addQuestions,
-  setAddQuestions,
+  questionsListHandler,
 }: UpdateTemplateQuestionSelectionsProps) {
   const [selectedQuestion, setSelectedQuestion] = useState('basic');
   return (
@@ -73,8 +74,7 @@ export default function UpdateTemplateQuestionSelections({
             tagName={'기본'}
             margin={'0.4rem'}
             type={'TEXT'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
           <UpdateQuestionBox
@@ -84,8 +84,7 @@ export default function UpdateTemplateQuestionSelections({
             tagName={'기본'}
             margin={'0.4rem'}
             type={'MEDIA'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
           <UpdateQuestionBox
@@ -94,8 +93,7 @@ export default function UpdateTemplateQuestionSelections({
             description={'보기 중 선택해서 답변하는 문항입니다.'}
             tagName={'기본'}
             type={'SELECT'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
         </QuestionBoxContainer>
@@ -109,8 +107,7 @@ export default function UpdateTemplateQuestionSelections({
             tagName={'전문'}
             margin={'0.4rem'}
             type={'PAIN_HSTRY'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
           <UpdateQuestionBox
@@ -120,8 +117,7 @@ export default function UpdateTemplateQuestionSelections({
             tagName={'전문'}
             margin={'0.4rem'}
             type={'CONDITION'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
           <UpdateQuestionBox
@@ -132,8 +128,7 @@ export default function UpdateTemplateQuestionSelections({
             }
             tagName={'전문'}
             type={'PAIN_INTV'}
-            addQuestions={addQuestions}
-            setAddQuestions={setAddQuestions}
+            questionsListHandler={questionsListHandler}
             totalOrder={totalOrder}
           />
         </QuestionBoxContainer>
