@@ -69,9 +69,9 @@ export default function UpdateTemplateSelectedQuestionContainer({
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        questionList.map(question => (
+        questionList.map((question, idx) => (
           <UpdateQuestion
-            key={question.order}
+            key={question.order + idx * Math.random()}
             question={question}
             onChange={
               question.tagName
