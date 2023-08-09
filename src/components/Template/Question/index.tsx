@@ -3,17 +3,12 @@ import { useCallback, useContext } from 'react';
 
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
+import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
 import QuestionHeader from './QuestionHeader';
 import QuestionOptionalContent from './QuestionOptionalContent';
-
-type checkedSpecialQuestions = {
-  isPAIN_HSTRY: boolean;
-  isCONDITION: boolean;
-  isPAIN_INTV: boolean;
-};
 
 type QuestionProps = {
   onChange: (
@@ -23,7 +18,7 @@ type QuestionProps = {
   ) => void;
   question: Questions;
   setIsCheckedSpecialQuestions: React.Dispatch<
-    React.SetStateAction<checkedSpecialQuestions>
+    React.SetStateAction<CheckedSpecialQuestions>
   >;
 };
 

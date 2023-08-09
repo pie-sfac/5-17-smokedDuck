@@ -10,7 +10,7 @@ import { UpdateTemplateType } from '@/types/template.interface';
 import { templateNotificationText } from '@/utils/constants/template';
 import { useRecord } from '@/utils/recordData';
 
-type UpdateTemplatePropType = {
+type UpdateTemplateProp = {
   id: number;
   recordDetailData: recordDetailType;
 };
@@ -18,7 +18,7 @@ type UpdateTemplatePropType = {
 export default function UpdateTemplate({
   id,
   recordDetailData,
-}: UpdateTemplatePropType) {
+}: UpdateTemplateProp) {
   const { recordListData, mutate: mutateTitle } = useRecord();
 
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({

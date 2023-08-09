@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 
 import Loading from '@/components/Common/Loading';
-import useRecordDetail from '@/hooks/useRecordDetail';
+import { useRecordDetail } from '@/utils/recordData';
 
-type RecordModalHeaderPropType = {
+type RecordModalHeaderProp = {
   id: number;
 };
 
-export default function RecordModalHeader({ id }: RecordModalHeaderPropType) {
+export default function RecordModalHeader({ id }: RecordModalHeaderProp) {
   const { recordDetailData } = useRecordDetail(id);
 
   return (

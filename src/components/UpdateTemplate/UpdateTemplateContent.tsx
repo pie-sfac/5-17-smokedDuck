@@ -18,6 +18,7 @@ type TemplateContentProps = {
     isMaximum: boolean;
     errorMessage: string;
   };
+
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
   newQuestionContentHandler: (
     order: number,

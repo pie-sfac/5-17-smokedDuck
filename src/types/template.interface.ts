@@ -25,3 +25,10 @@ export interface UpdateTemplateType {
 export interface UpdateTemplateResponse {
   message: string;
 }
+
+export type NewTemplateContent = {
+  questions: Questions[];
+  category?: '' | 'INTERVIEW' | 'TREATMENT' | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+};

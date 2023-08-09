@@ -4,19 +4,13 @@ import { mutate } from 'swr';
 import { createTemplate } from '@/apis/Template';
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
+import { NewTemplateContent } from '@/types/template.interface';
 import { templateNotificationText } from '@/utils/constants/template';
 import { useRecord } from '@/utils/recordData';
 
 import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';
 import TemplateTitle from './TemplateTitle';
-
-type NewTemplateContent = {
-  questions: Questions[];
-  category?: '' | 'INTERVIEW' | 'TREATMENT' | undefined;
-  title?: string | undefined;
-  description?: string | undefined;
-};
 
 export default function Template() {
   const {

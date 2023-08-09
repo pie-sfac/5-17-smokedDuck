@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import { getLinkDetails, LINK_URL } from '@/apis/Media';
-import { CategoryResponseDTO } from '@/types/category.interface';
+import { CategoryResponse } from '@/types/category.interface';
 import { FormData } from '@/types/media.interface';
 import useCategory from '@/utils/categoryData';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
@@ -161,7 +161,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
               setCategory(Number(event.target.value));
             }}
           >
-            {categories?.categories.map((categoryInfo: CategoryResponseDTO) => (
+            {categories?.categories.map((categoryInfo: CategoryResponse) => (
               <option key={categoryInfo.id} value={categoryInfo.id}>
                 {categoryInfo.title}
               </option>

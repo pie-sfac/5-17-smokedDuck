@@ -1,10 +1,10 @@
-export type category = {
+type Category = {
   id: number;
   name: string;
   text: string;
 };
 
-export const category: category[] = [
+export const category: Category[] = [
   { id: 0, name: 'employee', text: '직원관리' },
   { id: 1, name: 'tikect', text: '수강권 관리' },
   { id: 2, name: 'record', text: '기록 관리' },
