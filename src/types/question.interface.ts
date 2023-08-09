@@ -33,3 +33,9 @@ export type StringQuestionTypes =
   | 'PAIN_HSTRY'
   | 'CONDITION'
   | 'PAIN_INTV';
+
+export type CheckedSpecialQuestions = {
+  isPAIN_HSTRY: boolean;
+  isCONDITION: boolean;
+  isPAIN_INTV: boolean;
+};

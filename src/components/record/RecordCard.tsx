@@ -10,12 +10,12 @@ import { MainContext } from '@/store';
 
 import DeleteModal from '../Common/DeleteModal';
 
-type RecordCardPropsType = {
+type RecordCardProps = {
   title: string;
   id: number;
 };
 
-export default function RecordCard({ title, id }: RecordCardPropsType) {
+export default function RecordCard({ title, id }: RecordCardProps) {
   const [isSmallScreen] = useMediaQuery('(min-height: 800px)');
   const { setSeletedRecordCardId, setIsRecordEdit } = useContext(MainContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);

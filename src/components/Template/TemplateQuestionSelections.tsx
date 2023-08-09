@@ -9,19 +9,14 @@ import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
 import { MainContext } from '@/store';
+import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import QuestionBox from '../Common/QuestionBox';
 
-type checkedSpecialQuestions = {
-  isPAIN_HSTRY: boolean;
-  isCONDITION: boolean;
-  isPAIN_INTV: boolean;
-};
-
 type TemplateQuestionSelectionsProps = {
-  isCheckedSpecialQuestions: checkedSpecialQuestions;
+  isCheckedSpecialQuestions: CheckedSpecialQuestions;
   setIsCheckedSpecialQuestions: React.Dispatch<
-    React.SetStateAction<checkedSpecialQuestions>
+    React.SetStateAction<CheckedSpecialQuestions>
   >;
 };
 

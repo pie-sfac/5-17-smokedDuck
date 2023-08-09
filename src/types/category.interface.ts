@@ -1,14 +1,14 @@
-export interface CategoryRequestDTO {
+export interface CategoryRequest {
   title: string;
   description: string;
 }
 
-export interface CategoryResponseDTO extends CategoryRequestDTO {
+export interface CategoryResponse extends CategoryRequest {
   id: number;
   totalCount: number;
 }
 
-export interface CategoryListResponseDTO {
-  categories: CategoryResponseDTO[];
+export interface CategoryListResponse {
+  categories: CategoryResponse[];
   message: string;
 }

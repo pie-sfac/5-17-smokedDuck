@@ -1,18 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { Questions } from '@/types/question.interface';
 import {
   CreateTemplateResponse,
+  NewTemplateContent,
   UpdateTemplateResponse,
   UpdateTemplateType,
 } from '@/types/template.interface';
-
-type NewTemplateContent = {
-  questions: Questions[];
-  category?: '' | 'INTERVIEW' | 'TREATMENT' | undefined;
-  title?: string | undefined;
-  description?: string | undefined;
-};
 
 const TEMPLATE_URL = '/record-templates';
 

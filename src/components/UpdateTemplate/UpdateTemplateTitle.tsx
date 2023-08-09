@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import Loading from '@/components/Common/Loading';
 import { useRecordDetail } from '@/utils/recordData';
 
-type UpdateTemplateTitlePropType = {
+type UpdateTemplateTitleProp = {
   id: number;
   isEditing: boolean;
 };
@@ -11,7 +11,7 @@ type UpdateTemplateTitlePropType = {
 export default function UpdateTemplateTitle({
   id,
   isEditing,
-}: UpdateTemplateTitlePropType) {
+}: UpdateTemplateTitleProp) {
   const { recordDetailData } = useRecordDetail(id);
 
   return (

@@ -5,13 +5,13 @@ import Loading from '@/components/Common/Loading';
 import RecordCard from '@/components/Record/RecordCard';
 import { useRecord } from '@/utils/recordData';
 
-type RecordListContainerPropsType = {
+type RecordListContainerProps = {
   category: string;
 };
 
 export default function RecordListContainer({
   category,
-}: RecordListContainerPropsType) {
+}: RecordListContainerProps) {
   const { recordListData, isLoading, error } = useRecord(category);
   const [isShowLoading, setIsShowLoading] = useState(false);
 

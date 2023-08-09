@@ -1,14 +1,14 @@
 import useSWR from 'swr';
 
 import { getCategoryList } from '@/apis/Category';
-import { CategoryListResponseDTO } from '@/types/category.interface';
+import { CategoryListResponse } from '@/types/category.interface';
 
 export default function useCategory() {
   const {
     data: categoryList,
     mutate,
     error,
-  } = useSWR<CategoryListResponseDTO, Error>('/getCategory', getCategoryList);
+  } = useSWR<CategoryListResponse, Error>('/getCategory', getCategoryList);
 
   return {
     categoryListData: categoryList,

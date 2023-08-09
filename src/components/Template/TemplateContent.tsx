@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
+import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import TemplateQuestionSelections from './TemplateQuestionSelections';
 import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContainer';
@@ -16,12 +17,6 @@ type TemplateContentProps = {
   onChange: (id: string, value: string | Questions[]) => void;
 };
 
-type checkedSpecialQuestions = {
-  isPAIN_HSTRY: boolean;
-  isCONDITION: boolean;
-  isPAIN_INTV: boolean;
-};
-
 export default function TemplateContent({
   currTemplateSubHeader,
   setCurrTemplateSubHeader,
@@ -30,7 +25,7 @@ export default function TemplateContent({
   const { selectedTemplateTitle } = useContext(MainContext);
 
   const [isCheckedSpecialQuestions, setIsCheckedSpecialQuestions] =
-    useState<checkedSpecialQuestions>({
+    useState<CheckedSpecialQuestions>({
       isPAIN_HSTRY: false,
       isCONDITION: false,
       isPAIN_INTV: false,

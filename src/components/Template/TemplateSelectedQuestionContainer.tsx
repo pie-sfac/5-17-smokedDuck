@@ -3,19 +3,14 @@ import { useCallback, useContext, useEffect } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
+import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import Question from './Question';
 
-type checkedSpecialQuestions = {
-  isPAIN_HSTRY: boolean;
-  isCONDITION: boolean;
-  isPAIN_INTV: boolean;
-};
-
 type TemplateSelectedQuestionContainerProps = {
-  isCheckedSpecialQuestions: checkedSpecialQuestions;
+  isCheckedSpecialQuestions: CheckedSpecialQuestions;
   setIsCheckedSpecialQuestions: React.Dispatch<
-    React.SetStateAction<checkedSpecialQuestions>
+    React.SetStateAction<CheckedSpecialQuestions>
   >;
 };
 
