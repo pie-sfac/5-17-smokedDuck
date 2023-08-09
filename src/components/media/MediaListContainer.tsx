@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
@@ -22,51 +22,55 @@ export default function MediaListContainer({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isShowLoading, setIsShowLoading] = useState(false);
+
   const compareUpdateDate = (
-    a: GetLinkDetailResponse,
-    b: GetLinkDetailResponse
+    prevMedia: GetLinkDetailResponse,
+    nextMedia: GetLinkDetailResponse
   ) => {
-    const aUpdatedAt = new Date(a.updatedAt).getTime();
-    const bUpdatedAt = new Date(b.updatedAt).getTime();
-    return bUpdatedAt - aUpdatedAt;
+    const prevUpdatedAt = new Date(prevMedia.updatedAt).getTime();
+    const nextUpdatedAt = new Date(nextMedia.updatedAt).getTime();
+    return nextUpdatedAt - prevUpdatedAt;
   };
 
-  if (isLoading || error || !mediaList) {
-    return (
-      <LoadingBackGround>
-        <Loading />
-      </LoadingBackGround>
-    );
-  }
-
-  if (mediaList.length === 0) {
-    return (
-      <EmptyListBackground>
-        <img src="src/assets/EmptyMedia.svg" />
-      </EmptyListBackground>
-    );
-  }
+  useEffect(() => {
+    if (isLoading || error || !mediaList) {
+      setIsShowLoading(true);
+    }
+  }, [error, isLoading, mediaList]);
 
   return (
     <>
-      <ListBackGround>
-        {mediaList.sort(compareUpdateDate).map((item, index) => {
-          return (
-            <MediaCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              categoryId={item.category.id}
-              linkUrl={getLinkUrlInfo(item.url).linkUrl || ''}
-              thumbnailUrl={getLinkUrlInfo(item.url).thumbnailUrl || ''}
-              onClick={() => {
-                setActiveMediaCardInfo(index), setIsModalOpen(true);
-              }}
-            />
-          );
-        })}
-      </ListBackGround>
+      {isShowLoading && (
+        <LoadingBackGround>
+          <Loading />
+        </LoadingBackGround>
+      )}
+      {mediaList && mediaList.length === 0 ? (
+        <EmptyListBackground>
+          <img src="src/assets/EmptyMedia.svg" />
+        </EmptyListBackground>
+      ) : (
+        <ListBackGround>
+          {mediaList &&
+            mediaList.sort(compareUpdateDate).map((item, index) => {
+              return (
+                <MediaCard
+                  key={item.id}
+                  id={item.id}
+                  title={item.title}
+                  description={item.description}
+                  categoryId={item.category.id}
+                  linkUrl={getLinkUrlInfo(item.url).linkUrl || ''}
+                  thumbnailUrl={getLinkUrlInfo(item.url).thumbnailUrl || ''}
+                  onClick={() => {
+                    setActiveMediaCardInfo(index), setIsModalOpen(true);
+                  }}
+                />
+              );
+            })}
+        </ListBackGround>
+      )}
       {isModalOpen && mediaList && (
         <Modal
           setIsOpen={setIsModalOpen}
