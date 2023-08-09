@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import { MainContext } from '@/store';
 
-import Question from '../Question';
+import Question from './Question';
 
 type checkedSpecialQuestions = {
   isPAIN_HSTRY: boolean;
