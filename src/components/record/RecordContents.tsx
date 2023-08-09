@@ -9,21 +9,19 @@ import { MainContext } from '@/store';
 
 export default function RecordContents() {
   const { selectedRecordCardId } = useContext(MainContext);
-  const { recordDetailData, isLoading } = useRecordDetail(selectedRecordCardId);
+  const { recordQuestions, isLoading } = useRecordDetail(selectedRecordCardId);
 
-  if (isLoading || !recordDetailData) {
+  if (isLoading || !recordQuestions) {
     return <Loading />;
   }
   return (
     <ContentContainer
       style={{
         backgroundColor:
-          recordDetailData.questions.length !== 0
-            ? 'rgba(235, 241, 255, 0.26)'
-            : 'none',
+          recordQuestions.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
       }}
     >
-      {recordDetailData.questions.length === 0 ? (
+      {recordQuestions.length === 0 ? (
         <EmptyQuestionContainer>
           <img
             src={EmptyQuestion}
@@ -33,7 +31,7 @@ export default function RecordContents() {
           문항이 없습니다.
         </EmptyQuestionContainer>
       ) : (
-        recordDetailData.questions.map(question => (
+        recordQuestions.map(question => (
           <UpdateQuestion
             question={question}
             key={Math.random() * 100}

@@ -15,7 +15,9 @@ export default function useRecordDetail(id: number) {
 
   return {
     recordDetailData: recordDetailData,
-    recordQuestions: recordDetailData?.questions,
+    recordQuestions: recordDetailData?.questions.sort(
+      (a, b) => a.order - b.order
+    ),
     mutate: mutate,
     isLoading: !error && !recordDetailData,
   };

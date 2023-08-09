@@ -11,8 +11,7 @@ type TemplateContentProps = {
   setCurrTemplateSubHeader: Dispatch<
     SetStateAction<{ title: string; description: string }>
   >;
-  updateQuestions: Questions[];
-  addQuestions: Questions[];
+  totalList: Questions[];
   id: number;
   questionsListHandler: (
     type: StringQuestionTypes,
@@ -29,6 +28,8 @@ type TemplateContentProps = {
     valueKey: string,
     value: string | string[] | boolean
   ) => void;
+  handleDelete: (order: number, isNew: boolean) => void;
+  handleMove: (order: number, direction: string) => void;
 };
 
 export default function UpdateTemplateContent({
@@ -36,9 +37,10 @@ export default function UpdateTemplateContent({
   questionsListHandler,
   newQuestionContentHandler,
   existQuestionContentHandler,
-  updateQuestions,
-  addQuestions,
+  totalList,
   id,
+  handleDelete,
+  handleMove,
 }: TemplateContentProps) {
   const { recordDetailData } = useRecordDetail(id);
   if (!recordDetailData) {
@@ -66,7 +68,9 @@ export default function UpdateTemplateContent({
         <UpdateTemplateSelectedQuestionContainer
           newQuestionContentHandler={newQuestionContentHandler}
           existQuestionContentHandler={existQuestionContentHandler}
-          totalQuestions={[...updateQuestions, ...addQuestions]}
+          totalQuestions={totalList}
+          handleDelete={handleDelete}
+          handleMove={handleMove}
           id={id}
         />
       </>

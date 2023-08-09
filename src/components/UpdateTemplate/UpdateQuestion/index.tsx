@@ -12,6 +12,8 @@ interface QuestionProps {
     valueKey: string,
     value: string | string[] | boolean
   ) => void;
+  handleDelete?: (order: number, isNew: boolean) => void;
+  handleMove?: (order: number, direction: string) => void;
   question: Questions;
   isCheckOut?: boolean;
 }
@@ -19,6 +21,8 @@ interface QuestionProps {
 export default function UpdateQuestion({
   question,
   onChange,
+  handleDelete,
+  handleMove,
   isCheckOut,
 }: QuestionProps) {
   const isBasic = ['TEXT', 'MEDIA', 'SELECT'].includes(question.type);
@@ -60,13 +64,17 @@ export default function UpdateQuestion({
           onChange={onChange!}
         />
       )}
-      {isCheckOut ? (
+      {isCheckOut || !handleDelete || !handleMove ? (
         <></>
       ) : (
         <UpdateQuestionFooter
           order={question.order}
           onChange={onChange!}
           required={question.required}
+          isBasic={isBasic}
+          isNew={question.tagName ? true : false}
+          handleMove={handleMove}
+          handleDelete={handleDelete}
         />
       )}
     </QuestionContainer>
