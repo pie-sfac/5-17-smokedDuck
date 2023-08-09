@@ -33,8 +33,39 @@ export default function UpdateTemplate({
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
   const [totalList, setTotalList] = useState<Questions[]>(updateQuestions);
 
+  //벨리데이션 검증
+  const checkValidation = () => {
+    if (currTemplateSubHeader.title.length === 0) {
+      alert('템플릿 제목을 입력해주세요.');
+      return false;
+    }
+
+    totalList.forEach(listItem => {
+      if (
+        (listItem.type === 'TEXT' || listItem.type === 'MEDIA') &&
+        listItem.title.length === 0
+      ) {
+        alert(`${listItem.type} 문항의 제목을 입력해주세요.`);
+        return false;
+      }
+      if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
+        alert('선택형 문항의 보기가 존재하지 않습니다.');
+        return false;
+      } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
+        const set = new Set(listItem.options);
+        if (set.size !== listItem.options?.length) {
+          alert(
+            '작성하신 선택형 문항의 보기 중 중복값이 존재합니다. 중복을 수정해주세요.'
+          );
+          return false;
+        }
+      }
+    });
+  };
+
   //저장버튼 누를때 PUT 요청
   const handleClickedSaveButton = async (templateId?: number) => {
+    if (!checkValidation) return;
     //total리스트의 order값과 동기화
     const updateList = updateQuestions.map(listItem => {
       const newOrder = totalList.find(item => item.id === listItem.id)?.order;
