@@ -19,19 +19,20 @@ export async function requestLogin(username: string, password: string) {
     Authorization: `Basic ${basicToken}`,
   };
 
-  await axios
-    .post<tokenType>(`/admins/login`, '', {
+  try {
+    const response = await axios.post<tokenType>(`/admins/login`, '', {
       headers,
       withCredentials: true,
-    })
-    .then(res => {
-      onLoginSuccess(res);
-      window.localStorage.setItem('refreshToken', res.data.refreshToken);
-    })
-    .catch(error => {
-      alert('아이디 또는 비밀번호가 틀렸습니다.');
-      console.error(error);
     });
+    if (response.status === 200) {
+      onLoginSuccess(response);
+      window.localStorage.setItem('refreshToken', response.data.refreshToken);
+      return response;
+    }
+  } catch (error) {
+    alert('아이디 또는 비밀번호가 틀렸습니다.');
+    console.error(error);
+  }
 }
 
 export function onSlientRefresh() {

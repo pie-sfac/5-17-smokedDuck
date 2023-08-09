@@ -12,24 +12,32 @@ interface StyledPasswordIconProps {
 }
 
 export default function LoginForm() {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [centercode, setCentercode] = useState<string>('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [centercode, setCentercode] = useState('');
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [changeUser, setChangeUser] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [changeUser, setChangeUser] = useState(false);
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  const handleButtonDisabled = useCallback(() => {
+    if (username.length != 0 && password.length != 0) {
+      setIsButtonDisabled(false);
+    }
+  }, [password.length, username.length]);
+
   const navigate = useNavigate();
 
-  const isButtonDisabled: boolean =
-    username.length === 0 || password.length === 0;
-
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      requestLogin(username, password).then(() => {
+      const response = await requestLogin(username, password);
+
+      if (response?.status === 200) {
         navigate('/record');
-      });
+      }
     },
     [username, password, navigate]
   );
@@ -64,7 +72,10 @@ export default function LoginForm() {
           type="text"
           id="username"
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={e => {
+            setUsername(e.target.value);
+            handleButtonDisabled();
+          }}
         />
       </div>
       <StyledDivInput>
@@ -74,7 +85,10 @@ export default function LoginForm() {
           type={showPassword ? 'text' : 'password'}
           id="password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={e => {
+            setPassword(e.target.value);
+            handleButtonDisabled();
+          }}
         />
         <StyledPasswordIcon
           src={VisibilityOn}
