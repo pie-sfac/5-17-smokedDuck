@@ -6,7 +6,6 @@ import { mutate as globalMutate } from 'swr';
 import { deleteCategory } from '@/apis/Category';
 import { deleteLink, LINK_URL } from '@/apis/Media';
 import DeleteModal from '@/components/Common/DeleteModal/DeleteModal';
-import useCategory from '@/hooks/useCategory';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import {
@@ -14,6 +13,7 @@ import {
   GetLinkListResponse,
 } from '@/types/media.interface';
 import { recordListType } from '@/types/recordList.interface';
+import useCategory from '@/utils/categoryData';
 
 type DeleteModalPropsType = {
   id: number | number[];

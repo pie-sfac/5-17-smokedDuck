@@ -2,9 +2,9 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createCategory, updateCategory } from '@/apis/Category';
-import useCategory from '@/hooks/useCategory';
 import { MainContext } from '@/store';
 import { CategoryRequestDTO } from '@/types/category.interface';
+import useCategory from '@/utils/categoryData';
 
 import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
