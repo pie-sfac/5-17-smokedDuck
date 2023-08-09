@@ -18,6 +18,8 @@ type UpdateTemplateSelectedQuestionContainerProps = {
     valueKey: string,
     value: string | string[] | boolean
   ) => void;
+  handleDelete: (order: number, isNew: boolean) => void;
+  handleMove: (order: number, direction: string) => void;
   totalQuestions: Questions[];
   id: number;
 };
@@ -25,6 +27,8 @@ type UpdateTemplateSelectedQuestionContainerProps = {
 export default function UpdateTemplateSelectedQuestionContainer({
   newQuestionContentHandler,
   existQuestionContentHandler,
+  handleDelete,
+  handleMove,
   totalQuestions,
   id,
 }: UpdateTemplateSelectedQuestionContainerProps) {
@@ -74,6 +78,8 @@ export default function UpdateTemplateSelectedQuestionContainer({
                 ? newQuestionContentHandler
                 : existQuestionContentHandler
             }
+            handleDelete={handleDelete}
+            handleMove={handleMove}
           />
         ))
       )}
