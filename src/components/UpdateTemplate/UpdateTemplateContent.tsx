@@ -15,7 +15,7 @@ type TemplateContentProps = {
   id: number;
   caption: {
     isduplicate: boolean;
-    isMaximun: boolean;
+    isMaximum: boolean;
     errorMessage: string;
   };
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
@@ -45,33 +45,35 @@ export default function UpdateTemplateContent({
   caption,
 }: TemplateContentProps) {
   const { recordDetailData } = useRecordDetail(id);
-  if (!recordDetailData) {
-    return <Loading />;
-  }
+
   return (
-    <div>
-      <>
-        <UpdateTemplateSubHeader
-          title={recordDetailData.title}
-          description={
-            recordDetailData.description ? recordDetailData.description : ''
-          }
-          setCurrTemplateSubHeader={setCurrTemplateSubHeader}
-        />
-        <UpdateTemplateQuestionSelections
-          questionsListHandler={questionsListHandler}
-          category={recordDetailData.category}
-          caption={caption}
-        />
-        <UpdateTemplateSelectedQuestionContainer
-          newQuestionContentHandler={newQuestionContentHandler}
-          existQuestionContentHandler={existQuestionContentHandler}
-          totalQuestions={totalList}
-          handleDelete={handleDelete}
-          handleMove={handleMove}
-          id={id}
-        />
-      </>
-    </div>
+    <>
+      {!recordDetailData ? (
+        <Loading />
+      ) : (
+        <>
+          <UpdateTemplateSubHeader
+            title={recordDetailData.title}
+            description={
+              recordDetailData.description ? recordDetailData.description : ''
+            }
+            setCurrTemplateSubHeader={setCurrTemplateSubHeader}
+          />
+          <UpdateTemplateQuestionSelections
+            questionsListHandler={questionsListHandler}
+            category={recordDetailData.category}
+            caption={caption}
+          />
+          <UpdateTemplateSelectedQuestionContainer
+            newQuestionContentHandler={newQuestionContentHandler}
+            existQuestionContentHandler={existQuestionContentHandler}
+            totalQuestions={totalList}
+            handleDelete={handleDelete}
+            handleMove={handleMove}
+            id={id}
+          />
+        </>
+      )}
+    </>
   );
 }

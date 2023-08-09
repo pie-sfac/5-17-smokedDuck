@@ -14,14 +14,13 @@ export default function UpdateTemplateTitle({
 }: UpdateTemplateTitlePropType) {
   const { recordDetailData } = useRecordDetail(id);
 
-  return recordDetailData ? (
+  return (
     <ModalTitle>
-      {recordDetailData.category === 'INTERVIEW'
+      {!recordDetailData && <Loading />}
+      {recordDetailData?.category === 'INTERVIEW'
         ? `문진 템플릿 ${isEditing ? '수정' : ''}`
         : `처치 템플릿 ${isEditing ? '수정' : ''}`}
     </ModalTitle>
-  ) : (
-    <Loading />
   );
 }
 

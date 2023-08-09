@@ -11,6 +11,7 @@ type QuestionBoxProps = {
   type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
 };
+
 export default function QuestionBox({
   image,
   tagTitle,
