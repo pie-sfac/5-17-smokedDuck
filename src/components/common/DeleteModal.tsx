@@ -17,7 +17,7 @@ import { recordListType } from '@/types/recordList.interface';
 import useCategory from '@/utils/categoryData';
 import { useRecord } from '@/utils/recordData';
 
-type DeleteModalPropsType = {
+type DeleteModalProps = {
   id: number | number[];
   setDeleteModalOpen: Dispatch<SetStateAction<boolean>>;
   title: string;
@@ -33,7 +33,7 @@ export default function DeleteModal({
   setDeleteModalOpen,
   categoryId,
   setIsDeleteMode,
-}: DeleteModalPropsType) {
+}: DeleteModalProps) {
   const { pathname } = useLocation();
 
   const { selectedIds, setSelectedIds } = useContext(MainContext);
