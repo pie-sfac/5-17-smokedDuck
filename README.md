@@ -6,7 +6,7 @@
 
 ## 프로젝트 정보
 
-> **Piehealthcare**
+> **Piehealthcare - PoinT**
 <br/>**기록을 위한 센터의 기록 템플릿 관리 및 아카이브 링크(링크 보관함) 관리 기능 제작** 
 <br/>**개발기간: 2023.07.17 ~ 2023.08.10**
 
@@ -48,7 +48,7 @@ $ npm ci
 $ npm run dev
 ```
 
-## Stacks
+## 기술 스택
 
 ### Environment
 
@@ -68,7 +68,8 @@ $ npm run dev
 ![Axios](https://img.shields.io/badge/axios-5A29E4.svg?&style=for-the-badge&logo=axios&logoColor=white)
 ![Eslint](https://img.shields.io/badge/eslint-4B32C3.svg?&style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/prettier-DF0067.svg?&style=for-the-badge&logo=prettier&logoColor=white)
-
+![Emotion](https://img.shields.io/badge/Emotion-D87DCA.svg?&style=for-the-badge&logo=&logoColor=white)
+![SWR](https://img.shields.io/badge/SWR-EEEEEE.svg?&style=for-the-badge&logo=&logoColor=white)
 
 ### Communication
 
@@ -106,6 +107,7 @@ $ npm run dev
 #### 카테고리
 - 미디어 관리 카테고리의 생성, 조회, 수정, 삭제가 가능합니다.
 - 카테고리 삭제시, 해당 카테고리의 모든 센터 링크는 함께 삭제됩니다.
+- 중복된 카테고리명 생성시 경고 문구가 보여집니다.
 - 최대 10개의 카테고리 항목을 생성할 수 있으며, 카테고리명은 15자로 제한됩니다.
 
 #### 센터 링크
