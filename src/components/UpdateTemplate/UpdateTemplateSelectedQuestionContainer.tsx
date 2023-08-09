@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
 import UpdateQuestion from '@/components/UpdateTemplate/UpdateQuestion';
-import useRecordDetail from '@/hooks/useRecordDetail';
 import { Questions } from '@/types/question.interface';
+import { useRecordDetail } from '@/utils/recordData';
 
 type UpdateTemplateSelectedQuestionContainerProps = {
   newQuestionContentHandler: (

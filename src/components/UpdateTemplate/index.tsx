@@ -7,6 +7,7 @@ import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle
 import { Questions, StringQuestionTypes } from '@/types/question.interface';
 import { recordDetailType } from '@/types/recordDetail.interface';
 import { UpdateTemplateType } from '@/types/template.interface';
+import { templateNotificationText } from '@/utils/constants/template';
 import { useRecord } from '@/utils/recordData';
 
 type UpdateTemplatePropType = {
@@ -48,7 +49,7 @@ export default function UpdateTemplate({
 
     if (currTemplateSubHeader.title.length === 0) {
       isValid = false;
-      errorMessage = '템플릿 제목을 입력해주세요.';
+      errorMessage = templateNotificationText.untitledTemplate;
     }
 
     totalList.forEach(listItem => {
@@ -57,17 +58,16 @@ export default function UpdateTemplate({
         listItem.title.length === 0
       ) {
         isValid = false;
-        errorMessage = `${listItem.type} 문항의 제목을 입력해주세요.`;
+        errorMessage = `${listItem.type} ${templateNotificationText.untitledQuestion}`;
       }
       if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
         isValid = false;
-        errorMessage = '선택형 문항의 보기가 존재하지 않습니다.';
+        errorMessage = templateNotificationText.noOptions;
       } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
         const set = new Set(listItem.options);
         if (set.size !== listItem.options?.length) {
           isValid = false;
-          errorMessage =
-            '작성하신 선택형 문항의 보기 중 중복값이 존재합니다. 중복을 수정해주세요.';
+          errorMessage = templateNotificationText.duplicateOptions;
         }
       }
     });
@@ -153,7 +153,7 @@ export default function UpdateTemplate({
           setCaption({
             ...caption,
             isduplicate: true,
-            errorMessage: '전문 문항은 중복으로 추가할 수 없습니다.',
+            errorMessage: templateNotificationText.noDuplicateSpecialQuestions,
           });
           return;
         }
@@ -162,7 +162,7 @@ export default function UpdateTemplate({
         setCaption({
           ...caption,
           isMaximum: true,
-          errorMessage: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
+          errorMessage: templateNotificationText.limitedNumberOfQuestions,
         });
         return;
       }
