@@ -141,11 +141,7 @@ export default function UpdateTemplate({
         : addQuestions[addQuestions.length - 1].id + 1;
 
     const newOrder =
-      addQuestions.length === 0
-        ? updateQuestions.length === 0
-          ? 1
-          : updateQuestions[updateQuestions.length - 1].order + 1
-        : addQuestions[addQuestions.length - 1].order + 1;
+      totalList.length === 0 ? 1 : totalList[totalList.length - 1].order + 1;
 
     //전문문항 중복되는지 확인
     if (type === 'PAIN_HSTRY' || type === 'PAIN_INTV' || type === 'CONDITION') {
