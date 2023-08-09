@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
 import MediaCard from '@/components/Media/MediaCard';
-import useMediaCards from '@/hooks/useMediaCards';
 import { GetLinkDetailResponse } from '@/types/media.interface';
+import useMediaList from '@/utils/mediaListData';
 import { getLinkUrlInfo } from '@/utils/validations/linkUtils';
 
 import Loading from '../Common/Loading';
@@ -17,7 +17,7 @@ type MediaListContainerPropType = {
 export default function MediaListContainer({
   selectedCategory,
 }: MediaListContainerPropType) {
-  const { mediaList, isLoading, error } = useMediaCards(selectedCategory);
+  const { mediaList, isLoading, error } = useMediaList(selectedCategory);
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
