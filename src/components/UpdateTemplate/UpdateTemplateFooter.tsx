@@ -1,22 +1,22 @@
 import { Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import { Questions } from '@/types/question.interface';
-import { recordQuestionsType } from '@/types/recordDetail.interface';
-
 type UpdateTemplateFooterProps = {
   handleClickedSaveButton: (templateId?: number) => Promise<void>;
   id: number;
-  updateQuestions: recordQuestionsType[];
-  addQuestions: Questions[];
+  validation: { isValidate: boolean; errorMessage: string };
 };
 
 export default function UpdateTemplateFooter({
   handleClickedSaveButton,
   id,
+  validation,
 }: UpdateTemplateFooterProps) {
   return (
     <FooterContainer>
+      {!validation.isValidate && (
+        <ValidateCaption>{validation.errorMessage}</ValidateCaption>
+      )}
       <Button
         fontSize={'1rem'}
         _active={{
@@ -33,8 +33,14 @@ export default function UpdateTemplateFooter({
 }
 
 const FooterContainer = styled('div')`
-  height: 3.5rem;
   margin: 0.2rem 2rem 0.2rem 2rem;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+`;
+
+const ValidateCaption = styled.span`
+  font-size: 13px;
+  color: red;
+  margin-right: 1rem;
 `;

@@ -26,20 +26,88 @@ export default function UpdateTemplate({
       ? recordDetailData.description
       : '',
   });
+  const [deleteIds, setDeleteIds] = useState<number[]>([]);
   const [updateQuestions, setUpdateQuestions] = useState<Questions[]>(
     recordDetailData.questions
   );
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
+  const [totalList, setTotalList] = useState<Questions[]>(updateQuestions);
+  const [validation, setValidation] = useState({
+    isValidate: false,
+    errorMessage: '',
+  });
+  const [caption, setCaption] = useState({
+    isduplicate: false,
+    isMaximun: false,
+    errorMessage: '',
+  });
+  //벨리데이션 검증
+  const checkValidation = useCallback(() => {
+    let isValid = true;
+    let errorMessage = '';
+
+    if (currTemplateSubHeader.title.length === 0) {
+      isValid = false;
+      errorMessage = '템플릿 제목을 입력해주세요.';
+    }
+
+    totalList.forEach(listItem => {
+      if (
+        (listItem.type === 'TEXT' || listItem.type === 'MEDIA') &&
+        listItem.title.length === 0
+      ) {
+        isValid = false;
+        errorMessage = `${listItem.type} 문항의 제목을 입력해주세요.`;
+      }
+      if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
+        isValid = false;
+        errorMessage = '선택형 문항의 보기가 존재하지 않습니다.';
+      } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
+        const set = new Set(listItem.options);
+        if (set.size !== listItem.options?.length) {
+          isValid = false;
+          errorMessage =
+            '작성하신 선택형 문항의 보기 중 중복값이 존재합니다. 중복을 수정해주세요.';
+        }
+      }
+    });
+
+    setValidation({
+      isValidate: isValid,
+      errorMessage,
+    });
+
+    return isValid;
+  }, [currTemplateSubHeader.title.length, totalList]);
+
+  const syncOrder = useCallback(
+    (targetList: Questions[], correctOrderList: Questions[]) => {
+      return targetList.map(listItem => {
+        const newOrder = correctOrderList.find(item => item.id === listItem.id)
+          ?.order;
+        return {
+          ...listItem,
+          order: newOrder ? newOrder : 0,
+        };
+      });
+    },
+    []
+  );
 
   //저장버튼 누를때 PUT 요청
   const handleClickedSaveButton = async (templateId?: number) => {
+    const isRight = checkValidation();
+    if (!isRight) return;
+    //total리스트의 order값과 동기화
+    const updateList = syncOrder(updateQuestions, totalList);
+    const addList = syncOrder(addQuestions, totalList);
     const updatedTemplateContent: UpdateTemplateType = {
       title: currTemplateSubHeader.title,
       description: currTemplateSubHeader.description,
-      updateQuestions: updateQuestions ? updateQuestions : [],
-      addQuestions,
+      updateQuestions: updateList,
+      addQuestions: addList,
+      deleteIds,
     };
-
     if (templateId) {
       await updateTemplateAPI(templateId, updatedTemplateContent);
     }
@@ -57,20 +125,54 @@ export default function UpdateTemplate({
   };
 
   //문항 박스들 클릭하면 questionList에 담는함수
-  const questionsListHandler = (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => {
-    setAddQuestions([
-      ...addQuestions,
-      {
-        id: 0,
+  const questionsListHandler = useCallback(
+    (type: StringQuestionTypes, tagName: string) => {
+      setCaption({
+        isMaximun: false,
+        isduplicate: false,
+        errorMessage: '',
+      });
+
+      const newQuestionId =
+        updateQuestions.length === 0
+          ? addQuestions.length === 0
+            ? 1
+            : addQuestions[addQuestions.length - 1].id + 1
+          : addQuestions.length === 0
+          ? updateQuestions[updateQuestions.length - 1].id + 1
+          : addQuestions[addQuestions.length - 1].id + 1;
+
+      const newOrder =
+        totalList.length === 0 ? 1 : totalList[totalList.length - 1].order + 1;
+
+      //전문문항 중복되는지 확인
+      if (
+        type === 'PAIN_HSTRY' ||
+        type === 'PAIN_INTV' ||
+        type === 'CONDITION'
+      ) {
+        if (totalList.find(listItem => listItem.type === type)) {
+          setCaption({
+            ...caption,
+            isduplicate: true,
+            errorMessage: '전문 문항은 중복으로 추가할 수 없습니다.',
+          });
+          return;
+        }
+      }
+      if (totalList.length > 29) {
+        setCaption({
+          ...caption,
+          isMaximun: true,
+          errorMessage: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
+        });
+        return;
+      }
+
+      const newQuestion = {
+        id: newQuestionId,
         type,
-        order:
-          addQuestions.length === 0
-            ? totalOrder + 1
-            : addQuestions[addQuestions.length - 1].order + 1,
+        order: newOrder,
         required: false,
         title: '',
         tagName,
@@ -79,9 +181,13 @@ export default function UpdateTemplate({
         options: [],
         allowMultiple: false,
         addOtherOption: false,
-      },
-    ]);
-  };
+      };
+      setAddQuestions([...addQuestions, newQuestion]);
+      setTotalList([...totalList, newQuestion]);
+    },
+    [addQuestions, caption, totalList, updateQuestions]
+  );
+
   //기존의 항목들 수정하는 함수
   const existQuestionContentHandler = useCallback(
     (order: number, valueKey: string, value: string | string[] | boolean) => {
@@ -89,9 +195,14 @@ export default function UpdateTemplate({
         question.order === order ? { ...question, [valueKey]: value } : question
       );
       setUpdateQuestions(currentUpdatedQuestion);
+      setTotalList(
+        [...currentUpdatedQuestion, ...addQuestions].sort(
+          (a, b) => a.order - b.order
+        )
+      );
     },
 
-    [updateQuestions]
+    [addQuestions, updateQuestions]
   );
 
   //새로운 항목을 수정하는 함수
@@ -104,11 +215,88 @@ export default function UpdateTemplate({
             : question
         );
         setAddQuestions(currentUpdatedQuestion);
+        setTotalList(
+          [...updateQuestions, ...currentUpdatedQuestion].sort(
+            (a, b) => a.order - b.order
+          )
+        );
       }
     },
-    [addQuestions, setAddQuestions]
+    [addQuestions, updateQuestions]
   );
 
+  //항목 삭제
+  const questionDeleteHandler = useCallback(
+    (order: number, isNew: boolean) => {
+      const targetQuestion = totalList.find(item => item.order === order);
+      if (!isNew && targetQuestion) {
+        setDeleteIds([...deleteIds, targetQuestion.id]);
+        setUpdateQuestions(
+          updateQuestions.filter(item => item.order !== order)
+        );
+      } else if (targetQuestion) {
+        setAddQuestions(addQuestions.filter(item => item.order !== order));
+      }
+
+      setTotalList(
+        totalList
+          .filter(item => item.order !== order)
+          .sort((a, b) => a.order - b.order)
+          .map((item, index) => {
+            return { ...item, order: index + 1 };
+          })
+      );
+    },
+    [addQuestions, deleteIds, totalList, updateQuestions]
+  );
+
+  //항목 이동
+  const questionMoveHandler = useCallback(
+    (targetOrder: number, direction: string) => {
+      if (direction === 'up' && targetOrder === 1) {
+        alert('첫번째 문항입니다.');
+        return;
+      } else if (
+        direction === 'down' &&
+        targetOrder === totalList[totalList.length - 1].order
+      ) {
+        alert('마지막 문항입니다.');
+        return;
+      }
+
+      if (direction === 'up') {
+        const newList = totalList.map(item => {
+          if (item.order === targetOrder - 1)
+            return { ...item, order: item.order + 1 };
+
+          if (item.order === targetOrder)
+            return { ...item, order: item.order - 1 };
+
+          return item;
+        });
+
+        setTotalList(newList.sort((a, b) => a.order - b.order));
+        setAddQuestions(syncOrder(addQuestions, newList));
+        setUpdateQuestions(syncOrder(updateQuestions, newList));
+      }
+      if (direction === 'down') {
+        const newList = totalList.map(item => {
+          if (item.order === targetOrder + 1)
+            return { ...item, order: item.order - 1 };
+
+          if (item.order === targetOrder)
+            return { ...item, order: item.order + 1 };
+
+          return item;
+        });
+        setTotalList(newList.sort((a, b) => a.order - b.order));
+        setAddQuestions(syncOrder(addQuestions, newList));
+        setUpdateQuestions(syncOrder(updateQuestions, newList));
+      }
+    },
+
+    [addQuestions, syncOrder, totalList, updateQuestions]
+  );
   return (
     <>
       <UpdateTemplateTitle id={id} isEditing={true} />
@@ -118,13 +306,14 @@ export default function UpdateTemplate({
         questionsListHandler={questionsListHandler}
         newQuestionContentHandler={newQuestionContentHandler}
         existQuestionContentHandler={existQuestionContentHandler}
-        updateQuestions={updateQuestions}
-        addQuestions={addQuestions}
+        handleDelete={questionDeleteHandler}
+        handleMove={questionMoveHandler}
+        totalList={totalList}
+        caption={caption}
       />
       <UpdateTemplateFooter
         handleClickedSaveButton={handleClickedSaveButton}
-        updateQuestions={updateQuestions}
-        addQuestions={addQuestions}
+        validation={validation}
         id={id}
       />
     </>

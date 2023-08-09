@@ -12,22 +12,31 @@ import UpdateQuestionBox from '@/components/UpdateTemplate/UpdateQuestion/Update
 import { StringQuestionTypes } from '@/types/question.interface';
 
 type UpdateTemplateQuestionSelectionsProps = {
-  totalOrder: number;
-  questionsListHandler: (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => void;
+  category: string;
+  caption: {
+    isduplicate: boolean;
+    isMaximun: boolean;
+    errorMessage: string;
+  };
+  questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
 };
 
 export default function UpdateTemplateQuestionSelections({
-  totalOrder,
   questionsListHandler,
+  category,
+  caption,
 }: UpdateTemplateQuestionSelectionsProps) {
+  const renderCaption = () => {
+    if (caption.isduplicate || caption.isMaximun) {
+      return <Caption>{caption.errorMessage}</Caption>;
+    }
+    return null;
+  };
   const [selectedQuestion, setSelectedQuestion] = useState('basic');
   return (
     <EntireQuestionContainer>
       <QeustionsContainer>
+        {renderCaption()}
         <Box
           as="button"
           padding={1}
@@ -75,7 +84,6 @@ export default function UpdateTemplateQuestionSelections({
             margin={'0.4rem'}
             type={'TEXT'}
             questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
           />
           <UpdateQuestionBox
             image={Media}
@@ -85,7 +93,6 @@ export default function UpdateTemplateQuestionSelections({
             margin={'0.4rem'}
             type={'MEDIA'}
             questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
           />
           <UpdateQuestionBox
             image={Selections}
@@ -94,43 +101,45 @@ export default function UpdateTemplateQuestionSelections({
             tagName={'기본'}
             type={'SELECT'}
             questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
           />
         </QuestionBoxContainer>
       )}
       {selectedQuestion === 'specialty' && (
         <QuestionBoxContainer>
-          <UpdateQuestionBox
-            image={Pain}
-            tagTitle={'통증 정도'}
-            description={'회원의 통증 정도를 선택하는 문항입니다.'}
-            tagName={'전문'}
-            margin={'0.4rem'}
-            type={'PAIN_HSTRY'}
-            questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
-          />
-          <UpdateQuestionBox
-            image={Condition}
-            tagTitle={'오늘의 컨디션'}
-            description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
-            tagName={'전문'}
-            margin={'0.4rem'}
-            type={'CONDITION'}
-            questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
-          />
-          <UpdateQuestionBox
-            image={PainQuestion}
-            tagTitle={'통증 문진'}
-            description={
-              '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
-            }
-            tagName={'전문'}
-            type={'PAIN_INTV'}
-            questionsListHandler={questionsListHandler}
-            totalOrder={totalOrder}
-          />
+          {category === 'INTERVIEW' && (
+            <UpdateQuestionBox
+              image={PainQuestion}
+              tagTitle={'통증 문진'}
+              description={
+                '통증 부위, 유형, 정도, 빈도, 기간을 작성할 수 있는 문항입니다.'
+              }
+              tagName={'전문'}
+              type={'PAIN_INTV'}
+              questionsListHandler={questionsListHandler}
+            />
+          )}
+          {category === 'TREATMENT' && (
+            <>
+              <UpdateQuestionBox
+                image={Pain}
+                tagTitle={'통증 정도'}
+                description={'회원의 통증 정도를 선택하는 문항입니다.'}
+                tagName={'전문'}
+                margin={'0.4rem'}
+                type={'PAIN_HSTRY'}
+                questionsListHandler={questionsListHandler}
+              />
+              <UpdateQuestionBox
+                image={Condition}
+                tagTitle={'오늘의 컨디션'}
+                description={'회원의 컨디션 정도를 선택하는 문항입니다.'}
+                tagName={'전문'}
+                margin={'0.4rem'}
+                type={'CONDITION'}
+                questionsListHandler={questionsListHandler}
+              />
+            </>
+          )}
         </QuestionBoxContainer>
       )}
     </EntireQuestionContainer>
@@ -145,10 +154,16 @@ const QeustionsContainer = styled('div')`
   display: flex;
   justify-content: flex-end;
   margin: 0 2rem 1rem 2rem;
+  align-items: center;
 `;
 
 const QuestionBoxContainer = styled('div')`
   display: flex;
   margin: 0 2rem 0 2rem;
-  justify-content: space-between;
+`;
+
+const Caption = styled.span`
+  font-size: 12px;
+  color: red;
+  margin-right: 1rem;
 `;
