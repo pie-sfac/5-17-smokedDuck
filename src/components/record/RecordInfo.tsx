@@ -3,7 +3,7 @@ import RecordContents from '@/components/Record/RecordContents';
 import RecordModalHeader from '@/components/Record/RecordModalHeader';
 import UpdateTemplate from '@/components/UpdateTemplate';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
-import useRecordDetail from '@/hooks/useRecordDetail';
+import { useRecordDetail } from '@/utils/recordData';
 
 type RecordInfo = {
   id: number;
@@ -13,20 +13,18 @@ type RecordInfo = {
 export default function RecordInfo({ id, isEditing }: RecordInfo) {
   const { recordDetailData } = useRecordDetail(id);
 
-  if (!recordDetailData) {
-    return (
-      <>
-        <Loading />
-      </>
-    );
-  }
-  return isEditing ? (
-    <UpdateTemplate id={id} recordDetailData={recordDetailData} />
-  ) : (
+  return (
     <>
-      <UpdateTemplateTitle id={id} isEditing={isEditing} />
-      <RecordModalHeader id={id} />
-      <RecordContents />
+      {!recordDetailData && <Loading />}
+      {recordDetailData && isEditing ? (
+        <UpdateTemplate id={id} recordDetailData={recordDetailData} />
+      ) : (
+        <>
+          <UpdateTemplateTitle id={id} isEditing={isEditing} />
+          <RecordModalHeader id={id} />
+          <RecordContents />
+        </>
+      )}
     </>
   );
 }

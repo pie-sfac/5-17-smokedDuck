@@ -28,6 +28,7 @@ export default function QuestionFooter({
   isNew,
 }: QuestionFooterProps) {
   const [isRequired, setIsRequired] = useState(required ? required : false);
+
   return (
     <QuestionFooterContainer
       style={{

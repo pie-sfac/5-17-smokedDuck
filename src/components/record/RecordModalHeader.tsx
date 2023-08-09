@@ -10,21 +10,19 @@ type RecordModalHeaderPropType = {
 export default function RecordModalHeader({ id }: RecordModalHeaderPropType) {
   const { recordDetailData } = useRecordDetail(id);
 
-  if (!recordDetailData) {
-    return (
-      <TemplateContentContainer>
-        <Loading />
-      </TemplateContentContainer>
-    );
-  }
-
   return (
     <TemplateContentContainer>
-      <label htmlFor="template-title">템플릿 제목*</label>
-      <StyledHedaerText>{recordDetailData.title}</StyledHedaerText>
-      <br />
-      <label htmlFor="template-title">설명</label>
-      <StyledHedaerText>{recordDetailData.description}</StyledHedaerText>
+      {!recordDetailData ? (
+        <Loading />
+      ) : (
+        <>
+          <label htmlFor="template-title">템플릿 제목*</label>
+          <StyledHedaerText>{recordDetailData.title}</StyledHedaerText>
+          <br />
+          <label htmlFor="template-title">설명</label>
+          <StyledHedaerText>{recordDetailData.description}</StyledHedaerText>
+        </>
+      )}
     </TemplateContentContainer>
   );
 }

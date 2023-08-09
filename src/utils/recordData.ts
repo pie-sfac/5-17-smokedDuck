@@ -1,9 +1,10 @@
 import useSWR from 'swr';
 
-import { recordListFetcher } from '@/apis/record';
+import { recordDetailFetcher, recordListFetcher } from '@/apis/record';
+import { recordDetailType } from '@/types/recordDetail.interface';
 import { recordListType } from '@/types/recordList.interface';
 
-export default function useRecord(category?: string) {
+export function useRecord(category?: string) {
   const {
     data: recordList,
     mutate,
@@ -29,5 +30,25 @@ export default function useRecord(category?: string) {
       interviewCount: interviewCount ? interviewCount : 0,
       treatmentCount: treatmentCount ? treatmentCount : 0,
     },
+  };
+}
+
+export function useRecordDetail(id: number) {
+  const {
+    data: recordDetailData,
+    mutate,
+    error,
+  } = useSWR<recordDetailType, Error>(
+    `record-templates/${id}`,
+    recordDetailFetcher
+  );
+
+  return {
+    recordDetailData: recordDetailData,
+    recordQuestions: recordDetailData?.questions.sort(
+      (a, b) => a.order - b.order
+    ),
+    mutate: mutate,
+    isLoading: !error && !recordDetailData,
   };
 }

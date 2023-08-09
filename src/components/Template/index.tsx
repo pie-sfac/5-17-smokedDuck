@@ -2,10 +2,10 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createTemplate } from '@/apis/Template';
-import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
 import { templateNotificationText } from '@/utils/constants/template';
+import { useRecord } from '@/utils/recordData';
 
 import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';

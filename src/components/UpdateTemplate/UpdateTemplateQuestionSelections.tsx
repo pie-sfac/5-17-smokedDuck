@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import Condition from '@/assets/Condition.svg';
 import Media from '@/assets/Media.svg';
@@ -15,7 +15,7 @@ type UpdateTemplateQuestionSelectionsProps = {
   category: string;
   caption: {
     isduplicate: boolean;
-    isMaximun: boolean;
+    isMaximum: boolean;
     errorMessage: string;
   };
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
@@ -26,13 +26,15 @@ export default function UpdateTemplateQuestionSelections({
   category,
   caption,
 }: UpdateTemplateQuestionSelectionsProps) {
-  const renderCaption = () => {
-    if (caption.isduplicate || caption.isMaximun) {
+  const [selectedQuestion, setSelectedQuestion] = useState('basic');
+
+  const renderCaption = useCallback(() => {
+    if (caption.isduplicate || caption.isMaximum) {
       return <Caption>{caption.errorMessage}</Caption>;
     }
     return null;
-  };
-  const [selectedQuestion, setSelectedQuestion] = useState('basic');
+  }, [caption.errorMessage, caption.isMaximum, caption.isduplicate]);
+
   return (
     <EntireQuestionContainer>
       <QeustionsContainer>

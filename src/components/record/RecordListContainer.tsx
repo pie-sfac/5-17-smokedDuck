@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 import Loading from '@/components/Common/Loading';
 import RecordCard from '@/components/Record/RecordCard';
-import useRecord from '@/hooks/useRecord';
+import { useRecord } from '@/utils/recordData';
 
 type RecordListContainerPropsType = {
   category: string;
@@ -12,21 +13,26 @@ export default function RecordListContainer({
   category,
 }: RecordListContainerPropsType) {
   const { recordListData, isLoading, error } = useRecord(category);
+  const [isShowLoading, setIsShowLoading] = useState(false);
 
-  if (isLoading || error || !recordListData) {
-    return (
-      <ListBackGround>
-        <Loading />
-      </ListBackGround>
-    );
-  }
+  useEffect(() => {
+    if (isLoading || error || !recordListData) {
+      setIsShowLoading(true);
+    }
+    setIsShowLoading(false);
+  }, [error, isLoading, recordListData]);
+
   return (
     <ListBackGround>
-      <ListContainer>
-        {recordListData.map(item => (
-          <RecordCard title={item.title} key={item.id} id={item.id} />
-        ))}
-      </ListContainer>
+      {isShowLoading ? (
+        <Loading />
+      ) : (
+        <ListContainer>
+          {recordListData?.map(item => (
+            <RecordCard title={item.title} key={item.id} id={item.id} />
+          ))}
+        </ListContainer>
+      )}
     </ListBackGround>
   );
 }

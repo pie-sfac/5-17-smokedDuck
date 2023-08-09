@@ -4,10 +4,11 @@ import { updateTemplateAPI } from '@/apis/Template';
 import UpdateTemplateContent from '@/components/UpdateTemplate/UpdateTemplateContent';
 import UpdateTemplateFooter from '@/components/UpdateTemplate/UpdateTemplateFooter';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
-import useRecord from '@/hooks/useRecord';
 import { Questions, StringQuestionTypes } from '@/types/question.interface';
 import { recordDetailType } from '@/types/recordDetail.interface';
 import { UpdateTemplateType } from '@/types/template.interface';
+import { templateNotificationText } from '@/utils/constants/template';
+import { useRecord } from '@/utils/recordData';
 
 type UpdateTemplatePropType = {
   id: number;
@@ -38,17 +39,17 @@ export default function UpdateTemplate({
   });
   const [caption, setCaption] = useState({
     isduplicate: false,
-    isMaximun: false,
+    isMaximum: false,
     errorMessage: '',
   });
-  //벨리데이션 검증
+
   const checkValidation = useCallback(() => {
     let isValid = true;
     let errorMessage = '';
 
     if (currTemplateSubHeader.title.length === 0) {
       isValid = false;
-      errorMessage = '템플릿 제목을 입력해주세요.';
+      errorMessage = templateNotificationText.untitledTemplate;
     }
 
     totalList.forEach(listItem => {
@@ -57,17 +58,16 @@ export default function UpdateTemplate({
         listItem.title.length === 0
       ) {
         isValid = false;
-        errorMessage = `${listItem.type} 문항의 제목을 입력해주세요.`;
+        errorMessage = `${listItem.type} ${templateNotificationText.untitledQuestion}`;
       }
       if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
         isValid = false;
-        errorMessage = '선택형 문항의 보기가 존재하지 않습니다.';
+        errorMessage = templateNotificationText.noOptions;
       } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
         const set = new Set(listItem.options);
         if (set.size !== listItem.options?.length) {
           isValid = false;
-          errorMessage =
-            '작성하신 선택형 문항의 보기 중 중복값이 존재합니다. 중복을 수정해주세요.';
+          errorMessage = templateNotificationText.duplicateOptions;
         }
       }
     });
@@ -94,11 +94,10 @@ export default function UpdateTemplate({
     []
   );
 
-  //저장버튼 누를때 PUT 요청
   const handleClickedSaveButton = async (templateId?: number) => {
     const isRight = checkValidation();
     if (!isRight) return;
-    //total리스트의 order값과 동기화
+
     const updateList = syncOrder(updateQuestions, totalList);
     const addList = syncOrder(addQuestions, totalList);
     const updatedTemplateContent: UpdateTemplateType = {
@@ -108,6 +107,7 @@ export default function UpdateTemplate({
       addQuestions: addList,
       deleteIds,
     };
+
     if (templateId) {
       await updateTemplateAPI(templateId, updatedTemplateContent);
     }
@@ -124,11 +124,10 @@ export default function UpdateTemplate({
     }
   };
 
-  //문항 박스들 클릭하면 questionList에 담는함수
   const questionsListHandler = useCallback(
     (type: StringQuestionTypes, tagName: string) => {
       setCaption({
-        isMaximun: false,
+        isMaximum: false,
         isduplicate: false,
         errorMessage: '',
       });
@@ -145,7 +144,6 @@ export default function UpdateTemplate({
       const newOrder =
         totalList.length === 0 ? 1 : totalList[totalList.length - 1].order + 1;
 
-      //전문문항 중복되는지 확인
       if (
         type === 'PAIN_HSTRY' ||
         type === 'PAIN_INTV' ||
@@ -155,7 +153,7 @@ export default function UpdateTemplate({
           setCaption({
             ...caption,
             isduplicate: true,
-            errorMessage: '전문 문항은 중복으로 추가할 수 없습니다.',
+            errorMessage: templateNotificationText.noDuplicateSpecialQuestions,
           });
           return;
         }
@@ -163,8 +161,8 @@ export default function UpdateTemplate({
       if (totalList.length > 29) {
         setCaption({
           ...caption,
-          isMaximun: true,
-          errorMessage: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
+          isMaximum: true,
+          errorMessage: templateNotificationText.limitedNumberOfQuestions,
         });
         return;
       }
@@ -188,7 +186,6 @@ export default function UpdateTemplate({
     [addQuestions, caption, totalList, updateQuestions]
   );
 
-  //기존의 항목들 수정하는 함수
   const existQuestionContentHandler = useCallback(
     (order: number, valueKey: string, value: string | string[] | boolean) => {
       const currentUpdatedQuestion = updateQuestions.map(question =>
@@ -205,7 +202,6 @@ export default function UpdateTemplate({
     [addQuestions, updateQuestions]
   );
 
-  //새로운 항목을 수정하는 함수
   const newQuestionContentHandler = useCallback(
     (order: number, valueKey: string, value: string | string[] | boolean) => {
       if (addQuestions.length !== 0) {
@@ -225,7 +221,6 @@ export default function UpdateTemplate({
     [addQuestions, updateQuestions]
   );
 
-  //항목 삭제
   const questionDeleteHandler = useCallback(
     (order: number, isNew: boolean) => {
       const targetQuestion = totalList.find(item => item.order === order);
@@ -250,7 +245,6 @@ export default function UpdateTemplate({
     [addQuestions, deleteIds, totalList, updateQuestions]
   );
 
-  //항목 이동
   const questionMoveHandler = useCallback(
     (targetOrder: number, direction: string) => {
       if (direction === 'up' && targetOrder === 1) {
@@ -297,6 +291,7 @@ export default function UpdateTemplate({
 
     [addQuestions, syncOrder, totalList, updateQuestions]
   );
+
   return (
     <>
       <UpdateTemplateTitle id={id} isEditing={true} />

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
 import UpdateQuestion from '@/components/UpdateTemplate/UpdateQuestion';
-import useRecordDetail from '@/hooks/useRecordDetail';
 import { Questions } from '@/types/question.interface';
+import { useRecordDetail } from '@/utils/recordData';
 
 type UpdateTemplateSelectedQuestionContainerProps = {
   newQuestionContentHandler: (
@@ -34,56 +34,57 @@ export default function UpdateTemplateSelectedQuestionContainer({
 }: UpdateTemplateSelectedQuestionContainerProps) {
   const { recordDetailData } = useRecordDetail(id);
   const [questionList, setQuestionList] = useState(totalQuestions);
+
   useEffect(() => {
     setQuestionList(totalQuestions);
   }, [totalQuestions]);
 
-  if (!recordDetailData) {
-    return (
-      <ContentContainer
-        style={{
-          backgroundColor: 'none',
-        }}
-      >
-        <Loading />
-      </ContentContainer>
-    );
-  }
-
   return (
-    <ContentContainer
-      style={{
-        backgroundColor:
-          recordDetailData.questions.length !== 0
-            ? 'rgba(235, 241, 255, 0.26)'
-            : 'none',
-      }}
-    >
-      {questionList.length === 0 ? (
-        <EmptyQuestionContainer>
-          <img
-            src={EmptyQuestion}
-            alt="문항 없음 이미지"
-            style={{ marginBottom: '0.7rem' }}
-          />
-          문항이 없습니다.
-        </EmptyQuestionContainer>
+    <>
+      {!recordDetailData ? (
+        <ContentContainer
+          style={{
+            backgroundColor: 'none',
+          }}
+        >
+          <Loading />
+        </ContentContainer>
       ) : (
-        questionList.map(question => (
-          <UpdateQuestion
-            key={question.id}
-            question={question}
-            onChange={
-              question.tagName
-                ? newQuestionContentHandler
-                : existQuestionContentHandler
-            }
-            handleDelete={handleDelete}
-            handleMove={handleMove}
-          />
-        ))
+        <ContentContainer
+          style={{
+            backgroundColor:
+              recordDetailData.questions.length !== 0
+                ? 'rgba(235, 241, 255, 0.26)'
+                : 'none',
+          }}
+        >
+          {questionList.length === 0 ? (
+            <EmptyQuestionContainer>
+              <img
+                src={EmptyQuestion}
+                alt="문항 없음 이미지"
+                style={{ marginBottom: '0.7rem' }}
+              />
+              문항이 없습니다.
+            </EmptyQuestionContainer>
+          ) : (
+            questionList.map(question => (
+              <UpdateQuestion
+                key={question.id}
+                question={question}
+                onChange={
+                  question.tagName
+                    ? newQuestionContentHandler
+                    : existQuestionContentHandler
+                }
+                handleDelete={handleDelete}
+                handleMove={handleMove}
+              />
+            ))
+          )}
+        </ContentContainer>
       )}
-    </ContentContainer>
+    </>
   );
 }
 
