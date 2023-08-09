@@ -6,13 +6,13 @@ import useCategory from '@/utils/categoryData';
 
 import DeleteModalContainer from '../Common/DeleteModal';
 
-type categoryListType = {
+export type categoryListType = {
   id: number;
   title: string;
 };
 
 type CategoryListContentsProps = {
-  addedCategory: categoryListType[];
+  addedCategory?: categoryListType[];
   isDeleteMode: boolean;
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleUpdateCategory: (categoryId: number, updateText: string) => void;
@@ -106,6 +106,7 @@ export default function CategoryListContents({
                   onBlur={e => handleUpdateBlur(item.id, e.target.value)}
                   maxLength={15}
                   ref={
+                    addedCategory &&
                     item.id === addedCategory[addedCategory.length - 1].id
                       ? newCategoryInputRef
                       : null
