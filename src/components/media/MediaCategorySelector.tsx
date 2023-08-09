@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 
-import useCategory from '@/hooks/useCategory';
-import useMediaCards from '@/hooks/useMediaCards';
+import useCategory from '@/utils/categoryData';
+import useMediaList from '@/utils/mediaListData';
 
 type MediaCategorySelectorPropsType = {
   selectedCategory: string;
@@ -14,7 +14,7 @@ export default function MediaCategorySelector({
   categoryChange,
 }: MediaCategorySelectorPropsType) {
   const { categoryListData, isLoading, error } = useCategory();
-  const { totalLinksCount } = useMediaCards();
+  const { totalLinksCount } = useMediaList();
   const navigate = useNavigate();
 
   if (isLoading || error || !categoryListData) {

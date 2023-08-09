@@ -5,6 +5,7 @@ import { createTemplate } from '@/apis/Template';
 import useRecord from '@/hooks/useRecord';
 import { MainContext } from '@/store';
 import { Questions } from '@/types/question.interface';
+import { templateNotificationText } from '@/utils/constants/template';
 
 import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';
@@ -28,12 +29,11 @@ export default function Template() {
 
   const { recordListData } = useRecord();
 
+  const [didConditionPassed, setDidConditionPassed] = useState<boolean>();
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
     title: selectedRecordCard ? selectedRecordCard.title : '',
     description: selectedRecordCard ? selectedRecordCard.description : '',
   });
-
-  const [didConditionPassed, setDidConditionPassed] = useState<boolean>();
 
   const setTitle = useCallback((type: string) => {
     switch (type) {
@@ -58,35 +58,40 @@ export default function Template() {
     }
   }, []);
 
-  const handleTemplateContent = (id: string, value: string | Questions[]) => {
-    templateContent &&
-      setTemplateContent({
-        ...templateContent,
-        [id]: value,
-      });
-  };
+  const handleTemplateContent = useCallback(
+    (id: string, value: string | Questions[]) => {
+      templateContent &&
+        setTemplateContent({
+          ...templateContent,
+          [id]: value,
+        });
+    },
+    [setTemplateContent, templateContent]
+  );
 
   const handleClickedSaveButton = useCallback(() => {
     if (templateContent?.title.length === 0) {
-      alert('템플릿 제목을 입력해주세요.');
+      alert(templateNotificationText.untitledTemplate);
       return;
     }
     questionList.forEach(question => {
       if (question.tagName === '기본' && question.title.length === 0) {
-        alert(`${setTitle(question.type)} 문항의 제목을 입력해주세요.`);
+        alert(
+          `${setTitle(question.type)} ${
+            templateNotificationText.untitledQuestion
+          }`
+        );
         setDidConditionPassed(false);
         return;
       }
       if (question.type === 'SELECT' && question.options?.length === 0) {
-        alert('선택형 문항의 보기가 존재하지 않습니다.');
+        alert(templateNotificationText.noOptions);
         setDidConditionPassed(false);
         return;
       } else if (question.type === 'SELECT' && question.options?.length !== 0) {
         const set = new Set(question.options);
         if (set.size !== question.options?.length) {
-          alert(
-            '작성하신 선택형 문항의 보기 중 중복값이 존재합니다. 중복을 수정해주세요.'
-          );
+          alert(templateNotificationText.duplicateOptions);
           setDidConditionPassed(false);
           return;
         }
