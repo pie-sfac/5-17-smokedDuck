@@ -11,6 +11,11 @@ export type categoryListType = {
   title: string;
 };
 
+export type categoryListType = {
+  id: number;
+  title: string;
+};
+
 type CategoryListContentsProps = {
   addedCategory?: categoryListType[];
   isDeleteMode: boolean;
