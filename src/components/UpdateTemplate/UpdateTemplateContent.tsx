@@ -13,11 +13,12 @@ type TemplateContentProps = {
   >;
   totalList: Questions[];
   id: number;
-  questionsListHandler: (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => void;
+  caption: {
+    isduplicate: boolean;
+    isMaximun: boolean;
+    errorMessage: string;
+  };
+  questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
   newQuestionContentHandler: (
     order: number,
     valueKey: string,
@@ -41,16 +42,12 @@ export default function UpdateTemplateContent({
   id,
   handleDelete,
   handleMove,
+  caption,
 }: TemplateContentProps) {
   const { recordDetailData } = useRecordDetail(id);
   if (!recordDetailData) {
     return <Loading />;
   }
-  const totalOrder =
-    recordDetailData.questions.length !== 0
-      ? recordDetailData.questions[recordDetailData.questions.length - 1].order
-      : 1;
-
   return (
     <div>
       <>
@@ -62,8 +59,9 @@ export default function UpdateTemplateContent({
           setCurrTemplateSubHeader={setCurrTemplateSubHeader}
         />
         <UpdateTemplateQuestionSelections
-          totalOrder={totalOrder}
           questionsListHandler={questionsListHandler}
+          category={recordDetailData.category}
+          caption={caption}
         />
         <UpdateTemplateSelectedQuestionContainer
           newQuestionContentHandler={newQuestionContentHandler}

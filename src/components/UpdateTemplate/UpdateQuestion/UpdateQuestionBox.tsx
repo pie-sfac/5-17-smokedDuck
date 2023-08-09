@@ -9,12 +9,7 @@ type QuestionBoxProps = {
   tagName: string;
   margin?: string;
   type: 'TEXT' | 'MEDIA' | 'SELECT' | 'PAIN_HSTRY' | 'CONDITION' | 'PAIN_INTV';
-  totalOrder?: number;
-  questionsListHandler: (
-    type: StringQuestionTypes,
-    tagName: string,
-    totalOrder: number
-  ) => void;
+  questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
 };
 export default function QuestionBox({
   image,
@@ -23,7 +18,6 @@ export default function QuestionBox({
   tagName,
   margin,
   type,
-  totalOrder,
   questionsListHandler,
 }: QuestionBoxProps) {
   return (
@@ -32,9 +26,7 @@ export default function QuestionBox({
         marginRight: margin,
       }}
       onClick={() => {
-        if (totalOrder) {
-          questionsListHandler(type, tagName, totalOrder);
-        }
+        questionsListHandler(type, tagName);
       }}
     >
       <TagNameContainer>
