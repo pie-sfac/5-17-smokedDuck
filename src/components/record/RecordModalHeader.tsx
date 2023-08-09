@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 
+import Loading from '@/components/Common/Loading';
 import useRecordDetail from '@/hooks/useRecordDetail';
-
-import Loading from '../Common/Loading';
 
 type RecordModalHeaderPropType = {
   id: number;
