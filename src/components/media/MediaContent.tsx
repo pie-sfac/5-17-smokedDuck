@@ -43,8 +43,9 @@ const MediaDiv = styled('div')`
   padding-left: 16px;
 `;
 
-const MediaTitle = styled('p')`
+const MediaTitle = styled('h4')`
   width: 240px;
+  font-weight: 700;
   margin-bottom: 16px;
   white-space: nowrap;
   overflow: hidden;
