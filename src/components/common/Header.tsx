@@ -17,6 +17,8 @@ export default function Header() {
       if (item.id === 2 || item.id === 3) {
         navigate(`${item.name}`);
         setClickedIdNum(item.id);
+      } else {
+        navigate(`404`);
       }
     },
     [navigate]

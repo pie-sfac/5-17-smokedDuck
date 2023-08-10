@@ -137,7 +137,9 @@ export default function Template() {
         const newRecordListData = [
           ...(recordListData || []),
           {
-            id: recordListData
+            id: !recordListData
+              ? 1
+              : recordListData.length !== 0
               ? recordListData[recordListData?.length - 1].id + 1
               : 1,
             category: newTemplateContent.category,

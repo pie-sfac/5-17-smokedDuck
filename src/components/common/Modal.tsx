@@ -31,7 +31,6 @@ export default function Modal({
 }: ModalProps) {
   const { setSelectedRecordCard, setSelectedTemplateTitle, setQuestionList } =
     useContext(MainContext);
-
   const modalContainerStyle = useMemo(
     () => ({
       width,
@@ -49,8 +48,7 @@ export default function Modal({
       e.stopPropagation();
       if (e.target !== e.currentTarget) return;
       if (showConfirmationAlert) {
-        const shouldClose = window.confirm('정말로 나가시겠습니까?');
-        if (!shouldClose) {
+        if (!window.confirm('정말 나가시겠습니까?')) {
           return;
         }
       }
@@ -60,11 +58,11 @@ export default function Modal({
       setSelectedRecordCard(undefined);
     },
     [
+      showConfirmationAlert,
       setIsOpen,
-      setSelectedRecordCard,
       setSelectedTemplateTitle,
       setQuestionList,
-      showConfirmationAlert,
+      setSelectedRecordCard,
     ]
   );
 
@@ -84,7 +82,9 @@ export default function Modal({
               e:
                 | React.MouseEvent<HTMLDivElement, MouseEvent>
                 | React.MouseEvent<HTMLButtonElement, MouseEvent>
-            ) => closeModal(e)}
+            ) => {
+              closeModal(e);
+            }}
           />
         </ModalCloseButton>
       </ModalContainer>

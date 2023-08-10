@@ -73,9 +73,6 @@ export default function CategoryListContents({
     setSelectedIds([]);
   }, [isDeleteMode, setIsDeleteMode, setSelectedIds]);
 
-  // if (isLoading || error || !categoryListData) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <>
       <CategoryListContentsContainer>
