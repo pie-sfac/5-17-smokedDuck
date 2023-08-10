@@ -34,36 +34,48 @@ export default function UpdateTemplate({
   );
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
   const [totalList, setTotalList] = useState<Questions[]>(updateQuestions);
+
   const checkValidation = useCallback(() => {
     let isValid = true;
-    let errorMessage = '';
+    const errorMessageArray: string[] = [];
 
     if (currTemplateSubHeader.title.length === 0) {
       isValid = false;
-      errorMessage = templateNotificationText.untitledTemplate;
+      errorMessageArray.push(templateNotificationText.untitledTemplate);
     }
 
     totalList.forEach(listItem => {
-      if (
-        (listItem.type === 'TEXT' || listItem.type === 'MEDIA') &&
-        listItem.title.length === 0
-      ) {
+      if (listItem.type === 'TEXT' && listItem.title.length === 0) {
         isValid = false;
-        errorMessage = `${listItem.type} ${templateNotificationText.untitledQuestion}`;
+        errorMessageArray.push(
+          `텍스트 ${templateNotificationText.untitledQuestion}`
+        );
+      }
+      if (listItem.type === 'MEDIA' && listItem.title.length === 0) {
+        isValid = false;
+        errorMessageArray.push(
+          `미디어 ${templateNotificationText.untitledQuestion}`
+        );
+      }
+      if (listItem.type === 'SELECT' && listItem.title.length === 0) {
+        isValid = false;
+        errorMessageArray.push(
+          `선택형 ${templateNotificationText.untitledQuestion}`
+        );
       }
       if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
         isValid = false;
-        errorMessage = templateNotificationText.noOptions;
+        errorMessageArray.push(templateNotificationText.noOptions);
       } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
         const set = new Set(listItem.options);
         if (set.size !== listItem.options?.length) {
           isValid = false;
-          errorMessage = templateNotificationText.duplicateOptions;
+          errorMessageArray.push(templateNotificationText.duplicateOptions);
         }
       }
     });
 
-    return { isValid, errorMessage };
+    return { isValid, errorMessageArray };
   }, [currTemplateSubHeader.title.length, totalList]);
 
   const syncOrder = useCallback(
@@ -81,18 +93,19 @@ export default function UpdateTemplate({
   );
 
   const handleClickedSaveButton = async (templateId?: number) => {
-    const { isValid, errorMessage } = checkValidation();
+    const { isValid, errorMessageArray } = checkValidation();
     if (!isValid) {
-      toast({
-        title: errorMessage,
-        status: 'error',
-        isClosable: true,
-        duration: 1200,
-        containerStyle: {
-          marginBottom: '20px',
-        },
+      errorMessageArray.forEach(msg => {
+        toast({
+          title: msg,
+          status: 'error',
+          isClosable: true,
+          duration: 1200,
+          containerStyle: {
+            marginBottom: '20px',
+          },
+        });
       });
-
       return;
     }
 
