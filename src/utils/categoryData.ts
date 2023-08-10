@@ -8,7 +8,14 @@ export default function useCategory() {
     data: categoryList,
     mutate,
     error,
-  } = useSWR<CategoryListResponse, Error>('/getCategory', getCategoryList);
+  } = useSWR<CategoryListResponse, Error>('/getCategory', getCategoryList, {
+    onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+      if (retryCount >= 10) return;
+      setTimeout(() => {
+        revalidate({ retryCount });
+      }, 500);
+    },
+  });
 
   return {
     categoryListData: categoryList,
