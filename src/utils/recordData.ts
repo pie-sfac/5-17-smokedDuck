@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-import { recordDetailFetcher, recordListFetcher } from '@/apis/record';
+import { recordDetailFetcher, recordListFetcher } from '@/apis/Record';
 import { recordDetailType } from '@/types/recordDetail.interface';
 import { recordListType } from '@/types/recordList.interface';
 
@@ -9,7 +9,13 @@ export function useRecord(category?: string) {
     data: recordList,
     mutate,
     error,
-  } = useSWR<recordListType, Error>('record-templates', recordListFetcher);
+  } = useSWR<recordListType, Error>('record-templates', recordListFetcher, {
+    onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+      setTimeout(() => {
+        revalidate({ retryCount });
+      }, 50);
+    },
+  });
 
   const interviewCount = recordList?.filter(
     item => item.category === 'INTERVIEW'

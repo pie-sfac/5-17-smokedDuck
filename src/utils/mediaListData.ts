@@ -6,7 +6,14 @@ import { GetLinkListResponse } from '@/types/media.interface';
 export default function useMediaList(category?: string) {
   const { data: mediaList, error } = useSWR<GetLinkListResponse, Error>(
     LINK_URL,
-    getLinkList
+    getLinkList,
+    {
+      onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+        setTimeout(() => {
+          revalidate({ retryCount });
+        }, 50);
+      },
+    }
   );
 
   return {
