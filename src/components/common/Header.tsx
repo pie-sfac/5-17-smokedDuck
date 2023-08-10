@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { onSlientRefresh } from '@/apis/Login';
 import Logo from '@/assets/Logo.svg';
-import { category, userName } from '@/utils/constants/header';
+import { Category, categoryList, userName } from '@/utils/constants/header';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function Header() {
   const [clickedIdNum, setClickedIdNum] = useState<number>(2);
 
   const handlePageMove = useCallback(
-    (item: category) => {
+    (item: Category) => {
       if (item.id === 2 || item.id === 3) {
         navigate(`${item.name}`);
         setClickedIdNum(item.id);
@@ -37,7 +37,9 @@ export default function Header() {
   }, [navigate]);
 
   useEffect(() => {
-    const matchedCategory = category.find(item => '/' + item.name === pathname);
+    const matchedCategory = categoryList.find(
+      item => '/' + item.name === pathname
+    );
 
     if (matchedCategory) {
       setClickedIdNum(matchedCategory.id);
@@ -50,7 +52,7 @@ export default function Header() {
         <HeaderContainer>
           <img src={Logo} />
           <HeaderCategoryList>
-            {category.map(item => (
+            {categoryList.map(item => (
               <HeaderCategoryListItem
                 key={item.id}
                 onClick={() => handlePageMove(item)}
@@ -84,19 +86,16 @@ const HeaderContainer = styled.header`
 const HeaderCategoryList = styled.ul`
   display: flex;
   list-style: none;
-  padding: 0;
   .active {
     color: #2d62ea;
   }
 `;
 const HeaderCategoryListItem = styled.li`
-  padding: 0;
   margin-right: 56px;
   font-weight: 600;
   &:hover {
     color: #2d62ea;
   }
-
   cursor: pointer;
 `;
 

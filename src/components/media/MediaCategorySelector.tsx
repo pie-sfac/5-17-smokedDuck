@@ -13,13 +13,13 @@ export default function MediaCategorySelector({
   selectedCategory,
   categoryChange,
 }: MediaCategorySelectorProps) {
-  const { categoryListData, isLoading, error } = useCategory();
+  const { categoryListData } = useCategory();
   const { totalLinksCount } = useMediaList();
   const navigate = useNavigate();
 
-  if (isLoading || error || !categoryListData) {
-    return <LoadingContainer>Loading...</LoadingContainer>;
-  }
+  // if (isLoading || error || !categoryListData) {
+  //   return <LoadingContainer>Loading...</LoadingContainer>;
+  // }
 
   return (
     <MediaCategorySelectorContainer>
@@ -30,7 +30,7 @@ export default function MediaCategorySelector({
         >
           {`전체(${totalLinksCount})`}
         </CategoryItem>
-        {categoryListData.categories.map((item, index) => {
+        {categoryListData?.categories.map((item, index) => {
           return (
             <CategoryItem
               onClick={() => categoryChange(item.title)}
@@ -54,7 +54,6 @@ const MediaCategorySelectorContainer = styled('div')`
 const CategoryTitle = styled('ul')`
   display: flex;
   margin-top: 3rem;
-
   list-style: none;
   cursor: pointer;
 `;
@@ -73,18 +72,11 @@ const CategoryItem = styled('li')`
 const EditButton = styled('button')`
   position: absolute;
   right: 0;
-  top: 0;
+  top: 0.5rem;
   width: 64px;
   height: 32px;
   text-align: center;
-  padding-top: 4px;
+  padding-top: 2px;
   border: 1px solid #e7e7e7;
   border-radius: 8px;
-`;
-
-const LoadingContainer = styled('div')`
-  margin-top: 3rem;
-  padding: 0 1rem;
-  height: 2rem;
-  font-size: 18px;
 `;

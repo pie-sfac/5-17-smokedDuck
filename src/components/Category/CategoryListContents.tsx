@@ -28,7 +28,7 @@ export default function CategoryListContents({
   handleCheckboxChange,
   newCategoryInputRef,
 }: CategoryListContentsProps) {
-  const { categoryListData, isLoading, error } = useCategory();
+  const { categoryListData } = useCategory();
   const { selectedIds, setSelectedIds } = useContext(MainContext);
   const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -73,14 +73,14 @@ export default function CategoryListContents({
     setSelectedIds([]);
   }, [isDeleteMode, setIsDeleteMode, setSelectedIds]);
 
-  if (isLoading || error || !categoryListData) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading || error || !categoryListData) {
+  //   return <div>Loading...</div>;
+  // }
   return (
     <>
       <CategoryListContentsContainer>
         {isDeleteMode
-          ? categoryListData.categories.map((item, index) => {
+          ? categoryListData?.categories.map((item, index) => {
               return (
                 <CategoryListContent
                   key={`${item.id}-${index}`}
@@ -98,7 +98,7 @@ export default function CategoryListContents({
                 </CategoryListContent>
               );
             })
-          : categoryListData.categories.map((item, index) => (
+          : categoryListData?.categories.map((item, index) => (
               <CategoryListInputWrapper key={`${item.id}-${index}`}>
                 <CategoryListInput
                   value={item.title}

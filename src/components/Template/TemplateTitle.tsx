@@ -15,7 +15,8 @@ export default function TemplateTitle() {
 }
 
 const ModalTitle = styled('div')`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
   margin: 2rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid #e7e7e7;
