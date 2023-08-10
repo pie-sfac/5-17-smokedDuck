@@ -16,6 +16,7 @@ export default function RecordContents() {
       style={{
         backgroundColor:
           recordQuestions?.length !== 0 ? 'rgba(235, 241, 255, 0.26)' : 'none',
+        height: '40rem',
       }}
     >
       {isLoading || (!recordQuestions && <Loading />)}

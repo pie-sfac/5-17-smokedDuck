@@ -223,7 +223,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           disabled={!isFormComplete || isRequiredFieldsEmpty}
           onClick={handleSubmit}
         >
-          완료
+          저장
         </StyledButton>
       </ButtonPlace>
     </Container>
@@ -238,7 +238,7 @@ const Container = styled.div`
 `;
 
 const CreateHeader = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-size: 14px;
 `;
 
@@ -246,12 +246,12 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 `;
 
 const InputTitle = styled.h4`
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 6px;
+  margin-top: 6px;
 `;
 
 const DescriptionBox = styled.div`
@@ -260,8 +260,8 @@ const DescriptionBox = styled.div`
 
 const CharacterCount = styled.p`
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 6px;
+  right: 6px;
   font-size: 12px;
   color: #777;
 `;
@@ -275,9 +275,11 @@ const ButtonPlace = styled.div`
 const StyledButton = styled(Button)`
   border: none;
   border-radius: 70;
-  width: 40px;
-  font-size: 12px;
-  height: 24px;
+  width: 60px;
+  font-size: 1rem;
+  height: 40px;
+  padding: 0 16px;
+
   background-color: ${props => (props.disabled ? '#f4f4f4' : '#2D62EA')};
   color: ${props => (props.disabled ? '#aeaeae' : '#ffffff')};
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};

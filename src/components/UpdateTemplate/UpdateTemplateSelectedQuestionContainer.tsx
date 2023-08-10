@@ -103,7 +103,7 @@ const ContentContainer = styled('div')`
     display: none;
   }
   @media screen and (min-height: 800px) {
-    height: 18rem;
+    height: 28rem;
     margin-bottom: 1rem;
   }
 `;
