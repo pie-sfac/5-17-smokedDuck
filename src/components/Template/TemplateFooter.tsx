@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
-import { MainContext } from '@/store';
+import { QueustionContext } from '@/store/QuestionProvider';
 
 type TemplateFooterProps = {
   handleClickedSaveButton: () => void;
@@ -11,7 +11,7 @@ type TemplateFooterProps = {
 export default function TemplateFooter({
   handleClickedSaveButton,
 }: TemplateFooterProps) {
-  const { questionList } = useContext(MainContext);
+  const { questionList } = useContext(QueustionContext);
 
   return (
     <FooterContainer>

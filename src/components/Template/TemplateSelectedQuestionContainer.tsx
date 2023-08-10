@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useCallback, useContext, useEffect } from 'react';
 
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
-import { MainContext } from '@/store';
+import { QueustionContext } from '@/store/QuestionProvider';
 import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import Question from './Question';
@@ -17,7 +17,7 @@ type TemplateSelectedQuestionContainerProps = {
 export default function TemplateSelectedQuestionContainer({
   setIsCheckedSpecialQuestions,
 }: TemplateSelectedQuestionContainerProps) {
-  const { questionList, setQuestionList } = useContext(MainContext);
+  const { questionList, setQuestionList } = useContext(QueustionContext);
 
   const handleQuestionContent = useCallback(
     (

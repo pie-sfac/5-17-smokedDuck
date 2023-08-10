@@ -5,11 +5,12 @@ import Modal from '@/components/Common/Modal';
 import RecordListContainer from '@/components/Record/RecordListContainer';
 import TypeSelector from '@/components/Record/RecordTypeSelector';
 import Template from '@/components/Template';
-import { MainContext } from '@/store';
+import { RecordContext } from '@/store/RecordProvider';
+import { TemplateContext } from '@/store/TemplateProvider';
 
 export default function Record() {
-  const { recordModalOpen, setRecordModalState, selectedTemplateTitle } =
-    useContext(MainContext);
+  const { recordModalOpen, setRecordModalState } = useContext(RecordContext);
+  const { selectedTemplateTitle } = useContext(TemplateContext);
 
   const [templateCategory, setTemplateCategory] = useState('INTERVIEW');
   const [isSmallScreen] = useMediaQuery('(min-height: 800px)');

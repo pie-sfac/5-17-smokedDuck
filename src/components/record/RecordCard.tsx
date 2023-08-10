@@ -6,7 +6,7 @@ import { useContext, useState } from 'react';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordInfo from '@/components/Record/RecordInfo';
-import { MainContext } from '@/store';
+import { RecordContext } from '@/store/RecordProvider';
 
 import DeleteModal from '../Common/DeleteModal';
 
@@ -17,7 +17,7 @@ type RecordCardProps = {
 
 export default function RecordCard({ title, id }: RecordCardProps) {
   const [isSmallScreen] = useMediaQuery('(min-height: 800px)');
-  const { setSeletedRecordCardId, setIsRecordEdit } = useContext(MainContext);
+  const { setSeletedRecordCardId, setIsRecordEdit } = useContext(RecordContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);

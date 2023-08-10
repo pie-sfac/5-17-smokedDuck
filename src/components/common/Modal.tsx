@@ -4,12 +4,14 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
+  useContext,
   useMemo,
 } from 'react';
-import { useContext } from 'react';
 import { createPortal } from 'react-dom';
 
-import { MainContext } from '@/store';
+import { QueustionContext } from '@/store/QuestionProvider';
+import { RecordContext } from '@/store/RecordProvider';
+import { TemplateContext } from '@/store/TemplateProvider';
 
 type ModalProps = {
   width?: number;
@@ -26,8 +28,9 @@ export default function Modal({
   setIsOpen,
   children,
 }: ModalProps) {
-  const { setSelectedRecordCard, setSelectedTemplateTitle, setQuestionList } =
-    useContext(MainContext);
+  const { setSelectedRecordCard } = useContext(RecordContext);
+  const { setSelectedTemplateTitle } = useContext(TemplateContext);
+  const { setQuestionList } = useContext(QueustionContext);
   const modalContainerStyle = useMemo(
     () => ({
       width,

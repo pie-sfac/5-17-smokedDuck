@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
-import { MainContext } from '@/store';
+import { TemplateContext } from '@/store/TemplateProvider';
 
 export default function TemplateTitle() {
-  const { selectedTemplateTitle } = useContext(MainContext);
+  const { selectedTemplateTitle } = useContext(TemplateContext);
   return (
     <ModalTitle>
       {selectedTemplateTitle.length === 0
