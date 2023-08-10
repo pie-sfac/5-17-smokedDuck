@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 
 import { updateTemplateAPI } from '@/apis/Template';
@@ -20,7 +21,7 @@ export default function UpdateTemplate({
   recordDetailData,
 }: UpdateTemplateProp) {
   const { recordListData, mutate: mutateTitle } = useRecord();
-
+  const toast = useToast();
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
     title: recordDetailData.title,
     description: recordDetailData.description
@@ -33,16 +34,6 @@ export default function UpdateTemplate({
   );
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
   const [totalList, setTotalList] = useState<Questions[]>(updateQuestions);
-  const [validation, setValidation] = useState({
-    isValidate: false,
-    errorMessage: '',
-  });
-  const [caption, setCaption] = useState({
-    isduplicate: false,
-    isMaximum: false,
-    errorMessage: '',
-  });
-
   const checkValidation = useCallback(() => {
     let isValid = true;
     let errorMessage = '';
@@ -72,12 +63,7 @@ export default function UpdateTemplate({
       }
     });
 
-    setValidation({
-      isValidate: isValid,
-      errorMessage,
-    });
-
-    return isValid;
+    return { isValid, errorMessage };
   }, [currTemplateSubHeader.title.length, totalList]);
 
   const syncOrder = useCallback(
@@ -95,8 +81,20 @@ export default function UpdateTemplate({
   );
 
   const handleClickedSaveButton = async (templateId?: number) => {
-    const isRight = checkValidation();
-    if (!isRight) return;
+    const { isValid, errorMessage } = checkValidation();
+    if (!isValid) {
+      toast({
+        title: errorMessage,
+        status: 'error',
+        isClosable: true,
+        duration: 1200,
+        containerStyle: {
+          marginBottom: '20px',
+        },
+      });
+
+      return;
+    }
 
     const updateList = syncOrder(updateQuestions, totalList);
     const addList = syncOrder(addQuestions, totalList);
@@ -126,12 +124,6 @@ export default function UpdateTemplate({
 
   const questionsListHandler = useCallback(
     (type: StringQuestionTypes, tagName: string) => {
-      setCaption({
-        isMaximum: false,
-        isduplicate: false,
-        errorMessage: '',
-      });
-
       const newQuestionId =
         updateQuestions.length === 0
           ? addQuestions.length === 0
@@ -150,19 +142,28 @@ export default function UpdateTemplate({
         type === 'CONDITION'
       ) {
         if (totalList.find(listItem => listItem.type === type)) {
-          setCaption({
-            ...caption,
-            isduplicate: true,
-            errorMessage: templateNotificationText.noDuplicateSpecialQuestions,
+          toast({
+            title: templateNotificationText.noDuplicateSpecialQuestions,
+            status: 'error',
+            isClosable: true,
+            duration: 1200,
+            containerStyle: {
+              marginBottom: '20px',
+            },
           });
           return;
         }
       }
+
       if (totalList.length > 29) {
-        setCaption({
-          ...caption,
-          isMaximum: true,
-          errorMessage: templateNotificationText.limitedNumberOfQuestions,
+        toast({
+          title: templateNotificationText.limitedNumberOfQuestions,
+          status: 'error',
+          isClosable: true,
+          duration: 1200,
+          containerStyle: {
+            marginBottom: '20px',
+          },
         });
         return;
       }
@@ -183,7 +184,7 @@ export default function UpdateTemplate({
       setAddQuestions([...addQuestions, newQuestion]);
       setTotalList([...totalList, newQuestion]);
     },
-    [addQuestions, caption, totalList, updateQuestions]
+    [addQuestions, toast, totalList, updateQuestions]
   );
 
   const existQuestionContentHandler = useCallback(
@@ -304,11 +305,9 @@ export default function UpdateTemplate({
         handleDelete={questionDeleteHandler}
         handleMove={questionMoveHandler}
         totalList={totalList}
-        caption={caption}
       />
       <UpdateTemplateFooter
         handleClickedSaveButton={handleClickedSaveButton}
-        validation={validation}
         id={id}
       />
     </>

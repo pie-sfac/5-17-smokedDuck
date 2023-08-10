@@ -13,12 +13,6 @@ type TemplateContentProps = {
   >;
   totalList: Questions[];
   id: number;
-  caption: {
-    isduplicate: boolean;
-    isMaximum: boolean;
-    errorMessage: string;
-  };
-
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
   newQuestionContentHandler: (
     order: number,
@@ -43,7 +37,6 @@ export default function UpdateTemplateContent({
   id,
   handleDelete,
   handleMove,
-  caption,
 }: TemplateContentProps) {
   const { recordDetailData } = useRecordDetail(id);
 
@@ -63,7 +56,6 @@ export default function UpdateTemplateContent({
           <UpdateTemplateQuestionSelections
             questionsListHandler={questionsListHandler}
             category={recordDetailData.category}
-            caption={caption}
           />
           <UpdateTemplateSelectedQuestionContainer
             newQuestionContentHandler={newQuestionContentHandler}
