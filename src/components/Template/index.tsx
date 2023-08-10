@@ -74,6 +74,7 @@ export default function Template() {
         containerStyle: {
           marginBottom: '20px',
         },
+        duration: 1200,
       });
       return;
     }
@@ -88,6 +89,7 @@ export default function Template() {
           containerStyle: {
             marginBottom: '20px',
           },
+          duration: 1200,
         });
         setDidConditionPassed(false);
         return;
@@ -100,6 +102,7 @@ export default function Template() {
           containerStyle: {
             marginBottom: '20px',
           },
+          duration: 1200,
         });
         setDidConditionPassed(false);
         return;
@@ -113,6 +116,7 @@ export default function Template() {
             containerStyle: {
               marginBottom: '20px',
             },
+            duration: 1200,
           });
           setDidConditionPassed(false);
           return;
