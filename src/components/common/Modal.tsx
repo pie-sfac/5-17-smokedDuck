@@ -112,8 +112,8 @@ const ModalTitle = styled('div')`
 const ModalCloseButton = styled('button')`
   font-size: 24px;
   position: fixed;
-  top: 4%;
-  right: 3%;
+  top: 1.8rem;
+  right: 1.8rem;
   margin: 4px;
   z-index: 999;
 `;
