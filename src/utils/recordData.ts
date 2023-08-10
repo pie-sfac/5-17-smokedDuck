@@ -14,7 +14,7 @@ export function useRecord(category?: string) {
       if (retryCount >= 10) return;
       setTimeout(() => {
         revalidate({ retryCount });
-      }, 50);
+      }, 500);
     },
   });
 
