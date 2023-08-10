@@ -24,7 +24,7 @@ export default function RecordListContainer({
 
   return (
     <ListBackGround>
-      {isShowLoading ? (
+      {!recordListData ? (
         <Loading />
       ) : (
         <ListContainer>
@@ -47,8 +47,7 @@ const ListContainer = styled.div`
   padding: 5px;
   box-sizing: content-box;
   &::-webkit-scrollbar {
-    background-color: none;
-    width: 0.5rem;
+    display: none;
   }
   @media screen and (max-height: 965px) {
     padding: 3px;

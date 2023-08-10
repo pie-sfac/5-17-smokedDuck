@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useCallback, useState } from 'react';
+import { AiOutlineEye } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 import { requestLogin } from '@/apis/Login';
 import Logo from '@/assets/Logo.svg';
-import VisibilityOn from '@/assets/VisibilityOn.svg';
 
 interface StyledPasswordIconProps {
   password: string;
@@ -90,14 +90,13 @@ export default function LoginForm() {
             handleButtonDisabled();
           }}
         />
-        <StyledPasswordIcon
-          src={VisibilityOn}
-          alt=""
-          password={password}
-          onClick={() => {
-            setShowPassword(prevShowPassword => !prevShowPassword);
-          }}
-        />
+        <StyledPasswordIcon password={password}>
+          <AiOutlineEye
+            onClick={() => {
+              setShowPassword(prevShowPassword => !prevShowPassword);
+            }}
+          />
+        </StyledPasswordIcon>
       </StyledDivInput>
       <StyledFind>
         <span onClick={() => alert('아이디 찾기 페이지입니다.')}>
@@ -128,8 +127,8 @@ const StyledLoginForm = styled.form`
 `;
 
 const StyledImg = styled.img`
-  width: 77px;
-  height: 35px;
+  width: 78px;
+  height: 36px;
   margin-bottom: 48px;
 `;
 
@@ -161,12 +160,11 @@ const StyledDivInput = styled.div`
   position: relative;
 `;
 
-const StyledPasswordIcon = styled.img<StyledPasswordIconProps>`
+const StyledPasswordIcon = styled.div<StyledPasswordIconProps>`
   position: absolute;
   top: 38px;
   right: 8px;
-  width: 24px;
-  height: 24px;
+  font-size: 24px;
   cursor: pointer;
   display: ${props => (props.password.length !== 0 ? 'block' : 'none')};
 `;

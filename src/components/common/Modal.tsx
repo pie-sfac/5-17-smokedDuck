@@ -8,6 +8,7 @@ import {
 } from 'react';
 import { useContext } from 'react';
 import { createPortal } from 'react-dom';
+import { FiX } from 'react-icons/fi';
 
 import { MainContext } from '@/store';
 
@@ -58,7 +59,7 @@ export default function Modal({
   );
 
   return createPortal(
-    <BackgroundDim onClick={e => closeModal(e)}>
+    <BackgroundDim>
       <ModalContainer
         style={{
           ...modalContainerStyle,
@@ -67,7 +68,15 @@ export default function Modal({
       >
         {title && <ModalTitle>{title}</ModalTitle>}
         {children}
-        <ModalCloseButton onClick={e => closeModal(e)}>X</ModalCloseButton>
+        <ModalCloseButton>
+          <FiX
+            onClick={(
+              e:
+                | React.MouseEvent<HTMLDivElement, MouseEvent>
+                | React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => closeModal(e)}
+          />
+        </ModalCloseButton>
       </ModalContainer>
     </BackgroundDim>,
     document.body
@@ -93,16 +102,18 @@ const ModalContainer = styled('div')`
 `;
 
 const ModalTitle = styled('div')`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
   margin: 2rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid #e7e7e7;
 `;
 
 const ModalCloseButton = styled('button')`
-  font-size: 18px;
+  font-size: 24px;
   position: fixed;
-  top: 2%;
-  left: 95%;
-  margin: 3px;
+  top: 4%;
+  right: 3%;
+  margin: 4px;
+  z-index: 999;
 `;

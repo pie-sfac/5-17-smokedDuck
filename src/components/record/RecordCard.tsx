@@ -1,8 +1,8 @@
 import { useMediaQuery } from '@chakra-ui/media-query';
-import { SkeletonText } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
+import Textline from '@/assets/Textline.svg';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordInfo from '@/components/Record/RecordInfo';
@@ -31,9 +31,7 @@ export default function RecordCard({ title, id }: RecordCardProps) {
     <>
       <CardContainer onClick={cardClickHandler}>
         <CardTitle>{title}</CardTitle>
-        <LineArea>
-          <SkeletonText mt="8" noOfLines={4} spacing="4" skeletonHeight={2} />
-        </LineArea>
+        <img src={Textline} style={{ height: '7rem', marginLeft: '1rem' }} />
         <EditBox
           top={0}
           right={13}
@@ -49,7 +47,7 @@ export default function RecordCard({ title, id }: RecordCardProps) {
       {recordTemplateOpen && (
         <Modal
           setIsOpen={setRecordTemplateOpen}
-          height={isSmallScreen ? 720 : undefined}
+          height={isSmallScreen ? 900 : undefined}
         >
           <RecordInfo id={id} isEditing={false} />
         </Modal>
@@ -57,7 +55,7 @@ export default function RecordCard({ title, id }: RecordCardProps) {
       {editModalOpen && (
         <Modal
           setIsOpen={setEditModalOpen}
-          height={isSmallScreen ? 720 : undefined}
+          height={isSmallScreen ? 900 : undefined}
         >
           <RecordInfo id={id} isEditing={true} />
         </Modal>
@@ -73,11 +71,6 @@ export default function RecordCard({ title, id }: RecordCardProps) {
     </>
   );
 }
-
-const LineArea = styled.div`
-  width: 7rem;
-  height: 7rem;
-`;
 
 const CardContainer = styled.div`
   padding: 0.8rem;
@@ -103,4 +96,6 @@ const CardTitle = styled.h4`
   font-weight: 700;
   height: 74px;
   width: 10rem;
+  margin-top: 2rem;
+  margin-left: 1rem;
 `;
