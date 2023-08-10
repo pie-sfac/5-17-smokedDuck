@@ -56,6 +56,7 @@ export default function RecordCard({ title, id }: RecordCardProps) {
         <Modal
           setIsOpen={setEditModalOpen}
           height={isSmallScreen ? 900 : undefined}
+          showConfirmationAlert={true}
         >
           <RecordInfo id={id} isEditing={true} />
         </Modal>
