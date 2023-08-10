@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Modal from '@/components/Common/Modal';
 import LinkView from '@/components/Link/LinkView';
@@ -17,12 +17,10 @@ type MediaListContainerProp = {
 export default function MediaListContainer({
   selectedCategory,
 }: MediaListContainerProp) {
-  const { mediaList, isLoading, error } = useMediaList(selectedCategory);
+  const { mediaList } = useMediaList(selectedCategory);
   const [activeMediaCardInfo, setActiveMediaCardInfo] = useState<number>(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [isShowLoading, setIsShowLoading] = useState(false);
 
   const compareUpdateDate = (
     prevMedia: GetLinkDetailResponse,
@@ -33,22 +31,15 @@ export default function MediaListContainer({
     return nextUpdatedAt - prevUpdatedAt;
   };
 
-  useEffect(() => {
-    if (isLoading || error || !mediaList) {
-      setIsShowLoading(true);
-    }
-    return setIsShowLoading(false);
-  }, [error, isLoading, mediaList]);
-
   return (
     <ListBackGround>
+      {!mediaList && <Loading />}
       {mediaList && mediaList.length === 0 ? (
         <EmptyListBackground>
           <img src="src/assets/EmptyMedia.svg" />
         </EmptyListBackground>
       ) : (
         <ListContainer>
-          {!mediaList && <Loading />}
           {mediaList &&
             mediaList.sort(compareUpdateDate).map((item, index) => {
               return (

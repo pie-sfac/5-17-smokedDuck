@@ -64,7 +64,7 @@ export default function Header() {
           </HeaderCategoryList>
           <UserArea>
             <AvatarArea>
-              <Avatar src="https://bit.ly/broken-link" size="xs" />
+              <Avatar size="xs" />
             </AvatarArea>
             {userName}
             <PlanUser>플랜 이용중</PlanUser>

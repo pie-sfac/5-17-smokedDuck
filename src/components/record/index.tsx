@@ -36,6 +36,9 @@ export default function Record() {
               : undefined
           }
           setIsOpen={setRecordModalState}
+          showConfirmationAlert={
+            selectedTemplateTitle.length === 0 ? false : true
+          }
         >
           <Template />
         </Modal>

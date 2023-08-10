@@ -18,6 +18,7 @@ type ModalProps = {
   title?: string;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
+  showConfirmationAlert?: boolean;
 };
 
 export default function Modal({
@@ -26,9 +27,11 @@ export default function Modal({
   title,
   setIsOpen,
   children,
+  showConfirmationAlert = false,
 }: ModalProps) {
   const { setSelectedRecordCard, setSelectedTemplateTitle, setQuestionList } =
     useContext(MainContext);
+
   const modalContainerStyle = useMemo(
     () => ({
       width,
@@ -45,6 +48,12 @@ export default function Modal({
     ) => {
       e.stopPropagation();
       if (e.target !== e.currentTarget) return;
+      if (showConfirmationAlert) {
+        const shouldClose = window.confirm('정말로 나가시겠습니까?');
+        if (!shouldClose) {
+          return;
+        }
+      }
       setIsOpen(false);
       setSelectedTemplateTitle('');
       setQuestionList([]);
@@ -55,6 +64,7 @@ export default function Modal({
       setSelectedRecordCard,
       setSelectedTemplateTitle,
       setQuestionList,
+      showConfirmationAlert,
     ]
   );
 
