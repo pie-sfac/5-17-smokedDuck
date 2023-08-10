@@ -141,7 +141,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   return (
     <Container>
       <CreateHeader>
-        <Heading as="h5" size="sm">
+        <Heading as="h5" size="sm" marginBottom="6px">
           센터 링크
         </Heading>
         <p>센터에 미리 운동 영상 링크를 정리하세요.</p>
@@ -155,6 +155,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         ) : (
           <Select
             placeholder="카테고리를 선택해 주세요."
+            fontSize="0.9rem"
             marginBottom="10px"
             value={category}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -176,6 +177,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
             type="text"
             onChange={handleLinkChange}
             placeholder="URL을 입력해주세요"
+            fontSize="0.9rem"
             width="800px"
             marginBottom="10px"
             value={linkUrl}
@@ -191,6 +193,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
             setTitle(event.target.value);
           }}
           placeholder="링크 제목을 입력해 주세요."
+          fontSize="0.9rem"
           width="800px"
           marginBottom="10px"
         />
@@ -208,6 +211,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           resize="none"
           height="120px"
           width="800px"
+          fontSize="0.9rem"
         />
 
         <CharacterCount>{description.length} / 500</CharacterCount>
@@ -223,7 +227,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           disabled={!isFormComplete || isRequiredFieldsEmpty}
           onClick={handleSubmit}
         >
-          완료
+          저장
         </StyledButton>
       </ButtonPlace>
     </Container>
@@ -238,7 +242,7 @@ const Container = styled.div`
 `;
 
 const CreateHeader = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-size: 14px;
 `;
 
@@ -246,12 +250,12 @@ const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 `;
 
 const InputTitle = styled.h4`
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin-bottom: 6px;
+  margin-top: 6px;
 `;
 
 const DescriptionBox = styled.div`
@@ -260,8 +264,8 @@ const DescriptionBox = styled.div`
 
 const CharacterCount = styled.p`
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 6px;
+  right: 6px;
   font-size: 12px;
   color: #777;
 `;
@@ -275,9 +279,11 @@ const ButtonPlace = styled.div`
 const StyledButton = styled(Button)`
   border: none;
   border-radius: 70;
-  width: 40px;
-  font-size: 12px;
-  height: 24px;
+  width: 60px;
+  font-size: 1rem;
+  height: 40px;
+  padding: 0 16px;
+
   background-color: ${props => (props.disabled ? '#f4f4f4' : '#2D62EA')};
   color: ${props => (props.disabled ? '#aeaeae' : '#ffffff')};
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};

@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
@@ -34,6 +35,7 @@ export default function QuestionBox({
   setIsCheckedSpecialQuestions,
 }: QuestionBoxProps) {
   const { questionList, setQuestionList } = useContext(MainContext);
+  const toast = useToast();
 
   return (
     <QuestionBoxConatiner
@@ -43,7 +45,13 @@ export default function QuestionBox({
       onClick={() => {
         if (type === 'PAIN_HSTRY') {
           if (isCheckedSpecialQuestions?.isPAIN_HSTRY) {
-            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            toast({
+              title: '전문 문항 중복',
+              description: '전문 문항은 중복으로 추가할 수 없습니다.',
+              status: 'error',
+              duration: 1200,
+              isClosable: true,
+            });
             return;
           } else {
             setIsCheckedSpecialQuestions &&
@@ -54,7 +62,13 @@ export default function QuestionBox({
           }
         } else if (type === 'CONDITION') {
           if (isCheckedSpecialQuestions?.isCONDITION) {
-            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            toast({
+              title: '전문 문항 중복',
+              description: '전문 문항은 중복으로 추가할 수 없습니다.',
+              status: 'error',
+              duration: 1200,
+              isClosable: true,
+            });
             return;
           } else {
             setIsCheckedSpecialQuestions &&
@@ -65,7 +79,13 @@ export default function QuestionBox({
           }
         } else if (type === 'PAIN_INTV') {
           if (isCheckedSpecialQuestions?.isPAIN_INTV) {
-            alert('전문 문항은 중복으로 추가할 수 없습니다.');
+            toast({
+              title: '전문 문항 중복',
+              description: '전문 문항은 중복으로 추가할 수 없습니다.',
+              status: 'error',
+              duration: 1200,
+              isClosable: true,
+            });
             return;
           } else {
             setIsCheckedSpecialQuestions &&
@@ -76,7 +96,13 @@ export default function QuestionBox({
           }
         }
         if (questionList.length === 30) {
-          alert('템플릿당 문항수는 30개를 초과할 수 없습니다.');
+          toast({
+            title: '문항 수 초과',
+            description: '템플릿당 문항수는 30개를 초과할 수 없습니다.',
+            status: 'error',
+            duration: 1200,
+            isClosable: true,
+          });
           return;
         }
         setQuestionList([
@@ -113,7 +139,7 @@ export default function QuestionBox({
       <EntireContentContainer>
         <img src={image} alt={'아이콘 이미지'} width={45} height={30} />
         <TextContentContainer>
-          <div style={{ fontSize: '0.8rem' }}>{tagTitle}</div>
+          <div style={{ fontSize: '0.9rem' }}>{tagTitle}</div>
           <div style={{ fontSize: '0.6rem', width: '12.5rem' }}>
             {description}
           </div>

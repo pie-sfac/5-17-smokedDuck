@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 import Loading from '@/components/Common/Loading';
 import RecordCard from '@/components/Record/RecordCard';
@@ -12,19 +11,11 @@ type RecordListContainerProps = {
 export default function RecordListContainer({
   category,
 }: RecordListContainerProps) {
-  const { recordListData, isLoading, error } = useRecord(category);
-  const [isShowLoading, setIsShowLoading] = useState(false);
-
-  useEffect(() => {
-    if (isLoading || error || !recordListData) {
-      setIsShowLoading(true);
-    }
-    setIsShowLoading(false);
-  }, [error, isLoading, recordListData]);
+  const { recordListData } = useRecord(category);
 
   return (
     <ListBackGround>
-      {isShowLoading ? (
+      {!recordListData ? (
         <Loading />
       ) : (
         <ListContainer>
@@ -47,8 +38,7 @@ const ListContainer = styled.div`
   padding: 5px;
   box-sizing: content-box;
   &::-webkit-scrollbar {
-    background-color: none;
-    width: 0.5rem;
+    display: none;
   }
   @media screen and (max-height: 965px) {
     padding: 3px;

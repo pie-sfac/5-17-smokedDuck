@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import HambergerDot from '@/assets/hamburgerDots.svg';
 
@@ -20,6 +20,8 @@ export default function EditBox({
   onEditClick,
 }: EditBoxProps) {
   const [editOpen, setEditOpen] = useState(false);
+  const editBoxRef = useRef<HTMLDivElement | null>(null);
+
   const EditBoxStyle = useMemo(
     () => ({
       top,
@@ -34,12 +36,25 @@ export default function EditBox({
     setEditOpen(prevOpen => !prevOpen);
   }, []);
 
+  const handleOutsideClick = useCallback((e: MouseEvent) => {
+    if (editBoxRef.current && !editBoxRef.current.contains(e.target as Node)) {
+      setEditOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('click', handleOutsideClick);
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+    };
+  }, [handleOutsideClick]);
+
   return (
     <>
       <EditContainer onClick={clickHandler}>
         <ImgContainer src={HambergerDot} alt="편집/삭제버튼" />
         {editOpen && (
-          <EditItemArea style={{ ...EditBoxStyle }}>
+          <EditItemArea ref={editBoxRef} style={{ ...EditBoxStyle }}>
             <EditItem onClick={onEditClick}>편집</EditItem>
             <EditItem onClick={onDeleteClick}>삭제</EditItem>
           </EditItemArea>
@@ -50,14 +65,15 @@ export default function EditBox({
 }
 
 const EditItemArea = styled.div`
+  position: absolute;
+  margin-top: 8px;
+  margin-right: 14px;
   width: 5rem;
   height: 6rem;
   border-radius: 10px;
   border: 1px solid #e7e7e7;
   background-color: #fff;
   box-shadow: 0px 1px 4px -2px rgba(0, 0, 0, 0.75);
-
-  position: absolute;
 `;
 
 const EditItem = styled.div`
@@ -77,15 +93,15 @@ const EditItem = styled.div`
 
 const EditContainer = styled.div`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 35px;
-  height: 35px;
+  top: 6px;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+  padding: 10px;
 `;
 
 const ImgContainer = styled.img`
   width: 1rem;
   height: 1rem;
   z-index: 999;
-  margin-left: calc(35px - 1rem);
 `;

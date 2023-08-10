@@ -32,10 +32,13 @@ export default function Record() {
             selectedTemplateTitle.length === 0
               ? 400
               : isSmallScreen
-              ? 720
+              ? 900
               : undefined
           }
           setIsOpen={setRecordModalState}
+          showConfirmationAlert={
+            selectedTemplateTitle.length === 0 ? false : true
+          }
         >
           <Template />
         </Modal>

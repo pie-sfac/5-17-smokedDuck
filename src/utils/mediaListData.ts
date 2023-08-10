@@ -26,6 +26,6 @@ export default function useMediaList(category?: string) {
         : mediaList?.archiveLinks,
     isLoading: !error && !mediaList,
     error: error,
-    totalLinksCount: mediaList?.archiveLinks.length,
+    totalLinksCount: mediaList ? mediaList.archiveLinks.length : 0,
   };
 }

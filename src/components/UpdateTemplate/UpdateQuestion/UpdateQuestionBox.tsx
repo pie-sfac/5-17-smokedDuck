@@ -43,7 +43,7 @@ export default function QuestionBox({
       <EntireContentContainer>
         <img src={image} alt={'아이콘 이미지'} width={45} height={30} />
         <TextContentContainer>
-          <div style={{ fontSize: '0.8rem' }}>{tagTitle}</div>
+          <div style={{ fontSize: '0.9rem' }}>{tagTitle}</div>
           <div style={{ fontSize: '0.6rem', width: '12.5rem' }}>
             {description}
           </div>

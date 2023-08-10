@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
@@ -22,6 +23,7 @@ export default function Template() {
   } = useContext(MainContext);
 
   const { recordListData } = useRecord();
+  const toast = useToast();
 
   const [didConditionPassed, setDidConditionPassed] = useState<boolean>();
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
@@ -65,34 +67,64 @@ export default function Template() {
 
   const handleClickedSaveButton = useCallback(() => {
     if (templateContent?.title.length === 0) {
-      alert(templateNotificationText.untitledTemplate);
+      toast({
+        title: templateNotificationText.untitledTemplate,
+        status: 'error',
+        isClosable: true,
+        containerStyle: {
+          marginBottom: '20px',
+        },
+        duration: 1200,
+      });
       return;
     }
     questionList.forEach(question => {
       if (question.tagName === '기본' && question.title.length === 0) {
-        alert(
-          `${setTitle(question.type)} ${
+        toast({
+          title: `${setTitle(question.type)} ${
             templateNotificationText.untitledQuestion
-          }`
-        );
+          }`,
+          status: 'error',
+          isClosable: true,
+          containerStyle: {
+            marginBottom: '20px',
+          },
+          duration: 1200,
+        });
         setDidConditionPassed(false);
         return;
       }
       if (question.type === 'SELECT' && question.options?.length === 0) {
-        alert(templateNotificationText.noOptions);
+        toast({
+          title: templateNotificationText.noOptions,
+          status: 'error',
+          isClosable: true,
+          containerStyle: {
+            marginBottom: '20px',
+          },
+          duration: 1200,
+        });
         setDidConditionPassed(false);
         return;
       } else if (question.type === 'SELECT' && question.options?.length !== 0) {
         const set = new Set(question.options);
         if (set.size !== question.options?.length) {
-          alert(templateNotificationText.duplicateOptions);
+          toast({
+            title: templateNotificationText.duplicateOptions,
+            status: 'error',
+            isClosable: true,
+            containerStyle: {
+              marginBottom: '20px',
+            },
+            duration: 1200,
+          });
           setDidConditionPassed(false);
           return;
         }
       }
       setDidConditionPassed(true);
     });
-  }, [questionList, setTitle, templateContent?.title.length]);
+  }, [questionList, setTitle, templateContent?.title.length, toast]);
 
   useEffect(() => {
     if (didConditionPassed) {
