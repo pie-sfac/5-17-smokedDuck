@@ -88,7 +88,6 @@ const ListContainer = styled.div`
   overflow-y: scroll;
   height: calc(38rem + 1.5rem + 5px);
   box-sizing: content-box;
-  margin-top: 1rem;
   place-items: center;
   z-index: -9999;
   &::-webkit-scrollbar {
@@ -106,6 +105,8 @@ const ListBackGround = styled.div`
   height: calc(38rem + 1.5rem + 5px + 4rem);
   background-color: rgba(235, 241, 255, 0.8);
   border-radius: 10px;
+  padding: 2rem 6rem;
+  margin-top: 1rem;
   border: 1px solid #e7e7e7;
   @media screen and (max-height: 965px) {
     margin-top: calc(0.5rem + 10px);

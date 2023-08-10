@@ -44,7 +44,7 @@ export default function MediaCategorySelector({
 }
 
 const MediaCategorySelectorContainer = styled('div')`
-  height: 2rem;
+  height: 2.6rem;
 `;
 
 const CategoryTitle = styled('ul')`

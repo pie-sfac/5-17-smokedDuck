@@ -23,5 +23,4 @@ export default function MediaManagementPage() {
 
 const MediaContainer = styled('div')`
   position: relative;
-  margin: 0 auto;
 `;
