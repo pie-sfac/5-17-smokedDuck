@@ -60,8 +60,8 @@ $ npm run dev
 
 ### Development
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Typescript](https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Axios](https://img.shields.io/badge/axios-5A29E4.svg?&style=for-the-badge&logo=axios&logoColor=white)
 ![Eslint](https://img.shields.io/badge/eslint-4B32C3.svg?&style=for-the-badge&logo=eslint&logoColor=white)
@@ -86,7 +86,8 @@ $ npm run dev
 ### Record
 
 #### 문진/처치 템플릿
-- 템플릿을 추가, 삭제할 수 있습니다.
+- 템플릿을 생성, 조회, 수정, 삭제할 수 있습니다.
+- 문진과 처치 템플릿의 개별 생성이 가능합니다.
 - 기본문항과 전문문항을 선택해 템플릿을 제작할 수 있습니다.
 
 #### 기본문항
