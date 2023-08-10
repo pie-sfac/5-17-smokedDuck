@@ -7,11 +7,8 @@
 ## 프로젝트 정보
 
 > **Piehealthcare - PoinT**
-<br/>**기록을 위한 센터의 기록 템플릿 관리 및 아카이브 링크(링크 보관함) 관리 기능 제작** 
+<br/>**센터의 기록 템플릿 관리 및 아카이브 링크(링크 보관함) 관리 기능 제작** 
 <br/>**개발기간: 2023.07.17 ~ 2023.08.10**
-
-## 배포 주소
-> **링크:**
 
 ## 팀 소개
 
@@ -20,6 +17,7 @@
 |<img width="160px" src="https://avatars.githubusercontent.com/u/104823768?v=4" />|<img width="160px" src="https://avatars.githubusercontent.com/u/33304871?v=4">|<img width="160px" src="https://avatars.githubusercontent.com/u/87464286?v=4">|<img width="160px" src="https://avatars.githubusercontent.com/u/55127180?v=4">|
 |이승훈|허지연|김기현|김민정|
 |[@mandarin-sep](https://github.com/mandarin-sep)|[@Heojiyeon](https://github.com/Heojiyeon)|[@TomyoKim](https://github.com/TomyoKim)|[@minjeong19](https://github.com/minjeong19)|
+|- 기록관리 CRUD <br/> - 로그인 토큰 관리|- 기록관리 CRUD <br/> - 초기셋팅 및 리팩토링|- 센터 링크 CRUD <br/> - 유튜브 메타데이터 파싱|- 카테고리 CRUD <br/> - 센터 링크 메인화면|
 
 ## 프로젝트 소개
 **통증 관리 전문가들을 위한 올인원 고객 관리 전문 SaaS, 포인티**
@@ -78,7 +76,6 @@ $ npm run dev
 ![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white)
 
-## 화면 구성
 
 ## 주요 기능
 
