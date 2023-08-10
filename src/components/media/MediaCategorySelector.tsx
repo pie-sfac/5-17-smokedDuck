@@ -17,10 +17,6 @@ export default function MediaCategorySelector({
   const { totalLinksCount } = useMediaList();
   const navigate = useNavigate();
 
-  // if (isLoading || error || !categoryListData) {
-  //   return <LoadingContainer>Loading...</LoadingContainer>;
-  // }
-
   return (
     <MediaCategorySelectorContainer>
       <CategoryTitle>

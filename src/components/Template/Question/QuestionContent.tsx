@@ -67,7 +67,7 @@ const QuestionContentContainer = styled('div')`
 `;
 
 const StyledLabel = styled('label')`
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 `;
 
 const StyledInput = styled('input')`
