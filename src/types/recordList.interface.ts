@@ -10,7 +10,7 @@ export interface recordListResponseType {
   message: 'string';
 }
 
-export type recordListType = {
+export type RecordList = {
   id: number;
   category: string;
   title: string;

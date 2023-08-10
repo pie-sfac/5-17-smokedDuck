@@ -1,5 +1,5 @@
 import { Questions } from './question.interface';
-import { recordQuestionsType } from './recordDetail.interface';
+import { RecordQuestions } from './recordDetail.interface';
 
 export interface Template {
   category: '' | 'INTERVIEW' | 'TREATMENT';
@@ -17,7 +17,7 @@ export interface CreateTemplateResponse {
 export interface UpdateTemplateType {
   title: string;
   description: string | undefined;
-  updateQuestions: recordQuestionsType[] | [];
+  updateQuestions: RecordQuestions[] | [];
   addQuestions: Questions[];
   deleteIds: number[];
 }

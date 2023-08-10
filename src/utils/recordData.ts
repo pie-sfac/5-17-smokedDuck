@@ -1,15 +1,15 @@
 import useSWR from 'swr';
 
 import { recordDetailFetcher, recordListFetcher } from '@/apis/record';
-import { recordDetailType } from '@/types/recordDetail.interface';
-import { recordListType } from '@/types/recordList.interface';
+import { RecordDetail } from '@/types/recordDetail.interface';
+import { RecordList } from '@/types/recordList.interface';
 
 export function useRecord(category?: string) {
   const {
     data: recordList,
     mutate,
     error,
-  } = useSWR<recordListType, Error>('record-templates', recordListFetcher);
+  } = useSWR<RecordList, Error>('record-templates', recordListFetcher);
 
   const interviewCount = recordList?.filter(
     item => item.category === 'INTERVIEW'
@@ -38,7 +38,7 @@ export function useRecordDetail(id: number) {
     data: recordDetailData,
     mutate,
     error,
-  } = useSWR<recordDetailType, Error>(
+  } = useSWR<RecordDetail, Error>(
     `record-templates/${id}`,
     recordDetailFetcher
   );
