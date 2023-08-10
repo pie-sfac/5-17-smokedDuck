@@ -141,7 +141,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
   return (
     <Container>
       <CreateHeader>
-        <Heading as="h5" size="sm">
+        <Heading as="h5" size="sm" marginBottom="6px">
           센터 링크
         </Heading>
         <p>센터에 미리 운동 영상 링크를 정리하세요.</p>
@@ -155,6 +155,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
         ) : (
           <Select
             placeholder="카테고리를 선택해 주세요."
+            fontSize="0.9rem"
             marginBottom="10px"
             value={category}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -176,6 +177,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
             type="text"
             onChange={handleLinkChange}
             placeholder="URL을 입력해주세요"
+            fontSize="0.9rem"
             width="800px"
             marginBottom="10px"
             value={linkUrl}
@@ -191,6 +193,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
             setTitle(event.target.value);
           }}
           placeholder="링크 제목을 입력해 주세요."
+          fontSize="0.9rem"
           width="800px"
           marginBottom="10px"
         />
@@ -208,6 +211,7 @@ export default function LinkForm({ onSubmit, linkId }: LinkFormProps) {
           resize="none"
           height="120px"
           width="800px"
+          fontSize="0.9rem"
         />
 
         <CharacterCount>{description.length} / 500</CharacterCount>
