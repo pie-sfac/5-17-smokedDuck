@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import Condition from '@/assets/Condition.svg';
 import Media from '@/assets/Media.svg';
@@ -13,32 +13,18 @@ import { StringQuestionTypes } from '@/types/question.interface';
 
 type UpdateTemplateQuestionSelectionsProps = {
   category: string;
-  caption: {
-    isduplicate: boolean;
-    isMaximum: boolean;
-    errorMessage: string;
-  };
   questionsListHandler: (type: StringQuestionTypes, tagName: string) => void;
 };
 
 export default function UpdateTemplateQuestionSelections({
   questionsListHandler,
   category,
-  caption,
 }: UpdateTemplateQuestionSelectionsProps) {
   const [selectedQuestion, setSelectedQuestion] = useState('basic');
-
-  const renderCaption = useCallback(() => {
-    if (caption.isduplicate || caption.isMaximum) {
-      return <Caption>{caption.errorMessage}</Caption>;
-    }
-    return null;
-  }, [caption.errorMessage, caption.isMaximum, caption.isduplicate]);
 
   return (
     <EntireQuestionContainer>
       <QeustionsContainer>
-        {renderCaption()}
         <Box
           as="button"
           padding={1}
@@ -162,10 +148,4 @@ const QeustionsContainer = styled('div')`
 const QuestionBoxContainer = styled('div')`
   display: flex;
   margin: 0 2rem 0 2rem;
-`;
-
-const Caption = styled.span`
-  font-size: 12px;
-  color: red;
-  margin-right: 1rem;
 `;

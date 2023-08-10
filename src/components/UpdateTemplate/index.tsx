@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 
 import { updateTemplateAPI } from '@/apis/Template';
@@ -20,7 +21,7 @@ export default function UpdateTemplate({
   recordDetailData,
 }: UpdateTemplateProp) {
   const { recordListData, mutate: mutateTitle } = useRecord();
-
+  const toast = useToast();
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
     title: recordDetailData.title,
     description: recordDetailData.description
@@ -33,51 +34,48 @@ export default function UpdateTemplate({
   );
   const [addQuestions, setAddQuestions] = useState<Questions[]>([]);
   const [totalList, setTotalList] = useState<Questions[]>(updateQuestions);
-  const [validation, setValidation] = useState({
-    isValidate: false,
-    errorMessage: '',
-  });
-  const [caption, setCaption] = useState({
-    isduplicate: false,
-    isMaximum: false,
-    errorMessage: '',
-  });
 
   const checkValidation = useCallback(() => {
     let isValid = true;
-    let errorMessage = '';
+    const errorMessageArray: string[] = [];
 
     if (currTemplateSubHeader.title.length === 0) {
       isValid = false;
-      errorMessage = templateNotificationText.untitledTemplate;
+      errorMessageArray.push(templateNotificationText.untitledTemplate);
     }
 
     totalList.forEach(listItem => {
-      if (
-        (listItem.type === 'TEXT' || listItem.type === 'MEDIA') &&
-        listItem.title.length === 0
-      ) {
+      if (listItem.type === 'TEXT' && listItem.title.length === 0) {
         isValid = false;
-        errorMessage = `${listItem.type} ${templateNotificationText.untitledQuestion}`;
+        errorMessageArray.push(
+          `텍스트 ${templateNotificationText.untitledQuestion}`
+        );
+      }
+      if (listItem.type === 'MEDIA' && listItem.title.length === 0) {
+        isValid = false;
+        errorMessageArray.push(
+          `미디어 ${templateNotificationText.untitledQuestion}`
+        );
+      }
+      if (listItem.type === 'SELECT' && listItem.title.length === 0) {
+        isValid = false;
+        errorMessageArray.push(
+          `선택형 ${templateNotificationText.untitledQuestion}`
+        );
       }
       if (listItem.type === 'SELECT' && listItem.options?.length === 0) {
         isValid = false;
-        errorMessage = templateNotificationText.noOptions;
+        errorMessageArray.push(templateNotificationText.noOptions);
       } else if (listItem.type === 'SELECT' && listItem.options?.length !== 0) {
         const set = new Set(listItem.options);
         if (set.size !== listItem.options?.length) {
           isValid = false;
-          errorMessage = templateNotificationText.duplicateOptions;
+          errorMessageArray.push(templateNotificationText.duplicateOptions);
         }
       }
     });
 
-    setValidation({
-      isValidate: isValid,
-      errorMessage,
-    });
-
-    return isValid;
+    return { isValid, errorMessageArray };
   }, [currTemplateSubHeader.title.length, totalList]);
 
   const syncOrder = useCallback(
@@ -95,8 +93,21 @@ export default function UpdateTemplate({
   );
 
   const handleClickedSaveButton = async (templateId?: number) => {
-    const isRight = checkValidation();
-    if (!isRight) return;
+    const { isValid, errorMessageArray } = checkValidation();
+    if (!isValid) {
+      errorMessageArray.forEach(msg => {
+        toast({
+          title: msg,
+          status: 'error',
+          isClosable: true,
+          duration: 1200,
+          containerStyle: {
+            marginBottom: '20px',
+          },
+        });
+      });
+      return;
+    }
 
     const updateList = syncOrder(updateQuestions, totalList);
     const addList = syncOrder(addQuestions, totalList);
@@ -126,12 +137,6 @@ export default function UpdateTemplate({
 
   const questionsListHandler = useCallback(
     (type: StringQuestionTypes, tagName: string) => {
-      setCaption({
-        isMaximum: false,
-        isduplicate: false,
-        errorMessage: '',
-      });
-
       const newQuestionId =
         updateQuestions.length === 0
           ? addQuestions.length === 0
@@ -150,19 +155,28 @@ export default function UpdateTemplate({
         type === 'CONDITION'
       ) {
         if (totalList.find(listItem => listItem.type === type)) {
-          setCaption({
-            ...caption,
-            isduplicate: true,
-            errorMessage: templateNotificationText.noDuplicateSpecialQuestions,
+          toast({
+            title: templateNotificationText.noDuplicateSpecialQuestions,
+            status: 'error',
+            isClosable: true,
+            duration: 1200,
+            containerStyle: {
+              marginBottom: '20px',
+            },
           });
           return;
         }
       }
+
       if (totalList.length > 29) {
-        setCaption({
-          ...caption,
-          isMaximum: true,
-          errorMessage: templateNotificationText.limitedNumberOfQuestions,
+        toast({
+          title: templateNotificationText.limitedNumberOfQuestions,
+          status: 'error',
+          isClosable: true,
+          duration: 1200,
+          containerStyle: {
+            marginBottom: '20px',
+          },
         });
         return;
       }
@@ -183,7 +197,7 @@ export default function UpdateTemplate({
       setAddQuestions([...addQuestions, newQuestion]);
       setTotalList([...totalList, newQuestion]);
     },
-    [addQuestions, caption, totalList, updateQuestions]
+    [addQuestions, toast, totalList, updateQuestions]
   );
 
   const existQuestionContentHandler = useCallback(
@@ -304,11 +318,9 @@ export default function UpdateTemplate({
         handleDelete={questionDeleteHandler}
         handleMove={questionMoveHandler}
         totalList={totalList}
-        caption={caption}
       />
       <UpdateTemplateFooter
         handleClickedSaveButton={handleClickedSaveButton}
-        validation={validation}
         id={id}
       />
     </>
