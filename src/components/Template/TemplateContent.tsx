@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
-import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
-import { CheckedSpecialQuestions } from '@/types/question.interface';
+import { TemplateContext } from '@/store/TemplateProvider';
+import { CheckedSpecialQuestions, Questions } from '@/types/question.interface';
 
 import TemplateQuestionSelections from './TemplateQuestionSelections';
 import TemplateSelectedQuestionContainer from './TemplateSelectedQuestionContainer';
@@ -22,7 +21,7 @@ export default function TemplateContent({
   setCurrTemplateSubHeader,
   onChange,
 }: TemplateContentProps) {
-  const { selectedTemplateTitle } = useContext(MainContext);
+  const { selectedTemplateTitle } = useContext(TemplateContext);
 
   const [isCheckedSpecialQuestions, setIsCheckedSpecialQuestions] =
     useState<CheckedSpecialQuestions>({

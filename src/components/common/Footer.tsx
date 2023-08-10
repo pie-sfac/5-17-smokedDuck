@@ -1,29 +1,22 @@
 import { Button, chakra } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import styled from '@emotion/styled';
 
-import { MainContext } from '@/store';
+type Footer = {
+  onClick: () => void;
+  buttonContent: string;
+};
 
-export default function Footer() {
-  const { pathname } = useLocation();
-  const { setRecordModalState, setMediaModalState } = useContext(MainContext);
-
-  if (pathname === '/media') {
-    return (
-      <BlueButton onClick={() => setMediaModalState(true)}>
-        + 링크 추가
-      </BlueButton>
-    );
-  } else if (pathname === '/record') {
-    return (
-      <BlueButton onClick={() => setRecordModalState(true)}>
-        + 템플릿 추가
-      </BlueButton>
-    );
-  } else {
-    return null;
-  }
+export default function Footer({ onClick, buttonContent }: Footer) {
+  return (
+    <FooterContainer>
+      <BlueButton onClick={onClick}>{buttonContent}</BlueButton>
+    </FooterContainer>
+  );
 }
+
+const FooterContainer = styled('div')`
+  width: 100%;
+`;
 
 const BlueButton = chakra(Button, {
   baseStyle: {

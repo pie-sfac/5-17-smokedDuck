@@ -8,7 +8,7 @@ import Pain from '@/assets/Pain.svg';
 import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
-import { MainContext } from '@/store';
+import { TemplateContext } from '@/store/TemplateProvider';
 import { CheckedSpecialQuestions } from '@/types/question.interface';
 
 import QuestionBox from '../Common/QuestionBox';
@@ -24,7 +24,7 @@ export default function TemplateQuestionSelections({
   isCheckedSpecialQuestions,
   setIsCheckedSpecialQuestions,
 }: TemplateQuestionSelectionsProps) {
-  const { selectedTemplateTitle } = useContext(MainContext);
+  const { selectedTemplateTitle } = useContext(TemplateContext);
   const [selectedQuestion, setSelectedQuestion] = useState('');
 
   return (
