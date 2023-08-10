@@ -46,8 +46,9 @@ export default function UpdateQuestionOptionalContent({
         (_, idx) => targetId !== idx
       );
       setCurrentOptions(deletedOptions);
+      onChange(order, 'options', deletedOptions ? deletedOptions : []);
     },
-    [currentOptions]
+    [currentOptions, onChange, order]
   );
 
   return (
