@@ -81,7 +81,7 @@ export default function TemplateSelectedQuestionContainer({
 
 const ContentContainer = styled('div')`
   width: 940;
-  height: 13rem;
+  height: 12rem;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -94,7 +94,7 @@ const ContentContainer = styled('div')`
     display: none;
   }
   @media screen and (min-height: 800px) {
-    height: 18rem;
+    height: 28rem;
     margin-bottom: 1rem;
   }
 `;
