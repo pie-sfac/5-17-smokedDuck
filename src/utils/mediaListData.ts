@@ -9,6 +9,7 @@ export default function useMediaList(category?: string) {
     getLinkList,
     {
       onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+        if (retryCount >= 10) return;
         setTimeout(() => {
           revalidate({ retryCount });
         }, 50);

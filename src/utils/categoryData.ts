@@ -10,6 +10,7 @@ export default function useCategory() {
     error,
   } = useSWR<CategoryListResponse, Error>('/getCategory', getCategoryList, {
     onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+      if (retryCount >= 10) return;
       setTimeout(() => {
         revalidate({ retryCount });
       }, 50);

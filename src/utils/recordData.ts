@@ -11,6 +11,7 @@ export function useRecord(category?: string) {
     error,
   } = useSWR<recordListType, Error>('record-templates', recordListFetcher, {
     onErrorRetry: (_error, _key, _config, revalidate, { retryCount }) => {
+      if (retryCount >= 10) return;
       setTimeout(() => {
         revalidate({ retryCount });
       }, 50);
