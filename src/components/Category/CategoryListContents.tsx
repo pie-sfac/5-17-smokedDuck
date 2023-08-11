@@ -1,18 +1,14 @@
 import styled from '@emotion/styled';
 import { useCallback, useContext, useRef, useState } from 'react';
 
-import { MainContext } from '@/store';
+import { SelectedIdContext } from '@/store/SelectedIdProvider';
+import { CategoryList } from '@/types/category.interface';
 import useCategory from '@/utils/categoryData';
 
 import DeleteModal from '../Common/DeleteModal';
 
-export type categoryList = {
-  id: number;
-  title: string;
-};
-
 type CategoryListContentsProps = {
-  addedCategory?: categoryList[];
+  addedCategory?: CategoryList[];
   isDeleteMode: boolean;
   setIsDeleteMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleUpdateCategory: (categoryId: number, updateText: string) => void;
@@ -29,7 +25,7 @@ export default function CategoryListContents({
   newCategoryInputRef,
 }: CategoryListContentsProps) {
   const { categoryListData } = useCategory();
-  const { selectedIds, setSelectedIds } = useContext(MainContext);
+  const { selectedIds, setSelectedIds } = useContext(SelectedIdContext);
   const checkboxRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [duplicateCategoryId, setDuplicateCategoryId] = useState<number | null>(

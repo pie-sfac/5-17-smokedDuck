@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
 
-import { MainContext } from '@/store';
+import { QueustionContext } from '@/store/QuestionProvider';
 
 type checkedSpecialQuestions = {
   [key: string]: boolean;
@@ -34,7 +34,7 @@ export default function QuestionBox({
   isCheckedSpecialQuestions,
   setIsCheckedSpecialQuestions,
 }: QuestionBoxProps) {
-  const { questionList, setQuestionList } = useContext(MainContext);
+  const { questionList, setQuestionList } = useContext(QueustionContext);
   const toast = useToast();
 
   return (

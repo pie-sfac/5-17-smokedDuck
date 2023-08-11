@@ -5,8 +5,6 @@ import ReactDOM from 'react-dom/client';
 import App from '@/App.tsx';
 import Fonts from '@/fonts.tsx';
 
-import MainContextProvider from './store';
-
 const theme = extendTheme({
   fonts: {
     heading: 'Pretendard',
@@ -16,11 +14,9 @@ const theme = extendTheme({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MainContextProvider>
-      <ChakraProvider theme={theme}>
-        <Fonts />
-        <App />
-      </ChakraProvider>
-    </MainContextProvider>
+    <ChakraProvider theme={theme}>
+      <Fonts />
+      <App />
+    </ChakraProvider>
   </React.StrictMode>
 );

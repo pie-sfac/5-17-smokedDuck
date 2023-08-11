@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useContext, useMemo } from 'react';
 
-import { MainContext } from '@/store';
+import { TemplateContext } from '@/store/TemplateProvider';
 
 type SelectionBoxProps = {
   width?: number;
@@ -19,7 +19,7 @@ export default function SelectionBox({
   image,
 }: SelectionBoxProps) {
   const { templateContent, setTemplateContent, setSelectedTemplateTitle } =
-    useContext(MainContext);
+    useContext(TemplateContext);
   const selectionBoxContainerStyle = useMemo(
     () => ({
       width,

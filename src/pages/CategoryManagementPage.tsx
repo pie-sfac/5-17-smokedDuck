@@ -1,9 +1,15 @@
 import Category from '@/components/Category';
+import { CategoryProvider } from '@/store/CategoryProvider';
+import { SelectedIdProvider } from '@/store/SelectedIdProvider';
 
 export default function CategoryManagementPage() {
   return (
     <>
-      <Category />
+      <CategoryProvider>
+        <SelectedIdProvider>
+          <Category />
+        </SelectedIdProvider>
+      </CategoryProvider>
     </>
   );
 }

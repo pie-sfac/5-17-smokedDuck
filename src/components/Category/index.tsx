@@ -2,7 +2,8 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createCategory, updateCategory } from '@/apis/Category';
-import { MainContext } from '@/store';
+import { CategoryContext } from '@/store/CategoryProvider';
+import { SelectedIdContext } from '@/store/SelectedIdProvider';
 import { CategoryRequest } from '@/types/category.interface';
 import useCategory from '@/utils/categoryData';
 
@@ -10,7 +11,9 @@ import CategoryHeader from './CategoryHeader';
 import CategoryListContents from './CategoryListContents';
 
 export default function Category() {
-  const { storedCategoryList, setSelectedIds } = useContext(MainContext);
+  const { storedCategoryList } = useContext(CategoryContext);
+  const { setSelectedIds } = useContext(SelectedIdContext);
+
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const newCategoryInputRef = useRef<HTMLInputElement>(null);

@@ -1,6 +1,6 @@
 import { Questions } from '@/types/question.interface';
 
-export interface recordQuestionsType {
+export interface RecordQuestions {
   id: number;
   type:
     | ''
@@ -20,7 +20,7 @@ export interface recordQuestionsType {
   addOtherOption?: boolean;
 }
 
-export interface recordDetailType {
+export interface RecordDetail {
   id: number;
   category: string;
   title: string;

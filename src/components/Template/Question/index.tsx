@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
 import { useCallback, useContext } from 'react';
 
-import { MainContext } from '@/store';
-import { Questions } from '@/types/question.interface';
-import { CheckedSpecialQuestions } from '@/types/question.interface';
+import { QueustionContext } from '@/store/QuestionProvider';
+import { CheckedSpecialQuestions, Questions } from '@/types/question.interface';
 
 import QuestionContent from './QuestionContent';
 import QuestionFooter from './QuestionFooter';
@@ -27,7 +26,7 @@ export default function Question({
   question,
   setIsCheckedSpecialQuestions,
 }: QuestionProps) {
-  const { questionList, setQuestionList } = useContext(MainContext);
+  const { questionList, setQuestionList } = useContext(QueustionContext);
 
   const handleClickedMoveButton = useCallback(
     (moveDirection: string) => {

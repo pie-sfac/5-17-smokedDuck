@@ -6,14 +6,14 @@ import UpdateTemplateContent from '@/components/UpdateTemplate/UpdateTemplateCon
 import UpdateTemplateFooter from '@/components/UpdateTemplate/UpdateTemplateFooter';
 import UpdateTemplateTitle from '@/components/UpdateTemplate/UpdateTemplateTitle';
 import { Questions, StringQuestionTypes } from '@/types/question.interface';
-import { recordDetailType } from '@/types/recordDetail.interface';
+import { RecordDetail } from '@/types/recordDetail.interface';
 import { UpdateTemplateType } from '@/types/template.interface';
 import { templateNotificationText } from '@/utils/constants/template';
 import { useRecord } from '@/utils/recordData';
 
 type UpdateTemplateProp = {
   id: number;
-  recordDetailData: recordDetailType;
+  recordDetailData: RecordDetail;
 };
 
 export default function UpdateTemplate({

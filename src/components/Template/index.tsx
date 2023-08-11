@@ -3,7 +3,9 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createTemplate } from '@/apis/Template';
-import { MainContext } from '@/store';
+import { QueustionContext } from '@/store/QuestionProvider';
+import { RecordContext } from '@/store/RecordProvider';
+import { TemplateContext } from '@/store/TemplateProvider';
 import { Questions } from '@/types/question.interface';
 import { NewTemplateContent } from '@/types/template.interface';
 import { templateNotificationText } from '@/utils/constants/template';
@@ -14,13 +16,10 @@ import TemplateFooter from './TemplateFooter';
 import TemplateTitle from './TemplateTitle';
 
 export default function Template() {
-  const {
-    questionList,
-    templateContent,
-    setTemplateContent,
-    selectedTemplateTitle,
-    selectedRecordCard,
-  } = useContext(MainContext);
+  const { questionList } = useContext(QueustionContext);
+  const { templateContent, setTemplateContent, selectedTemplateTitle } =
+    useContext(TemplateContext);
+  const { selectedRecordCard } = useContext(RecordContext);
 
   const { recordListData } = useRecord();
   const toast = useToast();

@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 
-import { MainContext } from '@/store';
+import { MediaContext } from '@/store/MediaProvider';
 
 import Modal from '../Common/Modal';
 import LinkComponent from '../Link';
@@ -8,7 +8,7 @@ import MediaCategorySelector from './MediaCategorySelector';
 import MediaListContainer from './MediaListContainer';
 
 export default function Media() {
-  const { mediaModalOpen, setMediaModalState } = useContext(MainContext);
+  const { mediaModalOpen, setMediaModalState } = useContext(MediaContext);
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const categoryChange = (title: string) => {
     setSelectedCategory(title);

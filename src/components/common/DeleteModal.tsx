@@ -8,12 +8,12 @@ import { mutate as globalMutate } from 'swr';
 import { deleteCategory } from '@/apis/Category';
 import { deleteLink, LINK_URL } from '@/apis/Media';
 import Modal from '@/components/Common/Modal';
-import { MainContext } from '@/store';
+import { SelectedIdContext } from '@/store/SelectedIdProvider';
 import {
   GetLinkDetailResponse,
   GetLinkListResponse,
 } from '@/types/media.interface';
-import { recordListType } from '@/types/recordList.interface';
+import { RecordList } from '@/types/recordList.interface';
 import useCategory from '@/utils/categoryData';
 import { useRecord } from '@/utils/recordData';
 
@@ -36,13 +36,13 @@ export default function DeleteModal({
 }: DeleteModalProps) {
   const { pathname } = useLocation();
 
-  const { selectedIds, setSelectedIds } = useContext(MainContext);
+  const { selectedIds, setSelectedIds } = useContext(SelectedIdContext);
   const { recordListData, mutate } = useRecord();
   const { categoryListData, mutate: mutateCategory } = useCategory();
 
   const handleDeleteClick = async () => {
     if (pathname === '/record' && recordListData) {
-      const newRecordList: recordListType = recordListData.filter(
+      const newRecordList: RecordList = recordListData.filter(
         (item: { id: number }) => item.id !== id
       );
 

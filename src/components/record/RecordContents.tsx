@@ -4,11 +4,11 @@ import { useContext } from 'react';
 import EmptyQuestion from '@/assets/EmptyQuestion.svg';
 import Loading from '@/components/Common/Loading';
 import UpdateQuestion from '@/components/UpdateTemplate/UpdateQuestion';
-import { MainContext } from '@/store';
+import { RecordContext } from '@/store/RecordProvider';
 import { useRecordDetail } from '@/utils/recordData';
 
 export default function RecordContents() {
-  const { selectedRecordCardId } = useContext(MainContext);
+  const { selectedRecordCardId } = useContext(RecordContext);
   const { recordQuestions, isLoading } = useRecordDetail(selectedRecordCardId);
 
   return (
