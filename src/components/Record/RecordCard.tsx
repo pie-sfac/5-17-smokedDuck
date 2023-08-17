@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
 import Textline from '@/assets/Textline.svg';
+import DeleteModal from '@/components/Common/DeleteModal';
 import EditBox from '@/components/Common/EditBox';
 import Modal from '@/components/Common/Modal';
 import RecordInfo from '@/components/Record/RecordInfo';
 import { RecordContext } from '@/store/RecordProvider';
-
-import DeleteModal from '../Common/DeleteModal';
+import { TemplateContext } from '@/store/TemplateProvider';
 
 type RecordCardProps = {
   title: string;
@@ -17,7 +17,9 @@ type RecordCardProps = {
 
 export default function RecordCard({ title, id }: RecordCardProps) {
   const [isSmallScreen] = useMediaQuery('(min-height: 800px)');
-  const { setSeletedRecordCardId, setIsRecordEdit } = useContext(RecordContext);
+  const { setSeletedRecordCardId, setIsRecordEdit, setSelectedRecordCard } =
+    useContext(RecordContext);
+  const { setSelectedTemplateTitle } = useContext(TemplateContext);
   const [recordTemplateOpen, setRecordTemplateOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -25,6 +27,14 @@ export default function RecordCard({ title, id }: RecordCardProps) {
     setRecordTemplateOpen(true);
     setSeletedRecordCardId(id);
     setIsRecordEdit(false);
+  };
+
+  const saveHandler = () => {
+    setTimeout(() => {
+      setEditModalOpen(false);
+      setSelectedTemplateTitle('');
+      setSelectedRecordCard(undefined);
+    }, 500);
   };
 
   return (
@@ -58,7 +68,7 @@ export default function RecordCard({ title, id }: RecordCardProps) {
           height={isSmallScreen ? 900 : undefined}
           showConfirmationAlert={true}
         >
-          <RecordInfo id={id} isEditing={true} />
+          <RecordInfo id={id} isEditing={true} saveHandler={saveHandler} />
         </Modal>
       )}
       {deleteModalOpen && (

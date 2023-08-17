@@ -8,10 +8,9 @@ import Pain from '@/assets/Pain.svg';
 import PainQuestion from '@/assets/PainQuestion.svg';
 import Selections from '@/assets/Selections.svg';
 import Text from '@/assets/Text.svg';
+import QuestionBox from '@/components/Common/QuestionBox';
 import { TemplateContext } from '@/store/TemplateProvider';
 import { CheckedSpecialQuestions } from '@/types/question.interface';
-
-import QuestionBox from '../Common/QuestionBox';
 
 type TemplateQuestionSelectionsProps = {
   isCheckedSpecialQuestions: CheckedSpecialQuestions;

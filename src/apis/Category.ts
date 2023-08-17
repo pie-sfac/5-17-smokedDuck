@@ -1,17 +1,17 @@
 import axios, { AxiosResponse } from 'axios';
 
 import {
-  CategoryListResponseDTO,
-  CategoryRequestDTO,
-  CategoryResponseDTO,
+  CategoryListResponse,
+  CategoryRequest,
+  CategoryResponse,
 } from '@/types/category.interface';
 
 export const LINK_URL = 'archive-link-categories';
 
 export async function deleteCategory(
   categoryId: number
-): Promise<CategoryResponseDTO> {
-  const response: AxiosResponse<CategoryResponseDTO> = await axios.delete(
+): Promise<CategoryResponse> {
+  const response: AxiosResponse<CategoryResponse> = await axios.delete(
     `${LINK_URL}/${categoryId}`
   );
   return response.data;
@@ -19,19 +19,19 @@ export async function deleteCategory(
 
 export async function updateCategory(
   categoryId: number,
-  categoryData: CategoryRequestDTO
-): Promise<CategoryListResponseDTO> {
+  categoryData: CategoryRequest
+): Promise<CategoryListResponse> {
   const requestUrl = `/${LINK_URL}/${categoryId}`;
-  const response: AxiosResponse<CategoryListResponseDTO> = await axios.put(
+  const response: AxiosResponse<CategoryListResponse> = await axios.put(
     requestUrl,
     categoryData
   );
   return response.data;
 }
 
-export async function getCategoryList(): Promise<CategoryListResponseDTO> {
+export async function getCategoryList(): Promise<CategoryListResponse> {
   const requestUrl = `/${LINK_URL}`;
-  const response: AxiosResponse<CategoryListResponseDTO> = await axios.get(
+  const response: AxiosResponse<CategoryListResponse> = await axios.get(
     requestUrl
   );
 
@@ -39,9 +39,9 @@ export async function getCategoryList(): Promise<CategoryListResponseDTO> {
 }
 
 export async function createCategory(
-  categoryData: CategoryRequestDTO
-): Promise<CategoryResponseDTO> {
-  const response: AxiosResponse<CategoryResponseDTO> = await axios.post(
+  categoryData: CategoryRequest
+): Promise<CategoryResponse> {
+  const response: AxiosResponse<CategoryResponse> = await axios.post(
     `/${LINK_URL}`,
     categoryData
   );
