@@ -53,6 +53,10 @@ $ npm ci
 $ npm run dev
 ```
 
+### ID / PASSWORD
+id: tema17
+password: team17!!
+
 ## 기술 스택
 
 ### Environment
