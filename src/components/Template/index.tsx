@@ -25,7 +25,7 @@ export default function Template({ modalStatehandler }: TemplateProp) {
     useContext(TemplateContext);
   const { selectedRecordCard } = useContext(RecordContext);
 
-  const { recordListData, recordListId } = useRecord();
+  const { recordListData } = useRecord();
   const toast = useToast();
 
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
@@ -140,7 +140,9 @@ export default function Template({ modalStatehandler }: TemplateProp) {
         const newRecordListData = [
           ...(recordListData || []),
           {
-            id: recordListId,
+            id: !recordListData
+              ? 1
+              : recordListData[recordListData.length - 1].id + 1,
             category: newTemplateContent.category,
             title: newTemplateContent.title,
             description: newTemplateContent.description,
@@ -159,7 +161,6 @@ export default function Template({ modalStatehandler }: TemplateProp) {
     modalStatehandler,
     questionList,
     recordListData,
-    recordListId,
     templateContent,
     validationCheck,
   ]);
