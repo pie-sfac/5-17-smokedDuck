@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { mutate } from 'swr';
 
 import { createTemplate } from '@/apis/Template';
@@ -15,16 +15,19 @@ import TemplateContent from './TemplateContent';
 import TemplateFooter from './TemplateFooter';
 import TemplateTitle from './TemplateTitle';
 
-export default function Template() {
+type TemplateProp = {
+  modalStatehandler: () => void;
+};
+
+export default function Template({ modalStatehandler }: TemplateProp) {
   const { questionList } = useContext(QueustionContext);
   const { templateContent, setTemplateContent, selectedTemplateTitle } =
     useContext(TemplateContext);
   const { selectedRecordCard } = useContext(RecordContext);
 
-  const { recordListData } = useRecord();
+  const { recordListData, recordListId } = useRecord();
   const toast = useToast();
 
-  const [didConditionPassed, setDidConditionPassed] = useState<boolean>();
   const [currTemplateSubHeader, setCurrTemplateSubHeader] = useState({
     title: selectedRecordCard ? selectedRecordCard.title : '',
     description: selectedRecordCard ? selectedRecordCard.description : '',
@@ -64,7 +67,8 @@ export default function Template() {
     [setTemplateContent, templateContent]
   );
 
-  const handleClickedSaveButton = useCallback(() => {
+  const validationCheck = useCallback(() => {
+    let isValid = true;
     if (templateContent?.title.length === 0) {
       toast({
         title: templateNotificationText.untitledTemplate,
@@ -75,7 +79,7 @@ export default function Template() {
         },
         duration: 1200,
       });
-      return;
+      isValid = false;
     }
     questionList.forEach(question => {
       if (question.tagName === '기본' && question.title.length === 0) {
@@ -90,8 +94,7 @@ export default function Template() {
           },
           duration: 1200,
         });
-        setDidConditionPassed(false);
-        return;
+        isValid = false;
       }
       if (question.type === 'SELECT' && question.options?.length === 0) {
         toast({
@@ -103,8 +106,7 @@ export default function Template() {
           },
           duration: 1200,
         });
-        setDidConditionPassed(false);
-        return;
+        isValid = false;
       } else if (question.type === 'SELECT' && question.options?.length !== 0) {
         const set = new Set(question.options);
         if (set.size !== question.options?.length) {
@@ -117,16 +119,18 @@ export default function Template() {
             },
             duration: 1200,
           });
-          setDidConditionPassed(false);
-          return;
+          isValid = false;
         }
       }
-      setDidConditionPassed(true);
     });
+
+    return isValid;
   }, [questionList, setTitle, templateContent?.title.length, toast]);
 
-  useEffect(() => {
-    if (didConditionPassed) {
+  const handleClickedSaveButton = useCallback(() => {
+    const isValid = validationCheck();
+    if (isValid) {
+      modalStatehandler();
       const createNewRecord = async () => {
         const newTemplateContent: NewTemplateContent = {
           ...templateContent,
@@ -136,11 +140,7 @@ export default function Template() {
         const newRecordListData = [
           ...(recordListData || []),
           {
-            id: !recordListData
-              ? 1
-              : recordListData.length !== 0
-              ? recordListData[recordListData?.length - 1].id + 1
-              : 1,
+            id: recordListId,
             category: newTemplateContent.category,
             title: newTemplateContent.title,
             description: newTemplateContent.description,
@@ -154,9 +154,15 @@ export default function Template() {
         mutate('record-templates', newRecordListData, false);
       };
       createNewRecord();
-      setDidConditionPassed(false);
     }
-  }, [didConditionPassed, questionList, recordListData, templateContent]);
+  }, [
+    modalStatehandler,
+    questionList,
+    recordListData,
+    recordListId,
+    templateContent,
+    validationCheck,
+  ]);
 
   return (
     <>

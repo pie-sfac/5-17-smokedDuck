@@ -53,7 +53,7 @@ export default function MediaCard({
           setIsOpen={setEditModalOpen}
           width={940}
           height={640}
-          showConfirmationAlert={true}
+          showConfirmationAlert={false}
         >
           <div
             style={{

@@ -8,16 +8,21 @@ import { useRecordDetail } from '@/utils/recordData';
 type RecordInfo = {
   id: number;
   isEditing: boolean;
+  saveHandler?: () => void;
 };
 
-export default function RecordInfo({ id, isEditing }: RecordInfo) {
+export default function RecordInfo({ id, isEditing, saveHandler }: RecordInfo) {
   const { recordDetailData } = useRecordDetail(id);
 
   return (
     <>
       {!recordDetailData && <Loading />}
       {recordDetailData && isEditing ? (
-        <UpdateTemplate id={id} recordDetailData={recordDetailData} />
+        <UpdateTemplate
+          id={id}
+          recordDetailData={recordDetailData}
+          saveHandler={saveHandler!}
+        />
       ) : (
         <>
           <UpdateTemplateTitle id={id} isEditing={isEditing} />

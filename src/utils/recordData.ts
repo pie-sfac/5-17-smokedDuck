@@ -37,6 +37,7 @@ export function useRecord(category?: string) {
       interviewCount: interviewCount ? interviewCount : 0,
       treatmentCount: treatmentCount ? treatmentCount : 0,
     },
+    recordListId: recordList ? recordList[recordList.length - 1].id : 1,
   };
 }
 
