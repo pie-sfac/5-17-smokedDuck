@@ -120,3 +120,9 @@ $ npm run dev
 - 센터 링크 생성/삭제에서 유튜브 링크 입력시, 메타데이터를 파싱해 해당 링크의 정보를 불러올 수 있습니다.
 - 생성/수정된 센터 링크는 최신순으로 정렬됩니다.
 - 센터 링크 생성/수정 시 카테고리, 링크, 링크 제목은 공백으로 둘 수 없습니다.
+
+
+## 구현 화면
+![404](https://github.com/pie-sfac/5-17-smokedDuck/assets/33304871/64dfdb2a-4fec-484c-97f6-00476348a9da)
+![e4d93b3cd4f3bc2b](https://github.com/pie-sfac/5-17-smokedDuck/assets/33304871/1ef464df-1d08-4d04-b7bb-d4defbbf531c)
+![f5fed12dbbef2af0](https://github.com/pie-sfac/5-17-smokedDuck/assets/33304871/c9f0b7b3-b3a7-4caf-b7e7-f3abb9cb65ae)
