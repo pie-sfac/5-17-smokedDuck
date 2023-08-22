@@ -54,7 +54,7 @@ $ npm run dev
 ```
 
 ### ID / PASSWORD
-id: tema17
+id: team17
 password: team17!!
 
 ## 기술 스택
